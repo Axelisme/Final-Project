@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -rdynamic CMakeFiles/main.dir/main.cpp.o -o "/home/axel/Documents/VSCode/Final Project/bin/Debug/main"   -L/usr/local/lib  -Wl,-rpath,/usr/local/lib -lallegro_image -lallegro_ttf -lallegro_font -lallegro_dialog -lallegro_primitives -lallegro_acodec -lallegro_audio -lallegro -lallegro_main 
