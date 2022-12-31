@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/axel/Documents/VSCode/Final Project/bin/Debug/main"
-  "/home/axel/Documents/VSCode/Final Project/bin/Debug/main.pdb"
+  "/home/axel/Documents/VSCode/Final Project/bin/Release/main"
+  "/home/axel/Documents/VSCode/Final Project/bin/Release/main.pdb"
   "CMakeFiles/main.dir/main.cpp.o"
   "CMakeFiles/main.dir/main.cpp.o.d"
 )
