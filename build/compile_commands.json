@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/axel/Documents/VSCode/Final Project/build",
+  "command": "/usr/bin/g++  -I\"/home/axel/Documents/VSCode/Final Project/src/../include\" -O3 -DNDEBUG -o CMakeFiles/main.dir/main.cpp.o -c \"/home/axel/Documents/VSCode/Final Project/src/main.cpp\"",
+  "file": "/home/axel/Documents/VSCode/Final Project/src/main.cpp"
+}
+]
