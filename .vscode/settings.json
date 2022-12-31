@@ -7,5 +7,5 @@
     },
     "cmake.sourceDirectory": "${workspaceFolder}/src",
     "cmake.buildTask": false,
-    "cmake.configureOnOpen": true,
+    "cmake.configureOnOpen": false,
 }
