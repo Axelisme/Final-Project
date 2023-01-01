@@ -49,14 +49,14 @@ Monster::~Monster()
 void
 Monster::Load_Move()
 {
-    char buffer[50];
+    char buffer[100];
 
     for(int i=0; i < 4; i++)
     {
         for(int j=0; j<direction_count[i]; j++)
         {
             ALLEGRO_BITMAP *img;
-            sprintf(buffer, "../../data/%s/%s_%d.png", class_name, direction_name[i], j);
+            sprintf(buffer, "data/%s/%s_%d.png", class_name, direction_name[i], j);
 
             img = al_load_bitmap(buffer);
             if(img)

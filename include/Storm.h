@@ -14,8 +14,8 @@ public:
         attack_frequency = 5;
         attack_velocity = 20;
         attack_harm_point = 5;
-        img = al_load_bitmap("../../data/Tower/Storm.png");
-        attack_img = al_load_bitmap("../../data/Tower/Storm_Beam.png");
+        img = al_load_bitmap("data/Tower/Storm.png");
+        attack_img = al_load_bitmap("data/Tower/Storm_Beam.png");
     }
 
     int getWidth() override { return TowerWidth[STORM]; }

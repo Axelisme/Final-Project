@@ -45,7 +45,7 @@ Tower::SelectedTower(int mouse_x, int mouse_y, int type)
     char filename[50];
     ALLEGRO_BITMAP *bitmap;
 
-    sprintf(filename, "../../data/Tower/%s.png", TowerClass[type]);
+    sprintf(filename, "data/Tower/%s.png", TowerClass[type]);
     bitmap = al_load_bitmap(filename);
 
     al_draw_bitmap(bitmap, draw_x, draw_y, 0);

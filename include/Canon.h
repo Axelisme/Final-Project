@@ -14,8 +14,8 @@ public:
         attack_frequency = 30;
         attack_velocity = 6;
         attack_harm_point = 15;
-        img = al_load_bitmap("../../data/Tower/Canon.png");
-        attack_img = al_load_bitmap("../../data/Tower/Canon_Beam.png");
+        img = al_load_bitmap("data/Tower/Canon.png");
+        attack_img = al_load_bitmap("data/Tower/Canon_Beam.png");
     }
 
     int getWidth() override { return TowerWidth[CANON]; }

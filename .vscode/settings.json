@@ -8,4 +8,7 @@
     "cmake.sourceDirectory": "${workspaceFolder}/src",
     "cmake.buildTask": false,
     "cmake.configureOnOpen": false,
+    "cmake.debugConfig": {
+        "cwd": "${workspaceRoot}"
+    }
 }

@@ -14,8 +14,8 @@ public:
         attack_frequency = 50;
         attack_velocity = 10;
         attack_harm_point = 3;
-        img = al_load_bitmap("../../data/Tower/Poison.png");
-        attack_img = al_load_bitmap("../../data/Tower/Poison_Beam.png");
+        img = al_load_bitmap("data/Tower/Poison.png");
+        attack_img = al_load_bitmap("data/Tower/Poison_Beam.png");
     }
 
     int getWidth() override { return TowerWidth[POISON]; }

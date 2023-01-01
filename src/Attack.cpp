@@ -22,7 +22,7 @@ Attack::Attack(Circle *created_circle, Circle *target_circle, int harm_point, in
     this->attack_img = attack_img;
 
     // initialize the effect sound of attack
-    sample = al_load_sample("Arrow.wav");
+    sample = al_load_sample("data/Arrow.wav");
     arrow = al_create_sample_instance(sample);
     al_set_sample_instance_playmode(arrow, ALLEGRO_PLAYMODE_ONCE);
     al_attach_sample_instance_to_mixer(arrow, al_get_default_mixer());

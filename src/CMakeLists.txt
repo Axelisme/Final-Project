@@ -4,8 +4,14 @@ project(Final_CMake VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
+# CWD設定
+SET(WORKING_DIRECTORY ..)
+message("Working directory: ${WORKING_DIRECTORY}")
+
 # 新增原始檔列表變數
-aux_source_directory(. SRC_LIST)
+SET(SRC_DIR .)
+aux_source_directory(${SRC_DIR} SRC_LIST)
+message("Source directory: ${SRC_DIR}")
 
 # 指定庫檔案搜尋目錄，必須為絕對路徑
 link_directories(/usr/local/lib)
@@ -17,8 +23,10 @@ INCLUDE_DIRECTORIES(../include)
 INCLUDE_DIRECTORIES(/usr/local/include)
 
 # 生成可執行檔案
+SET(EXE_NAME game)
 set(EXECUTABLE_OUTPUT_PATH ../bin/${CMAKE_BUILD_TYPE})
-add_executable(game ${SRC_LIST})
+add_executable(${EXE_NAME} ${SRC_LIST})
+message("Excutable file: ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME}")
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

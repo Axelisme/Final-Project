@@ -20,7 +20,7 @@ LEVEL::setLevel(const int level)
     char buffer[50];
     FILE *file;
 
-    sprintf(buffer, "../../data/LEVEL%d.txt", level);
+    sprintf(buffer, "data/LEVEL%d.txt", level);
     file = fopen(buffer, "r");
 
     this->level = level;
