@@ -18,7 +18,7 @@ INCLUDE_DIRECTORIES(/usr/local/include)
 
 # 生成可執行檔案
 set(EXECUTABLE_OUTPUT_PATH ../bin/${CMAKE_BUILD_TYPE})
-add_executable(main ${SRC_LIST})
+add_executable(game ${SRC_LIST})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

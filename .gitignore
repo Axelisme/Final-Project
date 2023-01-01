@@ -1,3 +1,7 @@
+bin/
+bin/Debug/
+bin/Release/
+
 build/
 build/cmake_install.cmake
 build/CMakeCache.txt
@@ -241,3 +245,5 @@ build/CMakeFiles/main.dir/main.cpp.o
 build/CMakeFiles/main.dir/main.cpp.o.d
 build/CMakeFiles/main.dir/progress.make
 build/Testing/Temporary/LastTest.log
+bin/Debug/main
+bin/Release/main
