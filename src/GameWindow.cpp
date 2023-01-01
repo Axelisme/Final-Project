@@ -30,24 +30,24 @@ GameWindow::game_init()
 {
     char buffer[50];
 
-    icon = al_load_bitmap("./icon.png");
-    background = al_load_bitmap("./StartBackground.jpg");
+    icon = al_load_bitmap("../../data/icon.png");
+    background = al_load_bitmap("../../data/StartBackground.jpg");
 
     for(int i = 0; i < Num_TowerType; i++)
     {
-        sprintf(buffer, "./Tower/%s.png", TowerClass[i]);
+        sprintf(buffer, "../../data/Tower/%s.png", TowerClass[i]);
         tower[i] = al_load_bitmap(buffer);
     }
 
     al_set_display_icon(display, icon);
     al_reserve_samples(3);
 
-    sample = al_load_sample("growl.wav");
+    sample = al_load_sample("../../data/growl.wav");
     startSound = al_create_sample_instance(sample);
     al_set_sample_instance_playmode(startSound, ALLEGRO_PLAYMODE_ONCE);
     al_attach_sample_instance_to_mixer(startSound, al_get_default_mixer());
 
-    sample = al_load_sample("BackgroundMusic.ogg");
+    sample = al_load_sample("../../data/BackgroundMusic.ogg");
     backgroundSound = al_create_sample_instance(sample);
     al_set_sample_instance_playmode(backgroundSound, ALLEGRO_PLAYMODE_ONCE);
     al_attach_sample_instance_to_mixer(backgroundSound, al_get_default_mixer());
@@ -180,7 +180,7 @@ GameWindow::game_play()
 void
 GameWindow::show_err_msg(int msg)
 {
-    if(msg == GAME_TERMINATE)
+    if(msg == GAME_TERMINATE || msg == GAME_EXIT)
         fprintf(stderr, "Game Terminated...");
     else
         fprintf(stderr, "unexpected msg: %d", msg);
@@ -218,9 +218,9 @@ GameWindow::GameWindow()
     al_install_mouse();    // install mouse event
     al_install_audio();    // install audio event
 
-    font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",12,0); // load small font
-    Medium_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",24,0); //load medium font
-    Large_font = al_load_ttf_font("Caviar_Dreams_Bold.ttf",36,0); //load large font
+    font = al_load_ttf_font("../../data/Caviar_Dreams_Bold.ttf",12,0); // load small font
+    Medium_font = al_load_ttf_font("../../data/Caviar_Dreams_Bold.ttf",24,0); //load medium font
+    Large_font = al_load_ttf_font("../../data/Caviar_Dreams_Bold.ttf",36,0); //load large font
 
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_keyboard_event_source());

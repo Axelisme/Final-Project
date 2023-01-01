@@ -56,7 +56,7 @@ Monster::Load_Move()
         for(int j=0; j<direction_count[i]; j++)
         {
             ALLEGRO_BITMAP *img;
-            sprintf(buffer, "./%s/%s_%d.png", class_name, direction_name[i], j);
+            sprintf(buffer, "../../data/%s/%s_%d.png", class_name, direction_name[i], j);
 
             img = al_load_bitmap(buffer);
             if(img)

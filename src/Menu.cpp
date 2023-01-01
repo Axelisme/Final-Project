@@ -37,15 +37,15 @@ Menu::Menu()
     for(int i=0;i<Num_TowerType; i++)
     {
         ALLEGRO_BITMAP *tower;
-        sprintf(filename, "./Tower/%s_Menu.png", TowerClass[i]);
+        sprintf(filename, "../../data/Tower/%s_Menu.png", TowerClass[i]);
 
         tower = al_load_bitmap(filename);
         menu_tower.push_back(tower);
     }
 
-    love = al_load_bitmap("./Tower/love.png");
+    love = al_load_bitmap("../../data/Tower/love.png");
 
-    menuFont = al_load_ttf_font("pirulen.ttf", 12, 0); // load font
+    menuFont = al_load_ttf_font("../../data/pirulen.ttf", 12, 0); // load font
 }
 
 Menu::~Menu()

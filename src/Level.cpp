@@ -20,7 +20,7 @@ LEVEL::setLevel(const int level)
     char buffer[50];
     FILE *file;
 
-    sprintf(buffer, "LEVEL%d.txt", level);
+    sprintf(buffer, "../../data/LEVEL%d.txt", level);
     file = fopen(buffer, "r");
 
     this->level = level;
@@ -31,12 +31,14 @@ LEVEL::setLevel(const int level)
         this->levelMap[i].roadPoint = false;
     }
 
-    fscanf(file, "%s", buffer);
+    int err = fscanf(file, "%s", buffer);
+    if(err == EOF) exit(1);
     Monster_MAX = atoi(buffer);
 
     for(int i=0; i < Num_MonsterType; i++)
     {
-        fscanf(file, "%s", buffer);
+        int err = fscanf(file, "%s", buffer);
+        if(err == EOF) exit(1);
         MonsterNum[i] = atoi(buffer);
     }
 

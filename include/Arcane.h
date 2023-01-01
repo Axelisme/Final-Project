@@ -14,8 +14,8 @@ public:
         attack_frequency = 20;
         attack_velocity = 8;
         attack_harm_point = 5;
-        img = al_load_bitmap("./Tower/Arcane.png");
-        attack_img = al_load_bitmap("./Tower/Arcane_Beam.png");
+        img = al_load_bitmap("../../data/Tower/Arcane.png");
+        attack_img = al_load_bitmap("../../data/Tower/Arcane_Beam.png");
     }
 
     int getWidth() override { return TowerWidth[ARCANE]; }

@@ -14,8 +14,8 @@ public:
         attack_frequency = 15;
         attack_velocity = 8;
         attack_harm_point = 7;
-        img = al_load_bitmap("./Tower/Archer.png");
-        attack_img = al_load_bitmap("./Tower/Archer_Beam.png");
+        img = al_load_bitmap("../../data/Tower/Archer.png");
+        attack_img = al_load_bitmap("../../data/Tower/Archer_Beam.png");
     }
 
     int getWidth() override { return TowerWidth[ARCHER]; }
