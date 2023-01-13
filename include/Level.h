@@ -1,42 +1,14 @@
-#ifndef LEVEL_H_INCLUDED
-#define LEVEL_H_INCLUDED
+#ifndef LEVEL_H
+#define LEVEL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <string>
-#include <vector>
-#include "global.h"
+#include "Draw.h"
 
-typedef struct Node {
-    int h, g, f;
-    bool roadPoint;
-}Node;
-
-class LEVEL {
+class Level: Draw {
 public:
-    LEVEL(const int);
-    ~LEVEL();
+    void draw();
+    void update();
 
-    void setLevel(const int);
-    bool isRoad(int index) { return levelMap[index].roadPoint; }
-    int getMonsterSpeed() { return MonsterSpeed; }
-    int getLevel() { return level; }
-    //void search_destination();
-    std::vector<int> ReturnPath() { return road_grid; }
-
-    int MonsterNum[Num_MonsterType];
-
-private:
-    Node levelMap[NumOfGrid];
-    std::vector<int> road_grid;
-    // current level number
-    int level = 1;
-    // maximum number of monster of a level
-    int Monster_MAX = 50;
-    // frequency of producing  monster
-    int MonsterSpeed = 80;
+    Level(int l=1);
 };
 
-
-#endif // LEVEL_H_INCLUDED
+#endif // LEVEL_H

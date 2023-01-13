@@ -1,11 +1,9 @@
 #include "GameWindow.h"
 
-int main(int argc, char *argv[])
-{
-    GameWindow *TowerGame= new GameWindow();
+int main() {
+    GameWindow* SnakeGame = new GameWindow();
 
-    TowerGame->game_play();
+    SnakeGame->game_play();
 
-    delete TowerGame;
-    return 0;
+    delete SnakeGame;
 }

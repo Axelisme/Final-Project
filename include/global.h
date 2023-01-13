@@ -1,27 +1,20 @@
-#ifndef GLOBAL_H_INCLUDED
-#define GLOBAL_H_INCLUDED
+#ifndef GLOBAL_H
+#define GLOBAL_H
 
-#include <allegro5/allegro_font.h>
+#define STR_(X) #X
+#define STR(X) STR_(X)
 
-#define font_size 12
-#define grid_width 40
-#define grid_height 40
+#define FONT_PATH data/fonts
+#define IMAGE_PATH data/Image
 
-#define window_width 800
-#define window_height 600
-#define field_width 600
-#define field_height 600
+#define Debug 1
 
-#define Num_TowerType 5
-#define Num_MonsterType 4
-#define NumOfGrid (field_width / grid_width) * (field_height / grid_height)
+enum ERR_MSG {
+    INIT_FAIL,
+    START_FAIL,
+    RUNTIME_FAIL,
+    KEY_TERNIMATE
+};
 
-extern int TowerRadius[];
-extern char TowerClass[][20];
-extern int TowerWidth[];
-extern int TowerHeight[];
 
-enum {ARCANE = 0, ARCHER, CANON, POISON, STORM};
-enum {WOLF = 0, WOLFKNIGHT, DEMONNIJIA, CAVEMAN};
-
-#endif // GLOBAL_H_INCLUDED
+#endif // GLOBAL_H

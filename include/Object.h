@@ -1,25 +1,10 @@
-#ifndef OBJECT_H_INCLUDED
-#define OBJECT_H_INCLUDED
+#ifndef OBJECT_H
+#define OBJECT_H
 
-#include "Circle.h"
+#include "Draw.h"
 
-class Object {
-public:
-    Object() {}
-    ~Object() {}
-
-    // pure function for drawing object
-    virtual void Draw() = 0;
-
-    int getX() { return circle->x; }
-    int getY() { return circle->y; }
-    int getRadius() { return circle->r; }
-
-    Circle* getCircle() const { return circle; }
-
-protected:
-    Circle *circle;
+class Object: Draw {
 
 };
 
-#endif // OBJECT_H_INCLUDED
+#endif // OBJECT_H

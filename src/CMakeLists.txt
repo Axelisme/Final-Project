@@ -5,11 +5,11 @@ include(CTest)
 enable_testing()
 
 # CWD設定
-SET(WORKING_DIRECTORY ..)
+SET(WORKING_DIRECTORY /home/axel/Documents/VSCode/Final-Project)
 message("Working directory: ${WORKING_DIRECTORY}")
 
 # 新增原始檔列表變數
-SET(SRC_DIR .)
+SET(SRC_DIR ${WORKING_DIRECTORY}/src)
 aux_source_directory(${SRC_DIR} SRC_LIST)
 message("Source directory: ${SRC_DIR}")
 
@@ -19,12 +19,12 @@ set(LINK_LIB -lallegro_image -lallegro_ttf -lallegro_font -lallegro_dialog -lall
 link_libraries(${LINK_LIB})
 
 # 指定標頭檔案目錄
-INCLUDE_DIRECTORIES(../include)
+INCLUDE_DIRECTORIES(${WORKING_DIRECTORY}/include)
 INCLUDE_DIRECTORIES(/usr/local/include)
 
 # 生成可執行檔案
-SET(EXE_NAME game)
-set(EXECUTABLE_OUTPUT_PATH ../bin/${CMAKE_BUILD_TYPE})
+SET(EXE_NAME SnakeGame)
+set(EXECUTABLE_OUTPUT_PATH ${WORKING_DIRECTORY}/bin/${CMAKE_BUILD_TYPE})
 add_executable(${EXE_NAME} ${SRC_LIST})
 message("Excutable file: ${EXECUTABLE_OUTPUT_PATH}/${EXE_NAME}")
 
