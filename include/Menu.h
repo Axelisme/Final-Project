@@ -1,19 +1,25 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "Draw.h"
+#include "global.h"
+#include "Interface.h"
 
-enum MENU_TYPE {
-    START,
-    SELECT_LEVEL,
-    IN_GAME
-};
-
-class Menu: Draw {
+class Menu: public Interface {
 public:
-    MENU_TYPE state;
+    // draw
     void draw();
-    void update();
+    // update all object
+    void update(){}
+    
+    // process trigered by mouse
+    GAME_STATE mouse_triger(int mouse){return GAME_MENU;}
+
+    // constructor and deletor
+    Menu(MENU_TYPE _type) {}
+    ~Menu();
+
+private:
+    MENU_TYPE type;
 };
 
 #endif // MENU_H
