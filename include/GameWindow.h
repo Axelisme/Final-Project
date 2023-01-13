@@ -1,33 +1,21 @@
 #ifndef GANEWINDOW_H
 #define GANEWINDOW_H
 
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
-#include <allegro5/allegro_image.h>
-#include <string>
-#include "Menu.h"
-#include "Draw.h"
-#include "Level.h"
 #include "global.h"
+#include "Menu.h"
+#include "Level.h"
+#include <string>
 
 #define LOCKTIME 30
 #define FPS 40
 
 using namespace std;
 
-enum GAME_STATE {
-    GAME_MENU,
-    GAME_LEVEL,
-    GAME_TERMINATE
-};
-
-class GameWindow:Draw
-{
+class GameWindow {
 public:
     // Draw function
     void draw();
+    // update object
     void update();
 
     // debug information
@@ -38,6 +26,7 @@ public:
     // game process
     void game_load();
     void game_play();
+    void game_reset();
     void game_destroy();
 
     // Create and destroy
@@ -45,10 +34,12 @@ public:
     ~GameWindow();
 
     // work dir path
-    string WORKDIR;
+    static string WORKDIR;
+    
+private:
+    // set work dir path
     void Set_workdir();
 
-private:
     // inner process
     void game_begin();
     void game_process();
@@ -65,7 +56,7 @@ private:
     Level *level = nullptr;
 
     // state
-    GAME_STATE state;
+    GAME_STATE state = GAME_MENU;
 
     // event
     ALLEGRO_EVENT_QUEUE *event_queue = nullptr;
@@ -73,9 +64,6 @@ private:
 
     // Time
     ALLEGRO_TIMER *timer = nullptr;
-
-    // redraw
-    bool redraw = false;
 
     // bottom lock
     int lockcount = 0;

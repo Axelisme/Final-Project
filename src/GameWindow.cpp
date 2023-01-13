@@ -25,15 +25,19 @@ void GameWindow::Set_workdir() {
     char temp[200];
     readlink("/proc/self/exe", temp, 200);
     WORKDIR = temp;
-    WORKDIR = WORKDIR.substr(0,WORKDIR.find("/bin"));
+    WORKDIR = WORKDIR.substr(0,WORKDIR.find("/bin")) + "/data";
     show_msg(WORKDIR);
+    
 }
 
 void GameWindow::game_load() {
     cout << "Game Initializing...\n";
+    /*
+        for image and sound
+    */
 
     level = new Level(1);
-    menu = new Menu();
+    menu = new Menu(START);
 
 }
 
@@ -64,34 +68,35 @@ void GameWindow::game_process() {
 
     // process for different event
     switch(event.type) {
-        case ALLEGRO_EVENT_TIMER: {         // meet time update
-            redraw = true;
+        case ALLEGRO_EVENT_TIMER: {                  // meet time update
             update();
             draw();
             break;
         }
-        case ALLEGRO_EVENT_DISPLAY_CLOSE: { // if close the window
+        case ALLEGRO_EVENT_DISPLAY_CLOSE: {          // if close the window
             state = GAME_TERMINATE;
             return;
         }
-        case ALLEGRO_EVENT_KEY_DOWN: {      // if pulse a key
+        case ALLEGRO_EVENT_KEY_DOWN: {               // if pulse a key
             // check whether in lock state
             if(islock) break;
 
             // process for different state
-            switch(state) {
-                case GAME_MENU: {
-                    
-                }
-                case GAME_LEVEL: {
-                }
-                case GAME_TERMINATE: return;
+            if(state==GAME_LEVEL) {
+                    state = level->key_triger(event.keyboard.keycode);
             }
 
             // set buttom lock
             islock = true;
             lockcount = LOCKTIME;
 
+            break;
+        }
+        case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN: {      // if click
+            // process for different state
+            if(state==GAME_MENU) {
+                    state = menu->mouse_triger(event.mouse.button);
+            }
             break;
         }
     }
@@ -137,6 +142,12 @@ GameWindow::GameWindow() {
     // load work dir
     Set_workdir();
 
+    // first state is game menu
+    state = GAME_MENU;
+    // lock 
+    lockcount = 0;
+    islock = false;
+
     // Create Display
     display = al_create_display(width,height);
     if(display==nullptr) raise_err(INIT_FAIL,"can't not create display window");
@@ -170,10 +181,22 @@ GameWindow::GameWindow() {
 
 }
 
-void GameWindow::game_destroy() {
-    //delete display
-    al_destroy_display(display);
+void GameWindow::game_reset() {
+    level->reset();
+    int lockcount = 0;
+    bool islock = false;
+    state = GAME_MENU;
+}
 
+void GameWindow::game_destroy() {
+    game_reset();
+
+    al_destroy_display(display);            // delete display
+    al_destroy_event_queue(event_queue);    // delete event_queue
+    al_destroy_timer(timer);                // delete timer
+
+    delete level;
+    delete menu;
 }
 
 GameWindow::~GameWindow() {
