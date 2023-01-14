@@ -1,6 +1,10 @@
 #include "global.h"
 #include "Level.h"
 
+void Level::draw() {
+
+}
+
 // update all object
 void Level::update() {}
 
@@ -14,5 +18,6 @@ bool Level::load_level(int) {return true;}
 void Level::reset() {}
 
 // constructor and deletor
-Level::Level(int i) {}
+Level::Level(int i):Interface(MUSIC_PATH+"level_bgm.ogg",IMAGE_PATH+"background.jpg") {}
+
 Level::~Level() {}

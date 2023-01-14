@@ -8,10 +8,9 @@
 
 using namespace std;
 
-class Level {
+class Level: public Interface {
 public:
-    // draw
-    void draw();
+    void draw() override;
 
     // update all object
     void update();

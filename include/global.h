@@ -26,6 +26,9 @@
 #define CHUNK_WIDRH  (float(DISPLAY_WIDTH)/CHUNK_W_NUM)
 #define CHUNK_HEIGHT  (float(DISPLAY_HEIGHT)/CHUNK_H_NUM)
 
+const std::string MUSIC_PATH("data/music");
+const std::string IMAGE_PATH("data/image");
+
 #define BLACK al_map_rgb(0, 0, 0)
 
 enum GAME_STATE {
