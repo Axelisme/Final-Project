@@ -11,6 +11,8 @@ public:
     void draw();
     bool update();
 
+    Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,ALLEGRO_BITMAP *);
+
     bool isFall = false;
     MOVE_DIRCTION move_direction = NONE;
     MOVE_DIRCTION heading = NONE;

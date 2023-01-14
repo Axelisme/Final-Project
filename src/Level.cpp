@@ -4,8 +4,6 @@
 #include <fstream>
 #include <string>
 
-using Pos=pair<int, int>;
-
 void Level::draw() {
     Interface::draw();
 
@@ -51,11 +49,20 @@ bool Level::update() {
         }
     }
     
-     
+    snake->isFall = false;
     for(auto &b:snake->body) {
         int x = b->getx();
         int y = b->gety();
-        if(is(y,x,AIR)){}
+        if(!is(y+1,x,AIR) && !is(y+1,x,BODY)){
+            snake->isFall = true;
+            break;
+        }
+    }
+    if(snake->isFall)
+        snake->move_direction = NONE;
+        tmp |= snake->update();
+    else {
+
     }
     
 
@@ -96,7 +103,7 @@ bool Level::load_level(int level_idx)
     ifstream fin(LEVEL_PATH+tmp);
     if(!fin)
     {
-        sprintf(tmp, "Level%d loaded fail, no Level%d's data.", level_idx);
+        sprintf(tmp, "Level%d loaded fail, no Level%d's data.", level_idx,level_idx);
         raise_err(tmp);
         return false;
     }
@@ -129,7 +136,7 @@ bool Level::load_level(int level_idx)
                 {
                     fin >> snake_position_vector[i].first >> snake_position_vector[i].second;
                 }
-                snake = new_snake(snake_position_vector);   //TODO
+                snake = new Snake(snake_position_vector,Snake_head_image,Snake_body_image);   //TODO
                 
             case '4':   //stone
                 fin >> m;
@@ -137,7 +144,8 @@ bool Level::load_level(int level_idx)
                 for (int i = 0; i < m; i++)
                 {
                     fin >> stone_position.first >> stone_position.second;
-                    object.emplace_back(new_stone(stone_position)); //TODO
+                    Object * temp = new Stone(stone_position.first,stone_position.second,Stone_image);
+                    object.emplace_back(temp); //TODO
                 }
             case '5':   //map
                 fin >> m >> n;
@@ -153,7 +161,7 @@ bool Level::load_level(int level_idx)
                 map = map_matrix;
 
             default:
-            sprintf(tmp, "Level%d loaded fail, Level%d's data wrong.", level_idx);
+            sprintf(tmp, "Level%d loaded fail, Level%d's data wrong.", level_idx,level_idx);
             raise_err(tmp);
             return false;
         }
@@ -193,6 +201,8 @@ void Level::print_map()
 // reset
 void Level::reset() {
     load_level(level_idx);
+    key_lock = false;
+    key_lock_count =0;
 }
 
 // constructor and deletor

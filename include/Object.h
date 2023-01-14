@@ -20,6 +20,7 @@ public:
 
     void move(float _x,float _y) {x+=_x;y+=_y;}
     void setxy(float _x,float _y) {x=_x;y=_y;}
+    Pos ConvertIdx(int idx);
 
 protected:
     
@@ -38,7 +39,7 @@ protected:
     float height = 0; 
 
     // image
-    std::vector<ALLEGRO_BITMAP *>* Image = nullptr;
+    ALLEGRO_BITMAP * Image = nullptr;
     
 };
 

@@ -11,13 +11,13 @@ bool Stone::update() {
     return tmp;
 }
 
-Stone::Stone(float _x,float _y,std::vector<ALLEGRO_BITMAP *>* _img) {
+Stone::Stone(float _y,float _x,ALLEGRO_BITMAP *_img) {
     type = STONE;
     move_dirc = NONE;
 
     ani_total_count = ANI_TOTAL_COUNT;
     ani_count = 0;
-    ani_num = ANI_NUM[STONE];
+    ani_num = ANI_NUM;
     ani_image_idx = 0;
 
     x = _x;

@@ -8,7 +8,7 @@ class Stone: public Object {
 public:
     bool update() override;
 
-    Stone(float,float,std::vector<ALLEGRO_BITMAP *>*);
+    Stone(float _y,float _x,ALLEGRO_BITMAP *);
 
 private:
     bool isFall = false;
