@@ -14,8 +14,8 @@ void Level::draw() {
     snake->draw();
 }
 
-inline bool Level::is(int _y,int _x,OBJ_TYPE T) {
-        return map.at(_y).at(_x) == T;
+inline bool Level::is(Pos pos,OBJ_TYPE T) {
+        return map.at(pos.first).at(pos.second) == T;
 }
 
 inline bool Level::CanMove(MOVE_DIRCTION dirc) {
@@ -24,6 +24,8 @@ inline bool Level::CanMove(MOVE_DIRCTION dirc) {
 
 // update all object
 bool Level::update() {
+    if(is(snake->head,END)) return true;
+
     if((key_lock && ++key_lock_count)%key_lock_num == 0) 
         key_lock = false;
     
@@ -32,7 +34,7 @@ bool Level::update() {
             case STONE: {
                 int x = int(ob->getx());
                 int y = int(ob->gety());
-                if(is(y+1,x,AIR)) {
+                if(is({y+1,x},AIR)) {
                     ob->move_dirc = DOWN;
                     if(map[y][x]!=STONE) raise_warn("some thing mismatch about map"); 
                     map[y][x] = AIR;
@@ -53,19 +55,21 @@ bool Level::update() {
     for(auto &b:snake->body) {
         int x = b->getx();
         int y = b->gety();
-        if(!is(y+1,x,AIR) && !is(y+1,x,BODY)){
+        if(!is({y+1,x},AIR) && !is({y+1,x},BODY)){
             snake->isFall = true;
             break;
         }
     }
-    if(snake->isFall) 
+    if(snake->isFall || !CanMove(snake->move_direction)) 
         snake->move_direction = NONE;
-    else if(!CanMove(snake->move_direction)){
-        snake->move_direction = NONE;
+    else {
+        Pos next = snake->Next_Pos();
+        if(is(next,APPLE)) snake->next_apple = true;
     }
+
     snake->update();
 
-    return true;
+    return false;
 }
 
 // process trigered by key

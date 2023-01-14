@@ -11,16 +11,17 @@ public:
     void draw();
     bool update();
 
-    void EatApple();
+    void EatApple(Pos);
+    Pos Next_Pos();
 
     Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,ALLEGRO_BITMAP *);
 
     bool isFall = false;
+    bool next_apple = false;
     MOVE_DIRCTION move_direction = NONE;
     MOVE_DIRCTION heading = NONE;
 
-    float head_x=0;
-    float head_y=0;
+    Pos head = {0.0,0.0};
 
     std::vector<Body*> body;
 
