@@ -65,8 +65,6 @@ enum MOVE_DIRCTION {
 
 const int ANI_NUM[TYPE_NUM]={0,4,4,4,4,4};
 
-using Map = std::vector<std::vector<OBJ_TYPE>>;
-
 void raise_err(const std::string &);
 
 void raise_warn(const std::string &);

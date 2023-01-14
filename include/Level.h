@@ -8,6 +8,8 @@
 
 using namespace std;
 
+using Map = std::vector<std::vector<OBJ_TYPE>>;
+
 class Level: public Interface {
 public:
     void draw() override;
