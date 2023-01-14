@@ -18,13 +18,14 @@ inline bool Level::is(int _y,int _x,OBJ_TYPE T) {
         return map.at(_y).at(_x) == T;
 }
 
+inline bool Level::CanMove(MOVE_DIRCTION dirc) {
+    return true;
+}
+
 // update all object
 bool Level::update() {
-    bool tmp = false;
-    if((key_lock && ++key_lock_count)%key_lock_num == 0) {
+    if((key_lock && ++key_lock_count)%key_lock_num == 0) 
         key_lock = false;
-        tmp = true;
-    }
     
     for(auto &ob:object) {
         switch(ob->type) {
@@ -38,7 +39,6 @@ bool Level::update() {
                     ob->update();
                     ob->move_dirc = NONE;
                     map.at(y+1).at(x) = STONE;
-                    tmp = true;
                 }
                 else {
                     ob->move_dirc = NONE;
@@ -58,16 +58,14 @@ bool Level::update() {
             break;
         }
     }
-    if(snake->isFall)
+    if(snake->isFall) 
         snake->move_direction = NONE;
-        tmp |= snake->update();
-    else {
-
+    else if(!CanMove(snake->move_direction)){
+        snake->move_direction = NONE;
     }
-    
+    snake->update();
 
-
-    return tmp;
+    return true;
 }
 
 // process trigered by key
