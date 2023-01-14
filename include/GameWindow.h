@@ -13,7 +13,7 @@ public:
     // Draw function
     void draw();
     // update object
-    void update();
+    bool update();
 
     // game process
     void game_load();

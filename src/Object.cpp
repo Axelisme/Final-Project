@@ -19,7 +19,11 @@ void Object::draw() {
                           );
 }
 
-void Object::update() {
-    if((++ani_count)%ani_total_count == 0) ani_image_idx = (++ani_image_idx)%ani_num;
+bool Object::update() {
+    if((++ani_count)%ani_total_count == 0) {
+        ani_image_idx = (++ani_image_idx)%ani_num;
+        return true;
+    }
+    return false;
 }
 

@@ -6,8 +6,12 @@
 
 class Object {
 public:
+    // type
+    OBJ_TYPE type;
+    MOVE_DIRCTION move_dirc = NONE;
+
     void draw();
-    virtual void update();
+    virtual bool update();
 
     float getx() {return x;}
     float gety() {return y;}
@@ -18,9 +22,7 @@ public:
     void setxy(float _x,float _y) {x=_x;y=_y;}
 
 protected:
-    // type
-    OBJ_TYPE type;
-
+    
     // animation
     int ani_total_count;
     int ani_count;         //count form ani_total_count to 0

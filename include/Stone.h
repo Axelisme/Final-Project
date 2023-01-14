@@ -6,12 +6,9 @@
 
 class Stone: public Object {
 public:
-    void update() override;
+    bool update() override;
 
     Stone(float,float,std::vector<ALLEGRO_BITMAP *>*);
-
-    void triger_fall() {isFall=true;}
-    void stop_fall() {isFall=false;}
 
 private:
     bool isFall = false;

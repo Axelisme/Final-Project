@@ -1,15 +1,19 @@
 #include "global.h"
 #include "Stone.h"
 
-void Stone::update() {
-    Object::update();
+bool Stone::update() {
+    bool tmp = Object::update();
     
-    if(isFall)
+    if(isFall) {
+        tmp = true;
         move(0,G_VELOCITY);
+    }
+    return tmp;
 }
 
 Stone::Stone(float _x,float _y,std::vector<ALLEGRO_BITMAP *>* _img) {
     type = STONE;
+    move_dirc = NONE;
 
     ani_total_count = ANI_TOTAL_COUNT;
     ani_count = 0;

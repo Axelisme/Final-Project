@@ -13,7 +13,7 @@ public:
     void draw() override;
 
     // update all object
-    void update();
+    bool update();
 
     // process trigered by key
     GAME_STATE key_triger(int key);
@@ -29,15 +29,18 @@ public:
     ~Level();
 
 private:
-    int level_idx;
-    std::vector<std::vector<OBJ_TYPE>> map;
-    Snake *snake;
+    inline bool is(int,int,OBJ_TYPE);
 
-    std::vector<ALLEGRO_BITMAP *>  Ground_image;
-    std::vector<ALLEGRO_BITMAP *>  Stone_image;
-    std::vector<ALLEGRO_BITMAP *>  Apple_image;
-    std::vector<ALLEGRO_BITMAP *>  Snake_head_image;
-    std::vector<ALLEGRO_BITMAP *>  Snake_body_image;
+    int level_idx;
+    Map map;
+    Snake *snake;
+    std::vector<Object*> object;
+
+    ALLEGRO_BITMAP *  Ground_image;
+    ALLEGRO_BITMAP *  Stone_image;
+    ALLEGRO_BITMAP *  Apple_image;
+    ALLEGRO_BITMAP *  Snake_head_image;
+    ALLEGRO_BITMAP *  Snake_body_image;
 
     bool key_lock = false;
     int key_lock_count = 0;

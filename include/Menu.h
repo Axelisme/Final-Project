@@ -7,7 +7,7 @@
 class Menu: public Interface {
 public:
     // update all object
-    void update();
+    bool update();
     
     // process trigered by mouse
     GAME_STATE mouse_triger(int mouse){return GAME_MENU;}

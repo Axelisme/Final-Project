@@ -76,19 +76,18 @@ void GameWindow::game_process() {
     }
 }
 
-void GameWindow::update() {
+bool GameWindow::update() {
     // menu or level update
     switch(state) {
         case GAME_MENU: {
-            menu->update();
-            return;
+            return menu->update();
         }
         case GAME_LEVEL: {
-            level->update();
-            return;
+            return level->update();
         }
-        case GAME_TERMINATE: return;
+        case GAME_TERMINATE: return true;
     }
+    return false;
 }
 
 void GameWindow::draw() {

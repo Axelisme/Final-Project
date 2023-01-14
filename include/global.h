@@ -9,6 +9,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <string>
+#include <vector>
 
 #define Debug 1
 
@@ -17,9 +18,9 @@
 #define DISPLAY_HEIGHT 600
 #define CHUNK_W_NUM 20
 #define CHUNK_H_NUM 10
-#define G_VELOCITY 0.5     //CHUNK
+#define G_VELOCITY 1     //CHUNK
 #define FPS 40
-#define TYPE_NUM 5
+#define TYPE_NUM 6
 #define KEY_LOCK_NUM 1000
 #define ANI_TOTAL_COUNT 50
 
@@ -44,6 +45,7 @@ enum MENU_TYPE {
 };
 
 enum OBJ_TYPE {
+    AIR = 0,
     GROUND,
     STONE,
     APPLE,
@@ -51,7 +53,17 @@ enum OBJ_TYPE {
     BODY
 };
 
-const int ANI_NUM[TYPE_NUM]={4,4,4,4,4};
+enum MOVE_DIRCTION {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+    NONE
+};
+
+const int ANI_NUM[TYPE_NUM]={0,4,4,4,4,4};
+
+using Map = std::vector<std::vector<OBJ_TYPE>>;
 
 void raise_err(const std::string &);
 
