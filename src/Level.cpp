@@ -91,8 +91,9 @@ GAME_STATE Level::key_triger(int key) {
 }
 
 // load level
-bool Level::load_level(int level_idx) 
+bool Level::load_level(int _level_idx) 
 {
+    level_idx = _level_idx;
     Ground_image = al_load_bitmap((IMAGE_PATH+"/ground.png").c_str());
     Stone_image = al_load_bitmap((IMAGE_PATH+"/stone.png").c_str());
     Apple_image = al_load_bitmap((IMAGE_PATH+"/apple.png").c_str());
@@ -114,7 +115,7 @@ bool Level::load_level(int level_idx)
     int m = 0, n = 0;
     vector <Pos> snake_position_vector(m);  //snake_posotion_vector {{y1,x1},{y2,y2}}
     Pos stone_position;  //stone_posotion {y1,x1}
-    Map map_matrix(m,vector<OBJ_TYPE>(n));    //map(high,width)
+    Map map_matrix(m,vector<OBJ_TYPE>(n,AIR));    //map(high,width)
     while (t--)
     {
         fin >> data_type;
@@ -138,7 +139,7 @@ bool Level::load_level(int level_idx)
                 {
                     fin >> snake_position_vector[i].first >> snake_position_vector[i].second;
                 }
-                snake = new Snake(snake_position_vector,Snake_head_image,Snake_body_image);   //TODO
+                snake = new Snake(snake_position_vector,Snake_head_image,Snake_body_image);
                 
             case '4':   //stone
                 fin >> m;
@@ -147,7 +148,7 @@ bool Level::load_level(int level_idx)
                 {
                     fin >> stone_position.first >> stone_position.second;
                     Object * temp = new Stone(stone_position.first,stone_position.second,Stone_image);
-                    object.emplace_back(temp); //TODO
+                    object.emplace_back(temp);
                 }
             case '5':   //map
                 fin >> m >> n;

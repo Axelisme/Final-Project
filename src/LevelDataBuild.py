@@ -63,9 +63,9 @@ level1 = {
     "sound": ['/data/sound/sound1-1','/data/sound/sound1-2'],
     "map":[map1.shape, map1_str, map1_graph],
     "snake":[
+        '5 1',
+        '4 0',
         '4 1',
-        '4,0',
-        '5,1',
     ],
     "stone":[
         '0 7'
