@@ -28,6 +28,7 @@
 
 const std::string MUSIC_PATH("data/music");
 const std::string IMAGE_PATH("data/image");
+const std::string LEVEL_PATH("data/image");
 
 #define BLACK al_map_rgb(0, 0, 0)
 
@@ -44,11 +45,13 @@ enum MENU_TYPE {
 };
 
 enum OBJ_TYPE {
+    AIR,
     GROUND,
-    STONE,
-    APPLE,
     HEAD,
-    BODY
+    BODY,
+    END,
+    APPLE,
+    STONE
 };
 
 const int ANI_NUM[TYPE_NUM]={4,4,4,4,4};

@@ -1,17 +1,24 @@
-background
+1background
+1
 /data/image/background1
-music
+
+2music
+1
 /data/music/music1
-sound
-/data/sound/sound1-1
-/data/sound/sound1-2
-snake
+
+3snake
 3
 4 1
 4,0
 5,1
-map
+
+4stone
+1
+0 7
+
+5map
 10 25
+
 0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	6	0	0	0	0	0	0	0
 0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	0	0	0	0	0	0
 0	0	0	0	0	0	0	0	0	1	1	0	1	1	0	0	0	1	0	0	0	0	0	0	0
