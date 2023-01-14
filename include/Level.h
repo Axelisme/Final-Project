@@ -3,12 +3,11 @@
 
 #include "global.h"
 #include "Snake.h"
+#include "Stone.h"
 #include "Interface.h"
 #include <vector>
 
 using namespace std;
-
-using Map = std::vector<std::vector<OBJ_TYPE>>;
 
 class Level: public Interface {
 public:

@@ -9,6 +9,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 #include <string>
+#include <utility>
 #include <vector>
 
 #define Debug 1
@@ -21,6 +22,7 @@
 #define G_VELOCITY 1     //CHUNK
 #define FPS 40
 #define TYPE_NUM 6
+#define ANI_NUM 4
 #define KEY_LOCK_NUM 1000
 #define ANI_TOTAL_COUNT 50
 
@@ -56,14 +58,15 @@ enum OBJ_TYPE {
 };
 
 enum MOVE_DIRCTION {
-    LEFT,
+    LEFT = 0,
     RIGHT,
     UP,
     DOWN,
     NONE
 };
 
-const int ANI_NUM[TYPE_NUM]={0,4,4,4,4,4};
+using Pos = std::pair<float, float>;
+using Map = std::vector<std::vector<OBJ_TYPE>>;
 
 void raise_err(const std::string &);
 
