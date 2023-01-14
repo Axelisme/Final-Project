@@ -29,6 +29,7 @@
 
 const std::string MUSIC_PATH("data/music");
 const std::string IMAGE_PATH("data/image");
+const std::string LEVEL_PATH("data/level");
 
 #define BLACK al_map_rgb(0, 0, 0)
 
@@ -47,10 +48,11 @@ enum MENU_TYPE {
 enum OBJ_TYPE {
     AIR = 0,
     GROUND,
-    STONE,
-    APPLE,
     HEAD,
-    BODY
+    BODY,
+    END,
+    APPLE,
+    STONE
 };
 
 enum MOVE_DIRCTION {
