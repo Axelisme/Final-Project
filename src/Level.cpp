@@ -96,9 +96,9 @@ bool Level::load_level(int level_idx)
     int t = 4;
     char data_type[20], path[100];
     int m = 0, n = 0;
-    vector <Pos> snake_position;  //snake_posotion {{y1,x1},{y2,y2}}
-    vector <Pos> stone_position;  //stone_posotion {{y1,x1},{y2,y2}}
-    vector <vector<int>> map_matrix;    //map(high,width)
+    vector <Pos> snake_position_vector(m);  //snake_posotion_vector {{y1,x1},{y2,y2}}
+    Pos stone_position;  //stone_posotion {y1,x1}
+    Map map_matrix(m,vector<OBJ_TYPE>(n));    //map(high,width)
     while (t--)
     {
         fin >> data_type;
@@ -117,28 +117,33 @@ bool Level::load_level(int level_idx)
                     fin >> path;
                 }
             case '3':   //snake
-            case '4':   //stone
                 fin >> m;
-                vector <Pos> tmp_position(m);
                 for (int i = 0; i < m; i++)
                 {
-                    fin >> tmp_position[i].first >> tmp_position[i].second;
+                    fin >> snake_position_vector[i].first >> snake_position_vector[i].second;
                 }
-                if (data_type[0] == '3') {snake_position = tmp_position;}
-                else {stone_position = tmp_position;}
+                snake = new_snake(snake_position_vector);   //TODO
+                
+            case '4':   //stone
+                fin >> m;
+                object.reserve(m);
+                for (int i = 0; i < m; i++)
+                {
+                    fin >> stone_position.first >> stone_position.second;
+                    object.emplace_back(new_stone(stone_position)); //TODO
+                }
             case '5':   //map
                 fin >> m >> n;
-                Map tmp_matrix(m,vector<OBJ_TYPE>(n));    //map(high,width)
                 int element;
                 for (int i = 0; i < m; i++)
                 {
                     for (int j = 0; j < n; j++)
                     {
                         fin >> element;
-                        tmp_matrix[i][j] = static_cast<OBJ_TYPE>(element);
+                        map_matrix[i][j] = static_cast<OBJ_TYPE>(element);
                     }
                 }
-                map_matrix = tmp_matrix;
+                map = map_matrix;
 
             default:
             sprintf(tmp, "Level%d loaded fail, Level%d's data wrong.", level_idx);
@@ -149,8 +154,39 @@ bool Level::load_level(int level_idx)
     return true;
 }
 
+// print level map
+void Level::print_map()
+{
+    for (auto i:map)
+    {
+        for (auto j:i)
+        {
+            switch(j)
+            {
+                case AIR:
+                    cout << "  ";
+                case GROUND:
+                    cout << "██";
+                case HEAD:
+                    cout << "▓▓";
+                case BODY:
+                    cout << "▒▒";
+                case END:
+                    cout << " ⊠";
+                case APPLE:
+                    cout << " ⋄";
+                case STONE:
+                    cout << "░░";
+            }
+        }
+        cout << endl;
+    }
+};
+
 // reset
-void Level::reset() {}
+void Level::reset() {
+    load_level(level_idx);
+}
 
 // constructor and deletor
 Level::Level(int i):Interface(MUSIC_PATH+"level_bgm.ogg",IMAGE_PATH+"background.jpg") {

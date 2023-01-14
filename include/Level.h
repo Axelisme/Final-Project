@@ -24,6 +24,9 @@ public:
     // reset
     void reset();
 
+    // print level map
+    void print_map();
+
     // constructor and deletor
     Level(int);
     ~Level();
