@@ -89,6 +89,13 @@ GAME_STATE Level::key_triger(int key) {
 // load level
 bool Level::load_level(int level_idx) 
 {
+    Ground_image = al_load_bitmap((IMAGE_PATH+"/ground.png").c_str());
+    Stone_image = al_load_bitmap((IMAGE_PATH+"/stone.png").c_str());
+    Apple_image = al_load_bitmap((IMAGE_PATH+"/apple.png").c_str());
+    Snake_head_image = al_load_bitmap((IMAGE_PATH+"/snakeHead.png").c_str());
+    Snake_body_image = al_load_bitmap((IMAGE_PATH+"/snakeBody.png").c_str());
+    End_point_image = al_load_bitmap((IMAGE_PATH+"/end.png").c_str());
+    
     char tmp[100];
     sprintf(tmp, "/L%d", level_idx);
     ifstream fin(LEVEL_PATH+tmp);
