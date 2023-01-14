@@ -6,16 +6,14 @@
 
 class Menu: public Interface {
 public:
-    // draw
-    void draw();
     // update all object
-    void update(){}
+    void update();
     
     // process trigered by mouse
     GAME_STATE mouse_triger(int mouse){return GAME_MENU;}
 
     // constructor and deletor
-    Menu(MENU_TYPE _type) {}
+    Menu(MENU_TYPE _type);
     ~Menu();
 
 private:

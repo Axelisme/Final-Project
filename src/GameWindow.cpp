@@ -1,33 +1,17 @@
-#include "GameWindow.h"
 #include "global.h"
-#include <allegro5/allegro_audio.h>
-#include <allegro5/allegro_acodec.h>
+#include "GameWindow.h"
 #include <iostream>
-#include <filesystem>
+#include <unistd.h>
 
 using namespace std;
 
-void GameWindow::raise_err(ERR_MSG state,string msg = ""){
-    if (Debug) cerr << "error: " << msg << endl;
-    game_destroy();
-    exit(state);
-}
-
-void GameWindow::raise_warn(string msg = ""){
-    if (Debug) cerr << "warning: " << msg << endl;
-}
-
-void GameWindow::show_msg(string msg = ""){
-    cout << "Messenger: " << msg << endl;
-}
-
 void GameWindow::Set_workdir() {
-    char temp[200];
-    readlink("/proc/self/exe", temp, 200);
+    char temp[1024];
+    int n = readlink("/proc/self/exe", temp, 1024);
+    temp[n] = '\0';
     WORKDIR = temp;
-    WORKDIR = WORKDIR.substr(0,WORKDIR.find("/bin")) + "/data";
+    WORKDIR = WORKDIR.substr(0,WORKDIR.find("/bin"));
     show_msg(WORKDIR);
-    
 }
 
 void GameWindow::game_load() {
@@ -78,35 +62,21 @@ void GameWindow::game_process() {
             return;
         }
         case ALLEGRO_EVENT_KEY_DOWN: {               // if pulse a key
-            // check whether in lock state
-            if(islock) break;
-
             // process for different state
-            if(state==GAME_LEVEL) {
+            if(state==GAME_LEVEL)
                     state = level->key_triger(event.keyboard.keycode);
-            }
-
-            // set buttom lock
-            islock = true;
-            lockcount = LOCKTIME;
-
             break;
         }
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN: {      // if click
             // process for different state
-            if(state==GAME_MENU) {
+            if(state==GAME_MENU)
                     state = menu->mouse_triger(event.mouse.button);
-            }
             break;
         }
     }
 }
 
 void GameWindow::update() {
-    // buttom lock update
-    if(lockcount>0) --lockcount;
-    else islock = false;
-
     // menu or level update
     switch(state) {
         case GAME_MENU: {
@@ -137,29 +107,7 @@ void GameWindow::draw() {
 
 GameWindow::GameWindow() {
     // Initial Allegro
-    if (! al_init()) raise_err(INIT_FAIL,"allegro initial fail");
-
-    // load work dir
-    Set_workdir();
-
-    // first state is game menu
-    state = GAME_MENU;
-    // lock 
-    lockcount = 0;
-    islock = false;
-
-    // Create Display
-    display = al_create_display(width,height);
-    if(display==nullptr) raise_err(INIT_FAIL,"can't not create display window");
-    al_set_window_position(display,0,0);
-
-    // Create event queue
-    event_queue = al_create_event_queue();
-    if(event_queue==nullptr) raise_err(INIT_FAIL,"can't not create event_queue");
-
-    // Create timer
-    timer = al_create_timer(1.0 / FPS);
-    if(timer==nullptr) raise_err(INIT_FAIL,"can't not create timer");
+    if (! al_init()) raise_err("allegro initial fail");
 
     // Initial Allegro addon
     al_init_primitives_addon();
@@ -179,13 +127,33 @@ GameWindow::GameWindow() {
     al_register_event_source(event_queue, al_get_mouse_event_source());
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
+    // load work dir
+    Set_workdir();
+
+    // first state is game menu
+    state = FIRST_STATE;
+
+    // Create Display
+    display = al_create_display(width,height);
+    if(display==nullptr) raise_err("can't not create display window");
+    al_set_window_position(display,0,0);
+
+    // Create event queue
+    event_queue = al_create_event_queue();
+    if(event_queue==nullptr) raise_err("can't not create event_queue");
+
+    // Create timer
+    timer = al_create_timer(1.0 / FPS);
+    if(timer==nullptr) raise_err("can't not create timer");
+
+    // Create sound
+    if(!al_reserve_samples(3)) raise_warn("can't not initial sound");
+
 }
 
 void GameWindow::game_reset() {
     level->reset();
-    int lockcount = 0;
-    bool islock = false;
-    state = GAME_MENU;
+    state = FIRST_STATE;
 }
 
 void GameWindow::game_destroy() {

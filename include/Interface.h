@@ -11,17 +11,13 @@ using namespace std;
 class Interface {
 public:
     // draw all objects
-    virtual void draw()=0;
+    virtual void draw();
 
-    // load sound
-    bool load_sound(string);
-
-    // load backgroundImage
-    bool load_back(string);
+    // load sound and backgroundImage
+    Interface(string,string);
+    ~Interface();
 
 protected:
-    std::vector<Object*> Move_object;
-
     ALLEGRO_SAMPLE *sample = nullptr;
     ALLEGRO_SAMPLE_INSTANCE *backgroundSound = nullptr;
 

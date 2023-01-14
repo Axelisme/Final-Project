@@ -2,16 +2,17 @@
 #define LEVEL_H
 
 #include "global.h"
-#include "Map.h"
 #include "Snake.h"
 #include "Interface.h"
+#include <vector>
 
 using namespace std;
 
-class Level: public Interface {
+class Level {
 public:
-    //draw
+    // draw
     void draw();
+
     // update all object
     void update();
 
@@ -30,8 +31,18 @@ public:
 
 private:
     int level_idx;
-    Map *map;
+    std::vector<std::vector<OBJ_TYPE>> map;
     Snake *snake;
+
+    std::vector<ALLEGRO_BITMAP *>  Ground_image;
+    std::vector<ALLEGRO_BITMAP *>  Stone_image;
+    std::vector<ALLEGRO_BITMAP *>  Apple_image;
+    std::vector<ALLEGRO_BITMAP *>  Snake_head_image;
+    std::vector<ALLEGRO_BITMAP *>  Snake_body_image;
+
+    bool key_lock = false;
+    int key_lock_count = 0;
+    const int key_lock_num = KEY_LOCK_NUM;
   
 };
 

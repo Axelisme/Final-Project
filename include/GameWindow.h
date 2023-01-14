@@ -6,9 +6,6 @@
 #include "Level.h"
 #include <string>
 
-#define LOCKTIME 30
-#define FPS 40
-
 using namespace std;
 
 class GameWindow {
@@ -17,11 +14,6 @@ public:
     void draw();
     // update object
     void update();
-
-    // debug information
-    void raise_err(ERR_MSG state,string msg);
-    void raise_warn(string msg);
-    void show_msg(string msg);
 
     // game process
     void game_load();
@@ -46,8 +38,8 @@ private:
 
     // display 
     ALLEGRO_DISPLAY* display = nullptr;
-    const int width = 800;
-    const int height = 600;
+    const int width = DISPLAY_WIDTH;
+    const int height = DISPLAY_HEIGHT;
 
     // menu
     Menu *menu = nullptr;
@@ -64,10 +56,6 @@ private:
 
     // Time
     ALLEGRO_TIMER *timer = nullptr;
-
-    // bottom lock
-    int lockcount = 0;
-    bool islock = false;
 };
 
 
