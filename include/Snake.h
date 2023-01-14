@@ -11,6 +11,8 @@ public:
     void draw();
     bool update();
 
+    void EatApple();
+
     Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,ALLEGRO_BITMAP *);
 
     bool isFall = false;

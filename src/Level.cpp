@@ -18,13 +18,14 @@ inline bool Level::is(int _y,int _x,OBJ_TYPE T) {
         return map.at(_y).at(_x) == T;
 }
 
+inline bool Level::CanMove(MOVE_DIRCTION dirc) {
+    return true;
+}
+
 // update all object
 bool Level::update() {
-    bool tmp = false;
-    if((key_lock && ++key_lock_count)%key_lock_num == 0) {
+    if((key_lock && ++key_lock_count)%key_lock_num == 0) 
         key_lock = false;
-        tmp = true;
-    }
     
     for(auto &ob:object) {
         switch(ob->type) {
@@ -38,7 +39,6 @@ bool Level::update() {
                     ob->update();
                     ob->move_dirc = NONE;
                     map.at(y+1).at(x) = STONE;
-                    tmp = true;
                 }
                 else {
                     ob->move_dirc = NONE;
@@ -58,16 +58,14 @@ bool Level::update() {
             break;
         }
     }
-    if(snake->isFall)
+    if(snake->isFall) 
         snake->move_direction = NONE;
-        tmp |= snake->update();
-    else {
-
+    else if(!CanMove(snake->move_direction)){
+        snake->move_direction = NONE;
     }
-    
+    snake->update();
 
-
-    return tmp;
+    return true;
 }
 
 // process trigered by key
@@ -213,7 +211,7 @@ Level::Level(int i):Interface(MUSIC_PATH+"level_bgm.ogg",IMAGE_PATH+"background.
     Stone_image = al_load_bitmap((IMAGE_PATH+"/stone.png").c_str());
     Apple_image = al_load_bitmap((IMAGE_PATH+"/apple.png").c_str());
     Snake_head_image = al_load_bitmap((IMAGE_PATH+"/head.png").c_str());
-    Snake_body_image = al_load_bitmap((IMAGE_PATH+"/body.png").c_str());
+    End_point_image = al_load_bitmap((IMAGE_PATH+"/body.png").c_str());
 
     key_lock = false;
     key_lock_count =0;
@@ -222,11 +220,14 @@ Level::Level(int i):Interface(MUSIC_PATH+"level_bgm.ogg",IMAGE_PATH+"background.
 }
 
 Level::~Level() {
+    Interface::~Interface();
+    
     al_destroy_bitmap(Ground_image);
     al_destroy_bitmap(Stone_image);
     al_destroy_bitmap(Apple_image);
     al_destroy_bitmap(Snake_head_image);
     al_destroy_bitmap(Snake_body_image);
+    al_destroy_bitmap(End_point_image);
 
     delete snake;
     for(auto &o:object) delete o;

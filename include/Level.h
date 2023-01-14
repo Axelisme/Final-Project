@@ -34,6 +34,7 @@ public:
 
 private:
     inline bool is(int,int,OBJ_TYPE);
+    inline bool CanMove(MOVE_DIRCTION);
 
     int level_idx;
     Map map;
@@ -45,6 +46,7 @@ private:
     ALLEGRO_BITMAP *  Apple_image;
     ALLEGRO_BITMAP *  Snake_head_image;
     ALLEGRO_BITMAP *  Snake_body_image;
+    ALLEGRO_BITMAP *  End_point_image;
 
     bool key_lock = false;
     int key_lock_count = 0;
