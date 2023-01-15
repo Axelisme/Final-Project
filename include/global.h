@@ -39,13 +39,13 @@ const std::string IMAGE_PATH("data/image");
 const std::string LEVEL_PATH("data/level");
 
 #define BLACK  al_map_rgb(  0,  0,  0)
-#define RED    al_map_rgb(100,  0,  0)
-#define GREEN  al_map_rgb(  0,100,  0)
-#define BLUE   al_map_rgb(  0,  0,100)
-#define YELLOW al_map_rgb(100,100,  0)
-#define CMY    al_map_rgb(  0,100,100)
-#define PINK   al_map_rgb(100,  0,100)
-#define WRITE  al_map_rgb(100,100,100)
+#define RED    al_map_rgb(255,  0,  0)
+#define GREEN  al_map_rgb(  0,255,  0)
+#define BLUE   al_map_rgb(  0,  0,255)
+#define YELLOW al_map_rgb(255,255,  0)
+#define CMY    al_map_rgb(  0,255,255)
+#define PINK   al_map_rgb(255,  0,255)
+#define WRITE  al_map_rgb(255,255,255)
 
 enum GAME_STATE {
     GAME_MENU,

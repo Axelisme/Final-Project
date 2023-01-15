@@ -2,7 +2,7 @@
 
 void Interface::draw() {
     if(SIMPLY_DISPLAY){
-        al_clear_to_color(BLACK);
+        al_clear_to_color(PINK);
     }
     else{
     al_clear_to_color(BLACK);

@@ -77,12 +77,12 @@ bool Level::update() {
     }
     
     // snake fall dectection
-    snake->isFall = false;
+    snake->isFall = true;
     for(auto &b:snake->body) {
         Pos pos = b->getPos();
         OBJ_TYPE ob_type = is({pos.first+1,pos.second});
         if(ob_type != AIR && ob_type != BODY){
-            snake->isFall = true;
+            snake->isFall = false;
             break;
         }
     }
