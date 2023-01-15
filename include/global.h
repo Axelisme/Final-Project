@@ -23,6 +23,7 @@
 #define FPS 40
 #define TYPE_NUM 6
 #define ANI_NUM 4
+#define LEVEL_NUM 1
 #define KEY_LOCK_NUM 1000
 #define ANI_TOTAL_COUNT 50
 
@@ -64,6 +65,15 @@ enum MOVE_DIRCTION {
     UP,
     DOWN,
     NONE
+};
+
+enum BODY_DIRCTION {
+    VERTICAL,
+    HORIZONTAL,
+    TURN_BOTTOM_RIGHT,
+    TURN_BOTTOM_LEFT,
+    TURN_TOP_RIGHT,
+    TURN_TOP_LEFT
 };
 
 using Pos = std::pair<float, float>;

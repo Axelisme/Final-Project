@@ -13,13 +13,12 @@ public:
     void draw();
     virtual bool update();
 
-    float getx() {return x;}
-    float gety() {return y;}
+    float getx() {return pos.second;}
+    float gety() {return pos.first;}
     float getw() {return width;}
     float geth() {return height;}
 
-    void move(float _x,float _y) {x+=_x;y+=_y;}
-    void setxy(float _x,float _y) {x=_x;y=_y;}
+    void move_object(Pos);
     Pos ConvertIdx(int idx);
 
 protected:
@@ -31,8 +30,7 @@ protected:
     int ani_image_idx;     //the current image
 
     // center position
-    float x = 0;
-    float y = 0;
+    Pos pos;
 
     // width and height
     float width = 0;

@@ -7,8 +7,13 @@
 
 class Body: public Object {
 public:
+    void draw();
 
+    OBJ_TYPE type = BODY;
+    bool isFall = false;
+    BODY_DIRCTION dirc;
 
+    Body(Pos,OBJ_TYPE);
     
 };
 

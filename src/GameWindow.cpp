@@ -83,7 +83,18 @@ bool GameWindow::update() {
             return menu->update();
         }
         case GAME_LEVEL: {
-            return level->update();
+            if(level->update()) {
+                int level_idx = level->getID();
+                delete level;
+                if(level_idx != LEVEL_NUM){
+                    level = new Level(level_idx+1);
+                    return false;
+                }
+                else {
+                    state = GAME_TERMINATE;
+                    return true;
+                }
+            }
         }
         case GAME_TERMINATE: return true;
     }

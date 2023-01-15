@@ -28,13 +28,16 @@ public:
     // print level map
     void print_map();
 
+    //level id
+    int getID() {return level_idx;}
+
     // constructor and deletor
     Level(int);
     ~Level();
 
 private:
-    inline bool is(int,int,OBJ_TYPE);
-    inline bool CanMove(MOVE_DIRCTION);
+    inline bool is(Pos,OBJ_TYPE);
+    inline bool CanMove(Pos,MOVE_DIRCTION);
 
     int level_idx;
     Map map;
