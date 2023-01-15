@@ -2,7 +2,7 @@
 
 void Interface::draw() {
     if(SIMPLY_DISPLAY){
-        al_clear_to_color(BLACK);
+        //al_clear_to_color(PINK);
     }
     else{
     al_clear_to_color(BLACK);
@@ -16,12 +16,16 @@ bool Interface::update() {
 }
 
 Interface::Interface(string sound_path="",string image_path="") {
+    show_msg("Create Interface begin");
     // load sound
     if(!sound_path.empty()) {
         sample = al_load_sample(sound_path.c_str());
-        backgroundSound = al_create_sample_instance(sample);
-        al_set_sample_instance_playmode(backgroundSound, ALLEGRO_PLAYMODE_ONCE);
-        al_attach_sample_instance_to_mixer(backgroundSound, al_get_default_mixer());
+        if(sample==nullptr) backgroundSound = nullptr;\
+        else {
+            backgroundSound = al_create_sample_instance(sample);
+            al_set_sample_instance_playmode(backgroundSound, ALLEGRO_PLAYMODE_ONCE);
+            al_attach_sample_instance_to_mixer(backgroundSound, al_get_default_mixer());
+        }
     }
     else raise_warn("no sound path given");
 
@@ -30,14 +34,23 @@ Interface::Interface(string sound_path="",string image_path="") {
         backgroundImage = al_load_bitmap(image_path.c_str());
     }
     else raise_warn("no image path given");
+    show_msg("Create interface done");
 }
 
 void Interface::destroy_Interface() {
+    show_msg("Destroy interface begin");
     al_destroy_sample_instance(backgroundSound);
     al_destroy_sample(sample);
     al_destroy_bitmap(backgroundImage);
+    backgroundSound = nullptr;
+    sample = nullptr;
+    backgroundImage = nullptr;
+
+    show_msg("Destroy interface done");
 }
 
 Interface::~Interface() {
+    show_msg("Delete interface begin");
     destroy_Interface();
+    show_msg("Delete interface done");
 }
