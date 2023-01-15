@@ -8,6 +8,7 @@ void Snake::draw() {
 
 bool Snake::update() {
     if(isFall) {
+        show_msg("Snake fall begin");
         for(auto &b:body){
             b->isFall = true;
             b->update();
@@ -15,9 +16,11 @@ bool Snake::update() {
         head = body.back()->getPos();
         isFall = false;
         move_direction = NONE;
+        show_msg("Snake fall done");
         return true;
     }
     else if(can_eat_apple) {
+        show_msg("Snake eat apple begin");
         Pos next_pos = Next_Pos();
         Body *origin_head = body.back();
         origin_head->getImg() = Image_body;
@@ -26,9 +29,11 @@ bool Snake::update() {
                                 move_direction,
                                 move_direction));
         can_eat_apple = false;
+        show_msg("Snake eat apple done");
         return true;
     }
     else if(move_direction!=NONE) {
+        show_msg("Snake move begin");
         Pos next_pos = Next_Pos();
         delete body.front();
         body.pop_front();
@@ -42,6 +47,7 @@ bool Snake::update() {
         head = next_pos;
         heading = move_direction;
         move_direction = NONE;
+        show_msg("Snake move done");
         return true;
     }
     else return false;
@@ -72,6 +78,7 @@ DIRCTION Snake::Cal_Dirc(Pos now,Pos next) {
 
 Snake::Snake(std::vector<Pos>& Poss,ALLEGRO_BITMAP * img_head,
                                     ALLEGRO_BITMAP * img_body) {
+    show_msg("Create snake begin");
     Image_head = img_head;
     Image_body = img_body;
 
@@ -85,11 +92,15 @@ Snake::Snake(std::vector<Pos>& Poss,ALLEGRO_BITMAP * img_head,
         body.push_back(new Body(Poss[i],Image_body,from,to));
     }
     body.push_back(new Body(head,Image_head,to,to));
+    show_msg("Create Snake done");
 }
 
 Snake::~Snake() {
+    show_msg("Delete snake begin");
     for(auto &b:body) {
         delete b;
+        b = nullptr;
     }
+    show_msg("Delete snake done");
 }
 

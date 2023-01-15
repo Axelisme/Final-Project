@@ -26,6 +26,7 @@ void GameWindow::game_play() {
     game_begin();
 
     // process event until terminate
+    show_msg("Start to process event");
     while(state != GAME_TERMINATE) {
         if(!al_is_event_queue_empty(event_queue))
             game_process();

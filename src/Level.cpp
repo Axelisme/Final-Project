@@ -39,7 +39,7 @@ inline bool Level::CanMove(Pos next,DIRCTION dirc) {
             break;
         }
         case NONE:
-            return true;
+            return false;
     }
     if (map_next==BODY || map_next==GROUND || map_next==APPLE)
     {
@@ -81,7 +81,7 @@ bool Level::update() {
     for(auto &b:snake->body) {
         Pos pos = b->getPos();
         OBJ_TYPE ob_type = is({pos.first+1,pos.second});
-        if(ob_type != AIR && ob_type != BODY){
+        if(ob_type != AIR && ob_type != BODY && ob_type != HEAD){
             snake->isFall = false;
             break;
         }
@@ -96,7 +96,8 @@ bool Level::update() {
     }
     else if(CanMove(next,snake->move_direction)) {  //move
         show_msg("Snake move");
-        is(next) = BODY;
+        is(next) = HEAD;
+        is(snake->body.back()->getPos()) = BODY;
         is(snake->body.front()->getPos()) = AIR;
     }
     else { 
@@ -104,11 +105,12 @@ bool Level::update() {
         if(is(next)==APPLE) {  //eat apple
             show_msg("Snake eat apple");
             snake->can_eat_apple = true;
-            is(next) = BODY;
+            is(next) = HEAD;
         }
     }
     // update snake
     snake->update();
+    print_map();
 
     return true;
 }
@@ -319,12 +321,21 @@ void Level::destroy_level() {
     al_destroy_bitmap(Snake_head_image);
     al_destroy_bitmap(Snake_body_image);
     al_destroy_bitmap(End_point_image);
+    Ground_image = nullptr;
+    Stone_image = nullptr;
+    Apple_image = nullptr;
+    Snake_head_image = nullptr;
+    Snake_body_image = nullptr;
+    End_point_image = nullptr;
 
     key_lock = false;
     int key_lock_count = 0;
 
     delete snake;
-    for(auto &o:object) delete o;
+    for(auto &o:object) {
+        delete o;
+        o = nullptr;    
+    }
     show_msg("level destroy done");
 }
 
