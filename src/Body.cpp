@@ -24,8 +24,8 @@ bool Body::update() {
     return true;
 }
 
-Body::Body(Pos _pos,ALLEGRO_BITMAP *img,DIRCTION _from,DIRCTION _to):
-      Object(_pos,img,1,1)
+Body::Body(Pos _pos,OBJ_TYPE T,ALLEGRO_BITMAP *img,DIRCTION _from,DIRCTION _to):
+      Object(_pos,T,img,1,1)
 {
     show_msg("Create body begin");
     isFall = false;

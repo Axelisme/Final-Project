@@ -7,7 +7,7 @@
 class Object {
 public:
     // type
-    OBJ_TYPE type;
+    OBJ_TYPE type = AIR;
     bool CanFall = false;
     DIRCTION move_dirc = NONE;
 
@@ -22,8 +22,9 @@ public:
     void move_object(Pos dp) {pos.first+=dp.first;pos.second+=dp.second;}
     Pos ConvertIdx(int idx);
 
-    Object(Pos _pos,ALLEGRO_BITMAP *img,float w,float h):
+    Object(Pos _pos,OBJ_TYPE T,ALLEGRO_BITMAP *img,float w,float h):
             pos(_pos),
+            type(T),
             Image(img),
             width(w),
             height(h)  {}
