@@ -4,28 +4,34 @@
 #include "global.h"
 #include "Object.h"
 #include "Body.h"
-#include <vector>
+#include <deque>
 
 class Snake {
 public:
     void draw();
     bool update();
 
-    void EatApple(Pos);
     Pos Next_Pos();
-    BODY_DIRCTION Body_Dirc(int);
 
     Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,ALLEGRO_BITMAP *);
+    ~Snake();
 
     bool isFall = false;
     bool can_eat_apple = false;
-    MOVE_DIRCTION move_direction = NONE;
-    MOVE_DIRCTION heading = NONE;
+    DIRCTION move_direction = NONE;
+    DIRCTION heading = NONE;
 
     Pos head = {0.0,0.0};
 
-    std::vector<Body*> body;
+    std::deque<Body*> body;
 
+private:
+    Pos DIRC_TO_POS(DIRCTION);
+    DIRCTION Cal_Dirc(Pos,Pos);
+
+    // image
+    ALLEGRO_BITMAP * Image_head = nullptr;
+    ALLEGRO_BITMAP * Image_body = nullptr;
 };
 
 #endif // SNAKE_H

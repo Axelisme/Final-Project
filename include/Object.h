@@ -8,15 +8,15 @@ class Object {
 public:
     // type
     OBJ_TYPE type;
-    MOVE_DIRCTION move_dirc = NONE;
+    DIRCTION move_dirc = NONE;
 
     void draw();
     virtual bool update();
 
-    float getx() {return pos.second;}
-    float gety() {return pos.first;}
-    float getw() {return width;}
-    float geth() {return height;}
+    float &getw() {return width;}
+    float &geth() {return height;}
+    Pos &getPos() {return pos;}
+    ALLEGRO_BITMAP * &getImg() {return Image;}
 
     void move_object(Pos);
     Pos ConvertIdx(int idx);

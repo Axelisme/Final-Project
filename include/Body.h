@@ -9,11 +9,13 @@ class Body: public Object {
 public:
     void draw();
 
-    OBJ_TYPE type = BODY;
     bool isFall = false;
-    BODY_DIRCTION dirc;
+    DIRCTION from_dirc;
+    DIRCTION to_dirc;
 
-    Body(Pos,OBJ_TYPE);
+    void head_to_body(ALLEGRO_BITMAP *);
+
+    Body(Pos,ALLEGRO_BITMAP *,DIRCTION,DIRCTION);
     
 };
 

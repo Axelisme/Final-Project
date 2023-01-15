@@ -58,24 +58,15 @@ enum OBJ_TYPE {
     STONE
 };
 
-enum MOVE_DIRCTION {
-    LEFT = 0,
-    RIGHT,
-    UP,
-    DOWN,
-    NONE
+enum DIRCTION {
+    NONE = 0,
+    LEFT = -2,
+    UP   = -1,
+    DOWN = 1,
+    RIGHT = 2
 };
 
-enum BODY_DIRCTION {
-    VERTICAL,
-    HORIZONTAL,
-    TURN_BOTTOM_RIGHT,
-    TURN_BOTTOM_LEFT,
-    TURN_TOP_RIGHT,
-    TURN_TOP_LEFT
-};
-
-using Pos = std::pair<float, float>;
+using Pos = std::pair<double, double>;
 using Map = std::vector<std::vector<OBJ_TYPE>>;
 
 void raise_err(const std::string &);
