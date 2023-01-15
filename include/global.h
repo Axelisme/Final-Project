@@ -27,7 +27,7 @@
 #define G_VELOCITY 1     //CHUNK
 #define FPS 40
 #define LEVEL_NUM 1
-#define KEY_LOCK_NUM 1000
+#define KEY_LOCK_NUM 10
 #define ANI_NUM 4
 #define ANI_TOTAL_COUNT 50
 

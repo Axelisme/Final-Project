@@ -13,7 +13,7 @@ void Level::draw() {
     snake->draw();
 }
 
-inline bool Level::CanMove(Pos next,DIRCTION dirc) {
+bool Level::CanMove(Pos next,DIRCTION dirc) {
     OBJ_TYPE map_next;
     OBJ_TYPE map_next_next;
     switch(dirc)
@@ -93,24 +93,34 @@ bool Level::update() {
     if(snake->isFall) {  //falling
         show_msg("Snake fall");
         set_key_lock();
+        for(auto &b:snake->body) {
+            is(b->getPos()) = AIR;
+        }
         snake->move_direction = NONE;
     }
     else if(CanMove(next,snake->move_direction)) {  //move
         show_msg("Snake move");
-        is(next) = HEAD;
-        is(snake->body.back()->getPos()) = BODY;
-        is(snake->body.front()->getPos()) = AIR;
+        for(auto &b:snake->body) {
+            is(b->getPos()) = AIR;
+        }
     }
     else { 
         snake->move_direction = NONE;
         if(is(next)==APPLE) {  //eat apple
             show_msg("Snake eat apple");
             snake->can_eat_apple = true;
-            is(next) = HEAD;
+            for(auto &b:snake->body) {
+                is(b->getPos()) = AIR;
+            }
         }
     }
     // update snake
     snake->update();
+
+    for(auto &b:snake->body) {
+        is(b->getPos()) = b->type;
+    }
+
     print_map();
 
     return true;
@@ -297,6 +307,7 @@ void Level::print_map()
                     cout << "▞▞";
                     break;
                 default:
+                    cout << "**";
                     break;
             }
         }

@@ -24,7 +24,9 @@ bool Snake::update() {
         Pos next_pos = Next_Pos();
         Body *origin_head = body.back();
         origin_head->getImg() = Image_body;
+        origin_head->type = BODY;
         body.push_back(new Body(next_pos,
+                                HEAD,
                                 Image_head,
                                 move_direction,
                                 move_direction));
@@ -39,8 +41,10 @@ bool Snake::update() {
         body.pop_front();
         Body *origin_head = body.back();
         origin_head->getImg() = Image_body;
+        origin_head->type = BODY;
         origin_head->to_dirc = move_direction;
         body.push_back(new Body(next_pos,
+                                HEAD,
                                 Image_head,
                                 move_direction,
                                 move_direction));
@@ -89,9 +93,9 @@ Snake::Snake(std::vector<Pos>& Poss,ALLEGRO_BITMAP * img_head,
     for(int i=0;i<Poss.size()-1;++i) {
         from = to;
         to = Cal_Dirc(Poss[i],Poss[i+1]);
-        body.push_back(new Body(Poss[i],Image_body,from,to));
+        body.push_back(new Body(Poss[i],BODY,Image_body,from,to));
     }
-    body.push_back(new Body(head,Image_head,to,to));
+    body.push_back(new Body(head,HEAD,Image_head,to,to));
     show_msg("Create Snake done");
 }
 

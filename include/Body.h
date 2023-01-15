@@ -14,7 +14,7 @@ public:
     DIRCTION from_dirc;
     DIRCTION to_dirc;
 
-    Body(Pos,ALLEGRO_BITMAP *,DIRCTION,DIRCTION);
+    Body(Pos,OBJ_TYPE,ALLEGRO_BITMAP *,DIRCTION,DIRCTION);
     ~Body();
     
 };

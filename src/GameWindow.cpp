@@ -32,9 +32,6 @@ void GameWindow::game_play() {
             game_process();
     }
 
-    // free the game
-    show_msg("Destroy Game");
-    game_destroy();
 }
 
 void GameWindow::game_begin() {
@@ -187,8 +184,6 @@ void GameWindow::game_reset() {
 
 void GameWindow::game_destroy() {
     show_msg("Game destroy begin");
-
-    game_reset();
 
     al_destroy_display(display);            // delete display
     al_destroy_event_queue(event_queue);    // delete event_queue
