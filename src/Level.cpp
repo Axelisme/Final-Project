@@ -178,6 +178,7 @@ bool Level::load_level(int _level_idx)
     {
         sprintf(tmp, "Level%d loaded fail, no Level%d's data.", level_idx,level_idx);
         raise_err(tmp);
+        fin.close();
         return false;
     }
     int t = 5;
@@ -251,10 +252,12 @@ bool Level::load_level(int _level_idx)
             default:
             sprintf(tmp, "Level%d loaded fail, Level%d's data wrong.", level_idx,level_idx);
             raise_err(tmp);
+            fin.close();
             return false;
         }
     }
     show_msg("load level done");
+    fin.close();
     return true;
 }
 
