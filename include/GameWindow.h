@@ -25,13 +25,7 @@ public:
     GameWindow();
     ~GameWindow();
 
-    // work dir path
-    static string WORKDIR;
-    
 private:
-    // set work dir path
-    void Set_workdir();
-
     // inner process
     void game_begin();
     void game_process();

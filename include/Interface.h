@@ -13,8 +13,17 @@ public:
     // draw all objects
     virtual void draw();
 
+    // update interface
+    virtual bool update();
+
+    // start sound
+    void start_sound() {al_play_sample_instance(backgroundSound);}
+    // stop sound
+    void stop_sound() {al_stop_sample_instance(backgroundSound);}
+
     // load sound and backgroundImage
     Interface(string,string);
+    void destroy_Interface();
     ~Interface();
 
 protected:

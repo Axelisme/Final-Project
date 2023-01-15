@@ -14,7 +14,7 @@ public:
     void draw() override;
 
     // update all object
-    bool update();
+    bool update() override;
 
     // process trigered by key
     GAME_STATE key_triger(int key);
@@ -23,7 +23,7 @@ public:
     bool load_level(int);
 
     // reset
-    void reset();
+    void level_reset(int);
 
     // print level map
     void print_map();
@@ -31,15 +31,29 @@ public:
     //level id
     int getID() {return level_idx;}
 
+    //set key lock
+    void set_key_lock() {key_lock = true;key_lock_count=0;}
+
+    //update key lock
+    void update_key_lock() {
+        if(key_lock && (++key_lock_count%key_lock_num == 0)) {
+            key_lock = false;
+            key_lock_count = 0;
+        }
+    }
+
     // constructor and deletor
     Level(int);
+    void destroy_level();
     ~Level();
 
 private:
-    static DIRCTION KEY_TO_DIRC(int);
+    static inline DIRCTION KEY_TO_DIRC(int);
 
-    inline bool is(Pos,OBJ_TYPE);
-    inline bool CanMove(Pos,DIRCTION);
+    inline OBJ_TYPE& is(Pos pos) {
+        return map.at(pos.first).at(pos.second);
+    }
+    bool CanMove(Pos,DIRCTION);
 
     int level_idx;
     Map map;

@@ -1,4 +1,3 @@
-#include "global.h"
 #include "Stone.h"
 
 bool Stone::update() {
@@ -11,8 +10,11 @@ bool Stone::update() {
     return tmp;
 }
 
-Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img) {
+Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img):
+       Object(_pos,_img,1,1)
+{
     type = STONE;
+    CanFall = true;
     move_dirc = NONE;
 
     ani_total_count = ANI_TOTAL_COUNT;
@@ -22,10 +24,8 @@ Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img) {
 
     pos = _pos;
 
-    width = CHUNK_WIDRH;
-    height = CHUNK_HEIGHT;
-
-    Image = _img;
+    width = 1;
+    height = 1;
 
     isFall = false;
 }

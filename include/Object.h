@@ -8,9 +8,10 @@ class Object {
 public:
     // type
     OBJ_TYPE type;
+    bool CanFall = false;
     DIRCTION move_dirc = NONE;
 
-    void draw();
+    virtual void draw();
     virtual bool update();
 
     float &getw() {return width;}
@@ -18,16 +19,22 @@ public:
     Pos &getPos() {return pos;}
     ALLEGRO_BITMAP * &getImg() {return Image;}
 
-    void move_object(Pos);
+    void move_object(Pos dp) {pos.first+=dp.first;pos.second+=dp.second;}
     Pos ConvertIdx(int idx);
+
+    Object(Pos _pos,ALLEGRO_BITMAP *img,float w,float h):
+            pos(_pos),
+            Image(img),
+            width(w),
+            height(h)  {}
 
 protected:
     
     // animation
-    int ani_total_count;
-    int ani_count;         //count form ani_total_count to 0
-    int ani_num;
-    int ani_image_idx;     //the current image
+    int ani_total_count = ANI_TOTAL_COUNT;
+    int ani_count = 0;         //count form ani_total_count to 0
+    int ani_num = ANI_NUM;
+    int ani_image_idx = 0;     //the current image
 
     // center position
     Pos pos;

@@ -1,4 +1,3 @@
-#include "global.h"
 #include "Snake.h"
 
 void Snake::draw() {

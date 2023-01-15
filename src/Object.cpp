@@ -14,6 +14,16 @@ Pos ConvertIdx(int idx) {
 }
 
 void Object::draw() {
+    if(SIMPLY_DISPLAY) {
+        al_draw_rectangle((pos.second - width/2 )*CHUNK_WIDTH,
+                          (pos.first  - height/2)*CHUNK_HEIGHT,
+                          (pos.second + width/2 )*CHUNK_WIDTH,
+                          (pos.first  + height/2)*CHUNK_HEIGHT,
+                          SIMPLE_COLOR_LIST[type],
+                          0);
+    } 
+    else
+    {
     if(Image==nullptr) {
         raise_warn("try to draw null object"); 
         return;
@@ -25,12 +35,13 @@ void Object::draw() {
                           pos.first,pos.second,
                           Image_width/2,
                           Image_height/2,
-                          (pos.second-width/2)*CHUNK_WIDRH,
+                          (pos.second-width/2)*CHUNK_WIDTH,
                           (pos.first-height/2)*CHUNK_HEIGHT,
-                          width*CHUNK_WIDRH,
+                          width*CHUNK_WIDTH,
                           height*CHUNK_HEIGHT,
                           0
                           );
+    }
 }
 
 bool Object::update() {
@@ -40,4 +51,3 @@ bool Object::update() {
     }
     return false;
 }
-
