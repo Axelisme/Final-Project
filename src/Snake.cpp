@@ -25,12 +25,15 @@ bool Snake::update() {
         Body *origin_head = body.back();
         origin_head->getImg() = Image_body;
         origin_head->type = BODY;
+        head = next_pos;
+        heading = move_direction;
         body.push_back(new Body(next_pos,
                                 HEAD,
                                 Image_head,
                                 move_direction,
                                 move_direction));
         can_eat_apple = false;
+        move_direction = NONE;
         show_msg("Snake eat apple done");
         return true;
     }
@@ -55,16 +58,6 @@ bool Snake::update() {
         return true;
     }
     else return false;
-}
-
-Pos Snake::DIRC_TO_POS(DIRCTION dirc) {
-    switch(dirc) {
-        case LEFT:  return std::make_pair( 0.,-1.);
-        case RIGHT: return std::make_pair( 0., 1.);
-        case UP:    return std::make_pair(-1., 0.);
-        case DOWN:  return std::make_pair( 1., 0.);
-        default:    return std::make_pair( 0., 0.);
-    }
 }
 
 Pos Snake::Next_Pos() {

@@ -26,7 +26,6 @@ public:
     std::deque<Body*> body;
 
 private:
-    Pos DIRC_TO_POS(DIRCTION);
     DIRCTION Cal_Dirc(Pos,Pos);
 
     // image

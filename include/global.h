@@ -27,7 +27,7 @@
 #define G_VELOCITY 1     //CHUNK
 #define FPS 40
 #define LEVEL_NUM 1
-#define KEY_LOCK_NUM 10
+#define KEY_LOCK_NUM 5
 #define ANI_NUM 4
 #define ANI_TOTAL_COUNT 50
 
@@ -93,5 +93,7 @@ void raise_err(const std::string &);
 void raise_warn(const std::string &);
 
 void show_msg(const std::string &);
+
+Pos DIRC_TO_POS(DIRCTION);
 
 #endif // GLOBAL_H

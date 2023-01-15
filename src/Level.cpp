@@ -41,7 +41,6 @@ bool Level::CanMove(Pos next,DIRCTION dirc) {
         case NONE:
             return false;
     }
-    if (Debug){cout << map_next << " " << map_next << endl;}
     if (map_next==BODY || map_next==GROUND || map_next==APPLE)
     {
         return false;
@@ -56,11 +55,13 @@ bool Level::CanMove(Pos next,DIRCTION dirc) {
 
 bool Level::update() {
     // if reach end
-    if(is(snake->head)==END) return false;
+    if(is(snake->head)==END) 
+        return false;
 
     update_key_lock();
-    
-    // update object
+
+    bool draw = false;
+    // object state set
     for(auto &ob:object) {
         if(ob->CanFall) {
             Pos pos = ob->getPos();
@@ -68,13 +69,10 @@ bool Level::update() {
             int x = pos.second;
             if(is({y+1,x})==AIR) {
                 set_key_lock();
-                ob->move_dirc = DOWN;
-                //if(map[y][x]!=STONE) raise_warn("some thing mismatch about map"); 
-                map[y][x] = AIR;
-                map[y+1][x] = ob->type;
+                ob->isFall = true;
+                draw = true;
             }
         }
-        ob->update();
     }
     
     // snake fall dectection
@@ -89,40 +87,57 @@ bool Level::update() {
     }
 
     // snake state set
-    bool draw = false;
     Pos next = snake->Next_Pos();
     if(snake->isFall) {  //falling
         show_msg("Snake fall");
         set_key_lock();
-        for(auto &b:snake->body) {
-            is(b->getPos()) = AIR;
-        }
-        snake->move_direction = NONE;
         draw = true;
     }
     else if(is(next)==APPLE) {  //eat apple
         show_msg("Snake eat apple");
         snake->can_eat_apple = true;
-        for(auto &b:snake->body) {
-            is(b->getPos()) = AIR;
-        }
         draw = true;
     }
     else if(CanMove(next,snake->move_direction)) {  //move
-        show_msg("Snake move");
-        for(auto &b:snake->body) {
-            is(b->getPos()) = AIR;
+        if(is(next)==STONE) {
+            for(auto &o:object) {
+                if(o->type == STONE && o->getPos() == next) {
+                    o->move_dirc = snake->move_direction;
+                }
+            }
         }
+        show_msg("Snake move");
+        set_key_lock();
         draw = true;
     }
     else { 
         snake->move_direction = NONE;
     }
+
+    // delete snake in map
+    for(auto &b:snake->body) {
+            is(b->getPos()) = AIR;
+    }
+    // delete opject on map
+    for(auto &o:object) {
+        is(o->getPos()) = AIR;
+    }   
+
     // update snake
     snake->update();
+    
+    // update object
+    for(auto &o:object) {
+        o->update();
+    }
 
+    // update snack on map
     for(auto &b:snake->body) {
         is(b->getPos()) = b->type;
+    }
+    // update object on map
+    for(auto &o:object) {
+        is(o->getPos()) = o->type;
     }
 
     if(draw && Debug) print_map();
@@ -161,7 +176,6 @@ GAME_STATE Level::key_triger(int key) {
     else {
         show_msg("Key triger : move");
         snake->move_direction = KEY_TO_DIRC(key);
-        cout << snake->move_direction << endl;
     }
     return GAME_LEVEL;
 }
@@ -331,9 +345,9 @@ void Level::print_map()
 void Level::level_reset(int idx) {
     show_msg("Level reset begin");
     destroy_level();
-    load_level(idx);
     key_lock = false;
     key_lock_count =0;
+    load_level(idx);
     show_msg("Level reset done");
 }
 

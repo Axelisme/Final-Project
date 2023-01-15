@@ -32,11 +32,16 @@ public:
     int getID() {return level_idx;}
 
     //set key lock
-    void set_key_lock() {key_lock = true;key_lock_count=0;}
+    void set_key_lock() {
+        //show_msg("key lock");
+        key_lock = true;
+        key_lock_count=0;
+    }
 
     //update key lock
     void update_key_lock() {
         if(key_lock && (++key_lock_count%key_lock_num == 0)) {
+            //show_msg("key unlock");
             key_lock = false;
             key_lock_count = 0;
         }

@@ -26,3 +26,13 @@ void raise_warn(const std::string &msg){
 void show_msg(const std::string &msg){
     std::cout << "Messenger: " << msg << std::endl;
 }
+
+Pos DIRC_TO_POS(DIRCTION dirc) {
+    switch(dirc) {
+        case LEFT:  return std::make_pair( 0.,-1.);
+        case RIGHT: return std::make_pair( 0., 1.);
+        case UP:    return std::make_pair(-1., 0.);
+        case DOWN:  return std::make_pair( 1., 0.);
+        default:    return std::make_pair( 0., 0.);
+    }
+}

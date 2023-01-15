@@ -9,6 +9,7 @@ public:
     // type
     OBJ_TYPE type = AIR;
     bool CanFall = false;
+    bool isFall = false;
     DIRCTION move_dirc = NONE;
 
     virtual void draw();

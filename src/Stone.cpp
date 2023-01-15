@@ -1,13 +1,21 @@
 #include "Stone.h"
 
 bool Stone::update() {
-    bool tmp = Object::update();
+    Object::update();
     
     if(isFall) {
-        tmp = true;
-        move_object({1,0});
+        show_msg("Stone fall begin");
+        move_object({1.0,0.0});
+        isFall = false;
+        show_msg("Stone fall done");
     }
-    return tmp;
+    else if(move_dirc != NONE) {
+        show_msg("Stone move begin");
+        move_object(DIRC_TO_POS(move_dirc));
+        move_dirc = NONE;
+        show_msg("Stone move done");
+    }
+    return true;
 }
 
 Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img):
@@ -28,6 +36,5 @@ Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img):
     width = 1;
     height = 1;
 
-    isFall = false;
     show_msg("Create stone done");
 }
