@@ -89,6 +89,7 @@ bool Level::update() {
     }
 
     // snake state set
+    bool draw = false;
     Pos next = snake->Next_Pos();
     if(snake->isFall) {  //falling
         show_msg("Snake fall");
@@ -97,12 +98,14 @@ bool Level::update() {
             is(b->getPos()) = AIR;
         }
         snake->move_direction = NONE;
+        draw = true;
     }
     else if(CanMove(next,snake->move_direction)) {  //move
         show_msg("Snake move");
         for(auto &b:snake->body) {
             is(b->getPos()) = AIR;
         }
+        draw = true;
     }
     else { 
         snake->move_direction = NONE;
@@ -112,6 +115,7 @@ bool Level::update() {
             for(auto &b:snake->body) {
                 is(b->getPos()) = AIR;
             }
+            draw = true;
         }
     }
     // update snake
@@ -121,7 +125,7 @@ bool Level::update() {
         is(b->getPos()) = b->type;
     }
 
-    print_map();
+    if(draw && Debug) print_map();
 
     return true;
 }
@@ -258,16 +262,20 @@ bool Level::load_level(int _level_idx)
                 }
                 map = map_matrix;
                 print_map();
+                break;
             }
 
-            default:
-            sprintf(tmp, "Level%d loaded fail, Level%d's data wrong.", level_idx,level_idx);
-            raise_err(tmp);
-            fin.close();
-            return false;
+            default: {
+                sprintf(tmp, "Level%d loaded fail, Level%d's data wrong.", level_idx,level_idx);
+                raise_err(tmp);
+                fin.clear();
+                fin.close();
+                return false;
+            }
         }
     }
     show_msg("load level done");
+    fin.clear();
     fin.close();
     return true;
 }
