@@ -41,6 +41,7 @@ inline bool Level::CanMove(Pos next,DIRCTION dirc) {
         case NONE:
             return false;
     }
+    if (Debug){cout << map_next << " " << map_next << endl;}
     if (map_next==BODY || map_next==GROUND || map_next==APPLE)
     {
         return false;
