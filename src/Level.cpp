@@ -19,23 +19,23 @@ bool Level::CanMove(Pos next,DIRCTION dirc) {
     switch(dirc)
     {
         case LEFT: {
-            map_next = map[next.first][next.second-1];
-            map_next_next = map[next.first][next.second-2];
+            map_next = map[next.first][next.second];
+            map_next_next = map[next.first][next.second-1];
             break;
         }
         case RIGHT: {
-            map_next = map[next.first][next.second+1];
-            map_next_next = map[next.first][next.second+2];
+            map_next = map[next.first][next.second];
+            map_next_next = map[next.first][next.second+1];
             break;
         }
         case UP: {
-            map_next = map[next.first-1][next.second];
-            map_next_next = map[next.first-2][next.second];
+            map_next = map[next.first][next.second];
+            map_next_next = map[next.first-1][next.second];
             break;
         }
         case DOWN: {
-            map_next = map[next.first+1][next.second];
-            map_next_next = map[next.first+2][next.second];
+            map_next = map[next.first][next.second];
+            map_next_next = map[next.first+1][next.second];
             break;
         }
         case NONE:
