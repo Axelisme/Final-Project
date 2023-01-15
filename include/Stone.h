@@ -8,7 +8,7 @@ class Stone: public Object {
 public:
     bool update() override;
 
-    Stone(float _y,float _x,ALLEGRO_BITMAP *);
+    Stone(Pos,ALLEGRO_BITMAP *);
 
 private:
     bool isFall = false;

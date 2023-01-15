@@ -13,11 +13,12 @@ public:
 
     void EatApple(Pos);
     Pos Next_Pos();
+    BODY_DIRCTION Body_Dirc(int);
 
     Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,ALLEGRO_BITMAP *);
 
     bool isFall = false;
-    bool next_apple = false;
+    bool can_eat_apple = false;
     MOVE_DIRCTION move_direction = NONE;
     MOVE_DIRCTION heading = NONE;
 

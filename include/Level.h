@@ -37,7 +37,7 @@ public:
 
 private:
     inline bool is(Pos,OBJ_TYPE);
-    inline bool CanMove(MOVE_DIRCTION);
+    inline bool CanMove(Pos,MOVE_DIRCTION);
 
     int level_idx;
     Map map;

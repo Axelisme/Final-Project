@@ -25,8 +25,8 @@ void Object::draw() {
                           pos.first,pos.second,
                           Image_width/2,
                           Image_height/2,
-                          (x-width/2)*CHUNK_WIDRH,
-                          (y-height/2)*CHUNK_HEIGHT,
+                          (pos.second-width/2)*CHUNK_WIDRH,
+                          (pos.first-height/2)*CHUNK_HEIGHT,
                           width*CHUNK_WIDRH,
                           height*CHUNK_HEIGHT,
                           0

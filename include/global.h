@@ -66,6 +66,15 @@ enum MOVE_DIRCTION {
     NONE
 };
 
+enum BODY_DIRCTION {
+    VERTICAL,
+    HORIZONTAL,
+    TURN_BOTTOM_RIGHT,
+    TURN_BOTTOM_LEFT,
+    TURN_TOP_RIGHT,
+    TURN_TOP_LEFT
+};
+
 using Pos = std::pair<float, float>;
 using Map = std::vector<std::vector<OBJ_TYPE>>;
 

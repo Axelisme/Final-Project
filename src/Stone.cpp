@@ -6,12 +6,12 @@ bool Stone::update() {
     
     if(isFall) {
         tmp = true;
-        move(0,G_VELOCITY);
+        move_object({1,0});
     }
     return tmp;
 }
 
-Stone::Stone(float _y,float _x,ALLEGRO_BITMAP *_img) {
+Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img) {
     type = STONE;
     move_dirc = NONE;
 
@@ -20,8 +20,7 @@ Stone::Stone(float _y,float _x,ALLEGRO_BITMAP *_img) {
     ani_num = ANI_NUM;
     ani_image_idx = 0;
 
-    x = _x;
-    y = _y;
+    pos = _pos;
 
     width = CHUNK_WIDRH;
     height = CHUNK_HEIGHT;

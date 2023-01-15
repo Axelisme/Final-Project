@@ -18,7 +18,7 @@ inline bool Level::is(Pos pos,OBJ_TYPE T) {
         return map.at(pos.first).at(pos.second) == T;
 }
 
-inline bool Level::CanMove(MOVE_DIRCTION dirc) {
+inline bool Level::CanMove(Pos next,MOVE_DIRCTION dirc) {
     return true;
 }
 
@@ -60,11 +60,14 @@ bool Level::update() {
             break;
         }
     }
-    if(snake->isFall || !CanMove(snake->move_direction)) 
+    Pos next = snake->Next_Pos();
+    if(snake->isFall || !CanMove(next,snake->move_direction)) 
         snake->move_direction = NONE;
     else {
-        Pos next = snake->Next_Pos();
-        if(is(next,APPLE)) snake->next_apple = true;
+        if(is(next,APPLE)) {
+            snake->can_eat_apple = true;
+            map.at(next.first).at(next.second);
+        }
     }
 
     snake->update();
@@ -147,7 +150,7 @@ bool Level::load_level(int _level_idx)
                 for (int i = 0; i < m; i++)
                 {
                     fin >> stone_position.first >> stone_position.second;
-                    Object * temp = new Stone(stone_position.first,stone_position.second,Stone_image);
+                    Object * temp = new Stone(stone_position,Stone_image);
                     object.emplace_back(temp);
                 }
             case '5':   //map
