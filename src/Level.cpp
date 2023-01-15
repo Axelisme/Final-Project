@@ -181,9 +181,6 @@ bool Level::load_level(int _level_idx)
     int t = 4;
     char data_type[20], path[100];
     int m = 0, n = 0;
-    vector<Pos> snake_position_vector(m);  //snake_posotion_vector {{y1,x1},{y2,y2}}
-    Pos stone_position;  //stone_posotion {y1,x1}
-    Map map_matrix(m,vector<OBJ_TYPE>(n,AIR));    //map(high,width)
     while (t--)
     {
         fin >> data_type;
@@ -210,6 +207,7 @@ bool Level::load_level(int _level_idx)
             case '3': {  //snake
                 show_msg("load snake initial");
                 fin >> m;
+                vector <Pos> snake_position_vector(m);  //snake_posotion_vector {{y1,x1},{y2,y2}}
                 for (int i = 0; i < m; i++)
                 {
                     fin >> snake_position_vector[i].first >> snake_position_vector[i].second;
@@ -221,6 +219,7 @@ bool Level::load_level(int _level_idx)
             case '4': {  //stone
                 show_msg("load stone");
                 fin >> m;
+                Pos stone_position;  //stone_posotion {y1,x1}
                 object.reserve(m);
                 for (int i = 0; i < m; i++)
                 {
@@ -233,6 +232,7 @@ bool Level::load_level(int _level_idx)
             case '5': {  //map
                 show_msg("load map");
                 fin >> m >> n;
+                Map map_matrix(m,vector<OBJ_TYPE>(n,AIR));    //map(high,width)
                 int element;
                 for (int i = 0; i < m; i++)
                 {
