@@ -50,9 +50,7 @@ public:
 private:
     static inline DIRCTION KEY_TO_DIRC(int);
 
-    inline OBJ_TYPE& is(Pos pos) {
-        return map.at(pos.first).at(pos.second);
-    }
+    inline OBJ_TYPE& is(Pos pos) {return map.at(pos.first).at(pos.second);}
     bool CanMove(Pos,DIRCTION);
 
     int level_idx;
@@ -70,7 +68,6 @@ private:
     bool key_lock = false;
     int key_lock_count = 0;
     const int key_lock_num = KEY_LOCK_NUM;
-  
 };
 
 #endif // LEVEL_H
