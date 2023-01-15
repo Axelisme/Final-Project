@@ -55,7 +55,8 @@ enum OBJ_TYPE {
     BODY,
     END,
     APPLE,
-    STONE
+    STONE,
+    EDGE
 };
 
 enum DIRCTION {

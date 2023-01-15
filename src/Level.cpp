@@ -19,7 +19,35 @@ inline bool Level::is(Pos pos,OBJ_TYPE T) {
 }
 
 inline bool Level::CanMove(Pos next,DIRCTION dirc) {
-    return true;
+    OBJ_TYPE map_next;
+    OBJ_TYPE map_next_next;
+    switch(dirc)
+    {
+        case LEFT:
+            map_next = map[next.first][next.second-1];
+            map_next_next = map[next.first][next.second-2];
+        case RIGHT:
+            map_next = map[next.first][next.second+1];
+            map_next_next = map[next.first][next.second+2];
+        case UP:
+            map_next = map[next.first-1][next.second];
+            map_next_next = map[next.first-2][next.second];
+        case DOWN:
+            map_next = map[next.first+1][next.second];
+            map_next_next = map[next.first+2][next.second];
+        case NONE:
+            return true;
+    }
+    if (map_next==BODY || map_next==GROUND || map_next==APPLE)
+    {
+        return false;
+    }
+    else if (map_next==STONE && map_next_next!=AIR)
+    {
+        return false;
+    }
+    else {return true;}
+    return false;
 }
 
 // update all object
@@ -206,6 +234,8 @@ void Level::print_map()
                     cout << " ⋄";
                 case STONE:
                     cout << "░░";
+                case EDGE:
+                    cout << "▞▞";
             }
         }
         cout << endl;
