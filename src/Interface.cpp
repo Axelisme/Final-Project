@@ -1,9 +1,14 @@
 #include "Interface.h"
 
 void Interface::draw() {
+    if(SIMPLY_DISPLAY){
+        al_clear_to_color(BLACK);
+    }
+    else{
     al_clear_to_color(BLACK);
     al_draw_bitmap(backgroundImage, 0, 0, 0);
     start_sound();
+    }
 }
 
 bool Interface::update() {

@@ -114,14 +114,15 @@ void GameWindow::draw() {
     switch(state) {
         case GAME_MENU: {
             menu->draw();
-            return;
+            break;
         }
         case GAME_LEVEL: {
             level->draw();
-            return;
+            break;
         }
         case GAME_TERMINATE: return;
     }
+    al_flip_display();
 }
 
 GameWindow::GameWindow() {

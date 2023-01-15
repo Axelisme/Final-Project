@@ -178,7 +178,7 @@ bool Level::load_level(int _level_idx)
         raise_err(tmp);
         return false;
     }
-    int t = 4;
+    int t = 5;
     char data_type[20], path[100];
     int m = 0, n = 0;
     while (t--)
@@ -243,6 +243,7 @@ bool Level::load_level(int _level_idx)
                     }
                 }
                 map = map_matrix;
+                print_map();
             }
 
             default:
