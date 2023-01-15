@@ -36,8 +36,10 @@ public:
     ~Level();
 
 private:
+    static DIRCTION KEY_TO_DIRC(int);
+
     inline bool is(Pos,OBJ_TYPE);
-    inline bool CanMove(Pos,MOVE_DIRCTION);
+    inline bool CanMove(Pos,DIRCTION);
 
     int level_idx;
     Map map;

@@ -18,7 +18,7 @@ inline bool Level::is(Pos pos,OBJ_TYPE T) {
         return map.at(pos.first).at(pos.second) == T;
 }
 
-inline bool Level::CanMove(Pos next,MOVE_DIRCTION dirc) {
+inline bool Level::CanMove(Pos next,DIRCTION dirc) {
     OBJ_TYPE map_next;
     OBJ_TYPE map_next_next;
     switch(dirc)
@@ -60,8 +60,9 @@ bool Level::update() {
     for(auto &ob:object) {
         switch(ob->type) {
             case STONE: {
-                int x = int(ob->getx());
-                int y = int(ob->gety());
+                Pos pos = ob->getPos();
+                int x = pos.second;
+                int y = pos.first;
                 if(is({y+1,x},AIR)) {
                     ob->move_dirc = DOWN;
                     if(map[y][x]!=STONE) raise_warn("some thing mismatch about map"); 
@@ -81,9 +82,10 @@ bool Level::update() {
     
     snake->isFall = false;
     for(auto &b:snake->body) {
-        int x = b->getx();
-        int y = b->gety();
-        if(!is({y+1,x},AIR) && !is({y+1,x},BODY)){
+        Pos pos = b->getPos();
+        int x = pos.second;
+        int y = pos.first;
+        if(!is({pos.first+1,pos.second},AIR) && !is({pos.first+1,pos.second},BODY)){
             snake->isFall = true;
             break;
         }
@@ -94,13 +96,25 @@ bool Level::update() {
     else {
         if(is(next,APPLE)) {
             snake->can_eat_apple = true;
-            map.at(next.first).at(next.second);
+            map.at(next.first).at(next.second) = BODY;
         }
     }
 
     snake->update();
 
     return false;
+}
+
+inline DIRCTION Level::KEY_TO_DIRC(int key) {
+    switch(key) {
+        case ALLEGRO_KEY_LEFT:  return LEFT;
+        case ALLEGRO_KEY_RIGHT: return RIGHT;
+        case ALLEGRO_KEY_UP:    return UP;
+        case ALLEGRO_KEY_DOWN:  return DOWN;
+        default :               {
+            raise_warn("known key");
+            return NONE;}
+    }    
 }
 
 // process trigered by key
@@ -111,14 +125,8 @@ GAME_STATE Level::key_triger(int key) {
         return GAME_LEVEL;
     }
     if(key_lock) return GAME_LEVEL;
-    if(key>=ALLEGRO_KEY_LEFT && key <= ALLEGRO_KEY_DOWN) {
-        snake->move_direction = static_cast<MOVE_DIRCTION> (key - ALLEGRO_KEY_LEFT);
-        return GAME_LEVEL;
-    }
-    else {
-        raise_warn("Unknown key");
-        return GAME_LEVEL;
-    }
+    snake->move_direction = KEY_TO_DIRC(key);
+    return GAME_LEVEL;
 }
 
 // load level
@@ -173,8 +181,10 @@ bool Level::load_level(int _level_idx)
                 {
                     fin >> snake_position_vector[i].first >> snake_position_vector[i].second;
                 }
-                snake = new Snake(snake_position_vector,Snake_head_image,Snake_body_image);
+                snake = new Snake(snake_position_vector,Snake_head_image,
+                                                        Snake_body_image);
             }
+
             case '4':   //stone
             {
                 fin >> m;
