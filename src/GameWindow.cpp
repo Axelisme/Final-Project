@@ -86,19 +86,33 @@ bool GameWindow::update() {
             return true;
         }
         case GAME_LEVEL: {
-            if(!level->update()) {
-                int level_idx = level->getID();
-                if(level_idx == LEVEL_NUM) {
-                    state = GAME_TERMINATE;
-                    return false;
+            switch(level->level_stat)
+            {
+                case KEEP:{
+                    level->update();
+                    break;
                 }
-                else {
-                    level->level_reset(level_idx+1);
+                case NEXT:{
+                    int level_idx = level->getID();
+                    if(level_idx == LEVEL_NUM) {
+                        state = GAME_TERMINATE;
+                        return false;
+                    }
+                    else{
+                        delete level;
+                        level = new Level(level_idx+1);
+                        return true;
+                    }
+                }
+                case RESTART:{
+                    int level_idx = level->getID();
+                    delete level;
+                    level = new Level(level_idx);
                     return true;
                 }
             }
-            return true;
         }
+            return true;
         case GAME_TERMINATE: return false;
         default : {
             raise_err("unknown game state");

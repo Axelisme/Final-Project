@@ -27,7 +27,7 @@
 #define G_VELOCITY 1     //CHUNK
 #define FPS 40
 #define LEVEL_NUM 1
-#define KEY_LOCK_NUM 5
+#define KEY_LOCK_NUM 1
 #define ANI_NUM 4
 #define ANI_TOTAL_COUNT 50
 
@@ -69,6 +69,13 @@ enum OBJ_TYPE {
     END,
     APPLE,
     STONE,
+};
+
+enum LEVEL_STAT {
+    KEEP = 0,
+    STOP,
+    NEXT,
+    RESTART
 };
 
 const ALLEGRO_COLOR SIMPLE_COLOR_LIST[] = {BLACK,GREEN,RED,BLUE,PINK,CMY,WRITE,YELLOW};
