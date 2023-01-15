@@ -144,36 +144,41 @@ bool Level::load_level(int _level_idx)
     int t = 4;
     char data_type[20], path[100];
     int m = 0, n = 0;
-    vector <Pos> snake_position_vector(m);  //snake_posotion_vector {{y1,x1},{y2,y2}}
-    Pos stone_position;  //stone_posotion {y1,x1}
-    Map map_matrix(m,vector<OBJ_TYPE>(n,AIR));    //map(high,width)
     while (t--)
     {
         fin >> data_type;
         switch(data_type[0])
         {
             case '1':   //background
+            {
                 fin >> m;
                 while (m--)
                 {
                     fin >> path;
                 }
+            }
             case '2':   //music
+            {
                 fin >> m;
                 while (m--)
                 {
                     fin >> path;
                 }
+            }
             case '3':   //snake
+            {
                 fin >> m;
+                vector <Pos> snake_position_vector(m);  //snake_posotion_vector {{y1,x1},{y2,y2}}
                 for (int i = 0; i < m; i++)
                 {
                     fin >> snake_position_vector[i].first >> snake_position_vector[i].second;
                 }
                 snake = new Snake(snake_position_vector,Snake_head_image,Snake_body_image);
-                
+            }
             case '4':   //stone
+            {
                 fin >> m;
+                Pos stone_position;  //stone_posotion {y1,x1}
                 object.reserve(m);
                 for (int i = 0; i < m; i++)
                 {
@@ -181,8 +186,11 @@ bool Level::load_level(int _level_idx)
                     Object * temp = new Stone(stone_position,Stone_image);
                     object.emplace_back(temp);
                 }
+            }
             case '5':   //map
+            {
                 fin >> m >> n;
+                Map map_matrix(m,vector<OBJ_TYPE>(n,AIR));    //map(high,width)
                 int element;
                 for (int i = 0; i < m; i++)
                 {
@@ -193,7 +201,7 @@ bool Level::load_level(int _level_idx)
                     }
                 }
                 map = map_matrix;
-
+            }
             default:
             sprintf(tmp, "Level%d loaded fail, Level%d's data wrong.", level_idx,level_idx);
             raise_err(tmp);
