@@ -7,7 +7,8 @@ obj = {
     "Snake Body":3, 
     "End point":4,
     "Apple":5, 
-    "Stone":6
+    "Stone":6,
+    "Edge":-1
     }
 def map_to_graph(map):
     map_graph = [''.join(
@@ -18,6 +19,7 @@ def map_to_graph(map):
     '▒▒' if j==obj["Snake Body"] else  
     ' ⋄' if j==obj["Apple"] else 
     ' ⊠' if j==obj["End point"] else
+    '▞▞' if j==obj["Edge"] else
     '  ' for j in i) + '\n' for i in map1]
     return map_graph
 def map_to_string(map):
@@ -29,10 +31,12 @@ def map_to_string(map):
     f'{obj["Snake Body"]}' if j==obj["Snake Body"] else  
     f'{obj["Apple"]}' if j==obj["Apple"] else
     f'{obj["End point"]}' if j==obj["End point"] else 
+    f'{obj["Edge"]}' if j==obj["Edge"] else
     '0' for j in i) + '\n' for i in map1]
     return map_str
 
-map1 = np.zeros([10,25]).astype(int)
+map1_high, map1_width = 10, 25
+map1 = np.zeros([map1_high, map1_width]).astype(int)
 map1[1:4,17] = obj["Ground"]
 map1[6,10:24] = obj["Ground"]
 map1[6,14:17] = obj["Air"]
@@ -52,7 +56,17 @@ map1[7,19] = obj["End point"]
 map1[4,1] = obj["Snake Head"]
 map1[4,0] = obj["Snake Body"]
 map1[5,0] = obj["Snake Body"]
-# map1_shape = map1.shape
+map1[5,0] = obj["Snake Body"]
+
+edge_thick = 6
+edge_col = np.full((map1_high,edge_thick),obj["Air"])
+edge_row = np.full((edge_thick,map1_width+2*edge_thick),obj["Air"])
+map1 = np.concatenate([edge_col, map1], axis=1)
+map1 = np.concatenate([map1, edge_col], axis=1)
+map1 = np.concatenate([edge_row, map1], axis=0)
+map1 = np.concatenate([map1, edge_row], axis=0)
+map1[0,:] = map1[-1,:] = map1[:,0] = map1[:,-1] = obj["Edge"]
+
 map1_list = map1.tolist()
 map1_graph = map_to_graph(map1)
 map1_str = map_to_string(map1)
@@ -63,12 +77,12 @@ level1 = {
     "sound": ['/data/sound/sound1-1','/data/sound/sound1-2'],
     "map":[map1.shape, map1_str, map1_graph],
     "snake":[
-        '5 1',
-        '4 0',
-        '4 1',
+        '11 6',
+        '10 6',
+        '10 7',
     ],
     "stone":[
-        '0 7'
+        '6 23'
         ]
 }
 

@@ -191,6 +191,8 @@ void Level::print_map()
                     cout << " ⋄";
                 case STONE:
                     cout << "░░";
+                case EDGE:
+                    cout << "▞▞";
             }
         }
         cout << endl;
