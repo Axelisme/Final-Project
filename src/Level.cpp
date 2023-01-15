@@ -268,20 +268,30 @@ void Level::print_map()
             {
                 case AIR:
                     cout << "  ";
+                    break;
                 case GROUND:
                     cout << "██";
+                    break;
                 case HEAD:
                     cout << "▓▓";
+                    break;
                 case BODY:
                     cout << "▒▒";
+                    break;
                 case END:
                     cout << " ⊠";
+                    break;
                 case APPLE:
                     cout << " ⋄";
+                    break;
                 case STONE:
                     cout << "░░";
+                    break;
                 case EDGE:
                     cout << "▞▞";
+                    break;
+                default:
+                    break;
             }
         }
         cout << endl;

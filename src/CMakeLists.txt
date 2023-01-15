@@ -5,7 +5,7 @@ include(CTest)
 enable_testing()
 
 # CWD設定
-SET(WORKING_DIRECTORY /home/axel/Documents/VSCode/Final-Project)
+SET(WORKING_DIRECTORY ..)
 message("Working directory: ${WORKING_DIRECTORY}")
 
 # 新增原始檔列表變數

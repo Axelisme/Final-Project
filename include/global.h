@@ -61,14 +61,14 @@ enum MENU_TYPE {
 
 #define TYPE_NUM 6
 enum OBJ_TYPE {
-    AIR = 0,
+    EDGE = -1,
+    AIR,
     GROUND,
     HEAD,
     BODY,
     END,
     APPLE,
     STONE,
-    EDGE
 };
 
 const ALLEGRO_COLOR SIMPLE_COLOR_LIST[] = {BLACK,GREEN,RED,BLUE,PINK,CMY,WRITE,YELLOW};
