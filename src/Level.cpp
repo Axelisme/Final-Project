@@ -100,6 +100,14 @@ bool Level::update() {
         snake->move_direction = NONE;
         draw = true;
     }
+    else if(is(next)==APPLE) {  //eat apple
+        show_msg("Snake eat apple");
+        snake->can_eat_apple = true;
+        for(auto &b:snake->body) {
+            is(b->getPos()) = AIR;
+        }
+        draw = true;
+    }
     else if(CanMove(next,snake->move_direction)) {  //move
         show_msg("Snake move");
         for(auto &b:snake->body) {
@@ -109,14 +117,6 @@ bool Level::update() {
     }
     else { 
         snake->move_direction = NONE;
-        if(is(next)==APPLE) {  //eat apple
-            show_msg("Snake eat apple");
-            snake->can_eat_apple = true;
-            for(auto &b:snake->body) {
-                is(b->getPos()) = AIR;
-            }
-            draw = true;
-        }
     }
     // update snake
     snake->update();
@@ -155,10 +155,13 @@ GAME_STATE Level::key_triger(int key) {
         return GAME_LEVEL;
     }
     if(key_lock) {
+        show_msg("Key triger : key lock");
         snake->move_direction = NONE;
     }
     else {
+        show_msg("Key triger : move");
         snake->move_direction = KEY_TO_DIRC(key);
+        cout << snake->move_direction << endl;
     }
     return GAME_LEVEL;
 }
