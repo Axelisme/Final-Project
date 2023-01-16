@@ -169,6 +169,15 @@ GAME_STATE Level::key_triger(int key) {
         show_msg("Key triger : switch to game menu");
         return GAME_MENU;
     } 
+    if(key == ALLEGRO_KEY_N) {
+        show_msg("Key triger : jump to next level");
+        level_stat = NEXT;
+        return GAME_LEVEL;
+    } 
+    if(key == ALLEGRO_KEY_Q) {
+        show_msg("Key triger : quit game");
+        return GAME_TERMINATE;
+    } 
     if(key == ALLEGRO_KEY_R) {
         show_msg("Key triger : reset level");
         level_stat = RESTART;
