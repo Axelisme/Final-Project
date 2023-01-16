@@ -5,7 +5,7 @@
 #include "Snake.h"
 #include "Stone.h"
 #include "Interface.h"
-#include <vector>
+#include <list>
 
 using namespace std;
 
@@ -62,7 +62,7 @@ private:
     int level_idx;
     Map map;
     Snake *snake;
-    std::vector<Object*> object;
+    std::list<Object*> object;
 
     ALLEGRO_BITMAP *  Ground_image;
     ALLEGRO_BITMAP *  Stone_image;

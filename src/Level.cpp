@@ -39,8 +39,8 @@ bool Level::MakeMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
 
     switch(NT) {
         case GROUND: 
-        case APPLE:
-        case EDGE: return false;
+        case APPLE: return false;
+        case EDGE: 
         case AIR:
         case END: return true;
         case STONE: {
@@ -72,15 +72,17 @@ bool Level::update() {
     // update key lock
     update_key_lock();
 
-    Map _map(map);
-
     bool draw = false;
     // object state set
-    for(auto &ob:object) {
-        if(ob->type == STONE) {
-            if(MakeMove(ob->getPos(),STONE,DOWN)) {
+    for(auto it=object.begin();it!=object.end();++it) {
+        if((*it)->type == STONE) {
+            Pos _pos = (*it)->getPos();
+            if(is(_pos)==EDGE) {
+                object.erase(it);
+            }
+            if(MakeMove((*it)->getPos(),STONE,DOWN)) {
                 set_key_lock();
-                ob->move_dirc = DOWN;
+                (*it)->move_dirc = DOWN;
                 draw = true;
             }
         }
@@ -90,6 +92,10 @@ bool Level::update() {
     snake->isFall = true;
     for(auto &b:snake->body) {
         Pos pos = b->getPos();
+        if(is(pos)==EDGE) {
+            level_stat = RESTART;
+            return true;
+        }
         OBJ_TYPE below_type = is({pos.first+1,pos.second});
         if(!MakeMove(pos,BODY,DOWN)){
             snake->isFall = false;
@@ -150,7 +156,6 @@ GAME_STATE Level::key_triger(int key) {
     } 
     if(key == ALLEGRO_KEY_R) {
         show_msg("Key triger : reset level");
-        level_reset(1);
         level_stat = RESTART;
         return GAME_LEVEL;
     }
@@ -240,7 +245,6 @@ bool Level::load_level(int _level_idx)
                 show_msg("load stone");
                 fin >> m;
                 Pos stone_position;  //stone_posotion {y1,x1}
-                object.reserve(m);
                 for (int i = 0; i < m; i++)
                 {
                     fin >> stone_position.first >> stone_position.second;
