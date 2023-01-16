@@ -14,9 +14,9 @@
 #include <vector>
 
 #define Debug 1
-#define Show 1
+#define Show 0
 
-#define FIRST_STATE GAME_LEVEL
+#define FIRST_STATE GAME_MENU
 #define DISPLAY_WIDTH 800
 #define DISPLAY_HEIGHT 800
 
@@ -24,10 +24,10 @@
 #define CHUNK_H_NUM 14
 #define MAP_WIDTH  40
 #define MAP_HEIGHT 25
-#define SEE_MAP_LEFT 5
-#define SEE_MAP_RIGHT 35
-#define SEE_MAP_TOP 5
-#define SEE_MAP_BUTTOM 20
+#define SEE_MAP_LEFT 2
+#define SEE_MAP_RIGHT 39
+#define SEE_MAP_TOP 2
+#define SEE_MAP_BUTTOM 24
 #define CHUNK_WIDTH   (double(DISPLAY_WIDTH )/CHUNK_W_NUM)
 #define CHUNK_HEIGHT  (double(DISPLAY_HEIGHT)/CHUNK_H_NUM)
 #define MIDDLEGROUND_RATIO 0.7

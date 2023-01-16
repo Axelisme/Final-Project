@@ -52,6 +52,8 @@ void Level::draw_map() {
 }
 
 void Level::draw() {
+    //al_draw_bitmap(Fix_Background_image,0,0,0);
+
     window_center = snake->head;
     Interface::draw();
 
@@ -255,6 +257,12 @@ bool Level::load_level(int _level_idx)
 
     show_msg("Set level id");
     level_idx = _level_idx;
+
+    // backbackground image
+    Fix_Background_image = al_load_bitmap((IMAGE_PATH+"/fix_background.png").c_str());
+    if(Fix_Background_image==nullptr) {
+        raise_warn("Load fix background fail");
+    }
 
     show_msg("Load image begin");
     Ground_image = al_load_bitmap((IMAGE_PATH+"/ground.png").c_str());

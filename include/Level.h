@@ -71,16 +71,18 @@ private:
     Snake *snake;
     std::list<Object*> object;
 
-    ALLEGRO_BITMAP *  Ground_image;
-    ALLEGRO_BITMAP *  Stone_image;
-    ALLEGRO_BITMAP *  Apple_image;
-    ALLEGRO_BITMAP *  Snake_head_image;
-    ALLEGRO_BITMAP *  Snake_body_straight_image;
-    ALLEGRO_BITMAP *  Snake_body_turn_image;
-    ALLEGRO_BITMAP *  Snake_tail_image;
-    ALLEGRO_BITMAP *  End_point_image;
-    ALLEGRO_BITMAP *  Buttom_image;
-    ALLEGRO_BITMAP *  Spike_image;
+    ALLEGRO_BITMAP *  Fix_Background_image = nullptr;
+
+    ALLEGRO_BITMAP *  Ground_image = nullptr;
+    ALLEGRO_BITMAP *  Stone_image = nullptr;
+    ALLEGRO_BITMAP *  Apple_image = nullptr;
+    ALLEGRO_BITMAP *  Snake_head_image = nullptr;
+    ALLEGRO_BITMAP *  Snake_body_straight_image = nullptr;
+    ALLEGRO_BITMAP *  Snake_body_turn_image = nullptr;
+    ALLEGRO_BITMAP *  Snake_tail_image = nullptr;
+    ALLEGRO_BITMAP *  End_point_image = nullptr;
+    ALLEGRO_BITMAP *  Buttom_image = nullptr;
+    ALLEGRO_BITMAP *  Spike_image = nullptr;
 
     bool key_lock = false;
     int key_lock_count = 0;
