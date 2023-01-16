@@ -60,7 +60,7 @@ enum MENU_TYPE {
     IN_GAME
 };
 
-#define TYPE_NUM 6
+#define TYPE_NUM 10
 enum OBJ_TYPE {
     EDGE = -1,
     AIR,
@@ -70,6 +70,8 @@ enum OBJ_TYPE {
     END,
     APPLE,
     STONE,
+    SPIKE,
+    BUTTON
 };
 
 enum LEVEL_STAT {
