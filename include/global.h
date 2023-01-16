@@ -13,8 +13,8 @@
 #include <utility>
 #include <vector>
 
-#define Debug 1
-#define Show 1
+#define Debug 0
+#define Show 0
 
 #define FIRST_STATE GAME_MENU
 #define DISPLAY_WIDTH 800

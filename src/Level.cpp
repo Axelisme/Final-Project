@@ -98,14 +98,13 @@ bool Level::CanMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
 }
 
 bool Level::update() {
-    
-    if(is(snake->head,ground_map)==END){  // if reach end
-        level_stat = NEXT;
+    if(snake->isDied==true) {   // if is died
+        level_stat = RESTART;
         stop_sound();
         return false;
     }
-    else if(snake->isDied==true) {   // if is died
-        level_stat = RESTART;
+    else if(is(snake->head,ground_map)==END){  // if reach end
+        level_stat = NEXT;
         stop_sound();
         return false;
     }
