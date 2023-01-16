@@ -51,6 +51,7 @@ public:
     Level(int);
     void destroy_level();
     ~Level();
+    LEVEL_STAT level_stat = KEEP;
 
 private:
     static inline DIRCTION KEY_TO_DIRC(int);

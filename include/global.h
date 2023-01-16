@@ -72,6 +72,13 @@ enum OBJ_TYPE {
     STONE,
 };
 
+enum LEVEL_STAT {
+    KEEP = 0,
+    STOP,
+    NEXT,
+    RESTART
+};
+
 const ALLEGRO_COLOR SIMPLE_COLOR_LIST[] = {BLACK,GREEN,RED,BLUE,PINK,CMY,WRITE,YELLOW};
 
 enum DIRCTION {

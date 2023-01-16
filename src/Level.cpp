@@ -64,8 +64,10 @@ bool Level::MakeMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
 
 bool Level::update() {
     // if reach end
-    if(is(snake->head)==END) 
+    if(is(snake->head)==END){
+        level_stat = NEXT;
         return false;
+    }
 
     // update key lock
     update_key_lock();
@@ -149,6 +151,7 @@ GAME_STATE Level::key_triger(int key) {
     if(key == ALLEGRO_KEY_R) {
         show_msg("Key triger : reset level");
         level_reset(1);
+        level_stat = RESTART;
         return GAME_LEVEL;
     }
     if(key_lock) {
@@ -379,7 +382,6 @@ Level::Level(int i):Interface(MUSIC_PATH+"level_bgm.ogg",IMAGE_PATH+"background.
     show_msg("Create level begin");
     key_lock = false;
     key_lock_count =0;
-    
     load_level(i);
     show_msg("Create level done");
 }
