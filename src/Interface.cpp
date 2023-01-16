@@ -2,12 +2,26 @@
 
 void Interface::draw() {
     if(SIMPLY_DISPLAY){
-        //al_clear_to_color(PINK);
+        al_clear_to_color(PINK);
     }
     else{
     al_clear_to_color(BLACK);
-    al_draw_bitmap(backgroundImage, 0, 0, 0);
     start_sound();
+    const float sx = CHUNK_WIDTH*width_ratio*(window_center.second - window_width/2);
+    const float sy = 0;
+    const float sw = CHUNK_WIDTH*(width_ratio*window_width);
+    const float sh = CHUNK_WIDTH*image_height;
+    const float dx = 0;
+    const float dy = 0;
+    const float dw = CHUNK_WIDTH*window_width;
+    const float dh = CHUNK_WIDTH*window_height;
+    al_draw_scaled_bitmap(backgroundImage,
+                        sx,sy,
+                        sw,sh,
+                        dx,dy,
+                        dw,dh,
+                        0
+                        );
     }
 }
 
@@ -32,6 +46,12 @@ Interface::Interface(string sound_path="",string image_path="") {
     // load background image
     if(!image_path.empty()) {
         backgroundImage = al_load_bitmap(image_path.c_str());
+        window_width = CHUNK_WIDTH;
+        window_width = CHUNK_HEIGHT;
+        width_ratio = BACKGROUND_WIDTH_RATIO;
+        image_width = BACKGROUND_WIDTH;
+        image_height = BACKGROUND_HEIGHT;
+        
     }
     else raise_warn("no image path given");
     show_msg("Create interface done");

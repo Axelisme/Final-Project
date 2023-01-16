@@ -27,6 +27,15 @@ public:
     ~Interface();
 
 protected:
+    Pos window_center = {0,0};
+    double window_width  = 0;
+    double window_height = 0;
+
+    double width_ratio   = 1;
+
+    double image_width   = 0;
+    double image_height  = 0;
+
     ALLEGRO_SAMPLE *sample = nullptr;
     ALLEGRO_SAMPLE_INSTANCE *backgroundSound = nullptr;
 

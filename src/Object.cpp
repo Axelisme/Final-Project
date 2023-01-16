@@ -1,6 +1,6 @@
 #include "Object.h"
 
-Pos ConvertIdx(int idx) {
+Pos Object::ConvertIdx(int idx) {
     switch(idx) {
         case 0: return std::make_pair(0.0,0.0);
         case 1: return std::make_pair(0.0,0.5);
@@ -24,23 +24,23 @@ void Object::draw() {
     } 
     else
     {
-    if(Image==nullptr) {
-        raise_warn("try to draw null object"); 
-        return;
-    }
-    float Image_width = al_get_bitmap_width(Image);
-    float Image_height = al_get_bitmap_height(Image);
-    Pos pos = ConvertIdx(ani_image_idx);
-    al_draw_scaled_bitmap(Image,
-                          pos.first,pos.second,
-                          Image_width/2,
-                          Image_height/2,
-                          (pos.second-width/2)*CHUNK_WIDTH,
-                          (pos.first-height/2)*CHUNK_HEIGHT,
-                          width*CHUNK_WIDTH,
-                          height*CHUNK_HEIGHT,
-                          0
-                          );
+        if(Image==nullptr) {
+            raise_warn("try to draw null object"); 
+            return;
+        }
+        float Image_width = al_get_bitmap_width(Image);
+        float Image_height = al_get_bitmap_height(Image);
+        Pos pos = ConvertIdx(ani_image_idx);
+        al_draw_scaled_bitmap(Image,
+                            pos.first,pos.second,
+                            Image_width/2,
+                            Image_height/2,
+                            (pos.second-width/2)*CHUNK_WIDTH,
+                            (pos.first-height/2)*CHUNK_HEIGHT,
+                            width*CHUNK_WIDTH,
+                            height*CHUNK_HEIGHT,
+                            0
+                            );
     }
 }
 
