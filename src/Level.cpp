@@ -253,7 +253,37 @@ bool Level::load_level(int _level_idx)
                 }
                 break;
             }
-            case '5': {  //map
+            case '5': {  //button
+                show_msg("load button");
+                fin >> m;
+                Pos button_position;  //button_posotion {y1,x1}
+                for (int i = 0; i < m; i++)
+                {
+                    fin >> button_position.first >> button_position.second >> path;
+                    switch (path[1])
+                    {
+                    case 'h':{   //Short
+                        /* code */
+                        break;}
+                    case 'p':{   //Spike
+                        Pos spike_position;  //spike_posotion {y1,x1}
+                        fin >> n;
+                        while (n--)
+                        {
+                            fin >> spike_position.first >> spike_position.second;
+                        }
+                        
+                        break;}
+                    case 'r':{   //Grave
+                        /* code */
+                        break;}
+                    default:
+                        break;
+                    }
+                }
+                break;
+            }
+            case '6': {  //map
                 show_msg("load map");
                 fin >> m >> n;
                 Map map_matrix(m,vector<OBJ_TYPE>(n,AIR));    //map(high,width)
@@ -326,6 +356,12 @@ void Level::print_map()
                     break;
                 case EDGE:
                     cout << "▞▞";
+                    break;
+                case SPIKE:
+                    cout << "||";
+                    break;
+                case BUTTON:
+                    cout << " ▂";
                     break;
                 case BODY:
                     cout << "▒▒";
