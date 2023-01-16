@@ -29,8 +29,8 @@
 #define BACKGROUND_WIDTH_RATIO (BACKGROUND_WIDTH/MAP_WIDTH)
 #define MIDDLEGROUND_RATIO 0.7
 
-#define FPS 20 // need to improve
-#define LEVEL_NUM 1
+#define FPS 20
+#define LEVEL_NUM 2
 #define KEY_LOCK_NUM 0
 #define ANI_NUM 4
 #define ANI_TOTAL_COUNT 50
