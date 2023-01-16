@@ -8,6 +8,8 @@ obj = {
     "End point":4,
     "Apple":5, 
     "Stone":6,
+    "Spike":7,
+    "Button":8,
     "Edge":-1
     }
 def map_to_graph(map):
@@ -19,8 +21,10 @@ def map_to_graph(map):
     '▒▒' if j==obj["Snake Body"] else  
     ' ⋄' if j==obj["Apple"] else 
     ' ⊠' if j==obj["End point"] else
+    '||' if j==obj["Spike"] else
+    ' ▂' if j==obj["Button"] else
     '▞▞' if j==obj["Edge"] else
-    '  ' for j in i) + '\n' for i in map1]
+    '  ' for j in i) + '\n' for i in map]
     return map_graph
 def map_to_string(map):
     map_str = ['\t'.join(
@@ -32,8 +36,36 @@ def map_to_string(map):
     f'{obj["Apple"]}' if j==obj["Apple"] else
     f'{obj["End point"]}' if j==obj["End point"] else 
     f'{obj["Edge"]}' if j==obj["Edge"] else
-    '0' for j in i) + '\n' for i in map1]
+    '0' for j in i) + '\n' for i in map]
     return map_str
+
+def add_edge(map, thick = 7):
+    high, width = map.shape
+    edge_col = np.full((high,thick),obj["Air"])
+    edge_row = np.full((thick,width+2*thick),obj["Air"])
+    map = np.concatenate([edge_col, map], axis=1)
+    map = np.concatenate([map, edge_col], axis=1)
+    map = np.concatenate([edge_row, map], axis=0)
+    map = np.concatenate([map, edge_row], axis=0)
+    map[0:2,:] = map[-2:,:] = map[:,0:2] = map[:,-2:] = obj["Edge"]
+    return map
+
+def write_file(id,level):
+    with open(f'../data/level/L{id}','w') as fh:
+        fh.write('\n'.join(
+            [
+                "1background", str(len(level["background"])),*level["background"],'',
+                "2music", str(len(level["music"])),*level["music"],'',
+                "3snake", str(len(level["snake"])), *level["snake"],'',
+                "4stone", str(len(level["stone"])), *level["stone"],'',
+                "5button", str(len(level["button"])), *level["button"],'',
+                "6map", f'{level["map"][0][0]} {level["map"][0][1]}',''
+            ]
+        )+'\n')
+        fh.writelines([
+            *level["map"][1], *level["map"][2]
+        ])
+    return
 
 map1_high, map1_width = 10, 25
 map1 = np.zeros([map1_high, map1_width]).astype(int)
@@ -56,17 +88,7 @@ map1[7,19] = obj["End point"]
 map1[4,1] = obj["Snake Head"]
 map1[4,0] = obj["Snake Body"]
 map1[5,0] = obj["Snake Body"]
-map1[5,0] = obj["Snake Body"]
-
-edge_thick = 6
-edge_col = np.full((map1_high,edge_thick),obj["Air"])
-edge_row = np.full((edge_thick,map1_width+2*edge_thick),obj["Air"])
-map1 = np.concatenate([edge_col, map1], axis=1)
-map1 = np.concatenate([map1, edge_col], axis=1)
-map1 = np.concatenate([edge_row, map1], axis=0)
-map1 = np.concatenate([map1, edge_row], axis=0)
-map1[0,:] = map1[-1,:] = map1[:,0] = map1[:,-1] = obj["Edge"]
-
+map1 = add_edge(map1)
 map1_list = map1.tolist()
 map1_graph = map_to_graph(map1)
 map1_str = map_to_string(map1)
@@ -77,27 +99,73 @@ level1 = {
     "sound": ['/data/sound/sound1-1','/data/sound/sound1-2'],
     "map":[map1.shape, map1_str, map1_graph],
     "snake":[
-        '11 6',
-        '10 6',
-        '10 7',
+        '12 7',
+        '11 7',
+        '11 8',
     ],
     "stone":[
-        '6 23'
-        ]
-}
+        '7 24'
+        ],
+    "button":[
+    ]
+    }
 
-level_set = [level1]
-with open('../data/level/L1','w') as fh:
-    for level in level_set:
-        fh.write('\n'.join(
-            [
-                "1background", str(len(level["background"])),*level["background"],'',
-                "2music", str(len(level["music"])),*level["music"],'',
-                "3snake", str(len(level["snake"])), *level["snake"],'',
-                "4stone", str(len(level["stone"])), *level["stone"],'',
-                "5map", f'{level["map"][0][0]} {level["map"][0][1]}',''
-            ]
-        )+'\n')
-        fh.writelines([
-            *level["map"][1], *level["map"][2]
-        ])
+write_file(1,level1)
+
+map2_high, map2_width = 10, 25
+map2 = np.zeros([map2_high, map2_width]).astype(int)
+map2[3:8,1] = obj["Ground"]
+map2[[3,7],2] = obj["Ground"]
+map2[1:5,4] = obj["Ground"]
+map2[2:4,5] = obj["Ground"]
+map2[1:5,4] = obj["Ground"]
+map2[6,4:18] = obj["Ground"]
+map2[6,[8,16]] = obj["Air"]
+map2[3:9,7] = obj["Ground"]
+map2[7,9] = obj["Ground"]
+map2[8,8:10] = obj["Ground"]
+map2[3:5,9] = obj["Ground"]
+map2[4,10] = obj["Ground"]
+map2[2,13:21] = obj["Ground"]
+map2[2,14] = obj["Air"]
+map2[3,[15,18]] = obj["Ground"]
+map2[3:5,19:21] = obj["Ground"]
+map2[7,15:19] = obj["Ground"]
+map2[7,21:25] = obj["Ground"]
+map2[8,18:23] = obj["Ground"]
+map2[6,21:23] = obj["Ground"]
+map2[5,17] = obj["Ground"]
+map2[4:6,13:15] = obj["Ground"]
+map2[[2,5,4,5,5],[9,12,14,19,22]] = obj["Spike"]
+map2[[6,5,2],[3,16,12]] = obj["Apple"]
+map2[[1,5],[5,15]] = obj["Button"]
+map2[6,24] = obj["End point"]
+map2[2:4,0] = obj["Snake Body"]
+map2[2,1] = obj["Snake Head"]
+map2 = add_edge(map2)
+map2_list = map2.tolist()
+map2_graph = map_to_graph(map2)
+map2_str = map_to_string(map2)
+
+level2 = {
+    "background": ['/data/image/background2'],
+    "music": ['/data/music/music2'],
+    "sound": ['/data/sound/sound2-1','/data/sound/sound2-2'],
+    "map":[map1.shape, map1_str, map1_graph],
+    "snake":[
+        '10 7',
+        '9 7',
+        '9 8',
+    ],
+    "stone":[
+        ],
+    "button":[
+        '8 12 Short',
+        '12 22 Spike',
+        '2',
+        '11 21',
+        '8 22'
+    ]
+    }
+
+write_file(2,level2)
