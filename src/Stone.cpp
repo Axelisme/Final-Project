@@ -15,7 +15,7 @@ bool Stone::update() {
 }
 
 Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img):
-       Object(_pos,STONE,_img,1,1)
+       Object(_pos,STONE,_img,3,3)
 {
     show_msg("Create stone begin");
     type = STONE;
@@ -25,11 +25,6 @@ Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img):
     ani_count = 0;
     ani_num = ANI_NUM;
     ani_image_idx = 0;
-
-    pos = _pos;
-
-    width = 1;
-    height = 1;
 
     show_msg("Create stone done");
 }

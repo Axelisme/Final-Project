@@ -3,56 +3,87 @@
 #include <fstream>
 #include <string>
 
+void Level::draw_map() {
+    float window_x = window_center.second - window_width/2;
+    float window_y = (MAP_HEIGHT-SEE_MAP_HEIGHT)/2;
+    for(int i=0;i<map.size();++i) {
+        for(int j=0;j<map[0].size();++j){
+            if(j<window_x || j>window_x+window_width || i<window_y || i>window_y+window_height) continue;
+            ALLEGRO_BITMAP * img;
+            switch(ground_map[i][j]) {
+                case AIR : 
+                case EDGE : continue;
+                case GROUND: {
+                    img = Ground_image;
+                    break;
+                }
+                case END: {
+                    img = End_point_image;
+                    break;
+                }
+                case APPLE: {
+                    img = Apple_image;
+                    break;
+                }
+                case SPIKE:{
+                    img = Spike_image;
+                    break;
+                }
+                default: {
+                    raise_warn("wrong object type while write map");
+                    img = nullptr;
+                }
+            }
+            if(img==nullptr) {
+                raise_warn("try to draw null object"); 
+                return;
+            }
+
+            al_draw_scaled_bitmap(img,
+                                  0,0,
+                                  al_get_bitmap_width(img) ,al_get_bitmap_height(img),
+                                  CHUNK_WIDTH *(j -window_x - 1.5),
+                                  CHUNK_HEIGHT*(i -window_y - 1.5),
+                                  3*CHUNK_WIDTH,3*CHUNK_HEIGHT,
+                                  0
+                                 );
+        }
+    }
+}
+
 void Level::draw() {
+    window_center = snake->head;
     Interface::draw();
 
+    draw_map();
+
     for(auto &o:object) {
+        o->window_x = window_center.second - window_width/2;
+        o->window_y = (MAP_HEIGHT-SEE_MAP_HEIGHT)/2;
         o->draw();
     }
     
     snake->draw();
 }
 
-bool Level::MakeMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
+bool Level::CanMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
     if(dirc == NONE) return false;
     const Pos dP = DIRC_TO_POS(dirc);
     const Pos next = {now.first+dP.first,now.second+dP.second};
     const Pos next_next = {next.first+dP.first,next.second+dP.second};
-    OBJ_TYPE NT = is(next);
-    OBJ_TYPE NNT = is(next_next);
-
-    Object* obj = nullptr;
-    for(const auto &b:snake->body) {
-        if(b->getPos()==next) {
-            NT = b->type;
-            obj = b;
-        }
-        if(b->getPos()==next_next) NNT = b->type;
-    }
-    for(const auto &o:object) {
-        if(o->getPos()==next) {
-            NT = o->type;
-            obj = o;
-        }
-        if(o->getPos()==next_next) NNT = o->type;
-    }
+    OBJ_TYPE NT = is(next,map);
+    OBJ_TYPE NNT = is(next_next,map);
 
     switch(NT) {
+        case HEAD:
+        case BODY:
         case GROUND: 
         case APPLE: return false;
         case EDGE: 
         case AIR:
-        case END: return true;
+        case END:   return true;
         case STONE: {
-            if(NNT == AIR || NNT == END) {
-                obj->move_dirc = dirc;
-                return true;
-            }
-            else return false;
-        }
-        case HEAD:
-        case BODY: {
-            if(T == BODY || T == HEAD) return true;
+            if(NNT==AIR || NNT==EDGE || NNT == END) return true;
             else return false;
         }
         default:{
@@ -64,7 +95,7 @@ bool Level::MakeMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
 
 bool Level::update() {
     // if reach end
-    if(is(snake->head)==END){
+    if(is(snake->head,ground_map)==END){
         level_stat = NEXT;
         return false;
     }
@@ -77,12 +108,15 @@ bool Level::update() {
     for(auto it=object.begin();it!=object.end();++it) {
         if((*it)->type == STONE) {
             Pos _pos = (*it)->getPos();
-            if(is(_pos)==EDGE) {
+            if(is(_pos,ground_map)==EDGE) {
+                is(_pos,ob_map) = AIR;
+                delete *it;
                 object.erase(it);
+                draw = true;
             }
-            if(MakeMove((*it)->getPos(),STONE,DOWN)) {
+            if(CanMove((*it)->getPos(),STONE,Gravity)) {
                 set_key_lock();
-                (*it)->move_dirc = DOWN;
+                (*it)->move_dirc = Gravity;
                 draw = true;
             }
         }
@@ -92,12 +126,14 @@ bool Level::update() {
     snake->isFall = true;
     for(auto &b:snake->body) {
         Pos pos = b->getPos();
-        if(is(pos)==EDGE) {
+        const Pos dP = DIRC_TO_POS(Gravity);
+        const Pos next = {pos.first+dP.first,pos.second+dP.second};
+        if(is(pos,ground_map)==EDGE) {
+            snake->isFall = false;
             level_stat = RESTART;
             return true;
         }
-        OBJ_TYPE below_type = is({pos.first+1,pos.second});
-        if(!MakeMove(pos,BODY,DOWN)){
+        if(!CanMove(pos,b->type,Gravity) && is(next,snake_map)!=BODY && is(next,snake_map)!=HEAD){
             snake->isFall = false;
             break;
         }
@@ -107,19 +143,42 @@ bool Level::update() {
     Pos next = snake->Next_Pos();
     if(snake->isFall) {  //falling
         show_msg("Snake fall");
+        snake->move_direction = Gravity;
         set_key_lock();
         draw = true;
     }
-    else if(is(next)==APPLE) {  //eat apple
+    else if(snake->move_direction==NONE) {}
+    else if(is(next,map)==APPLE) {  //eat apple
         show_msg("Snake eat apple");
         snake->can_eat_apple = true;
-        is(next) = AIR;
+        is(next,map) = AIR;
+        is(next,ground_map) = AIR;
         draw = true;
     }
-    else if(MakeMove(snake->head,HEAD,snake->move_direction)) {  //move
+    else if(CanMove(snake->head,HEAD,snake->move_direction)) {  //move
         show_msg("Snake move");
+        if(is(next,map)==STONE) {
+            for(auto &ob:object) {
+                if(ob->getPos() == next) ob->move_dirc = snake->move_direction;
+            }
+        }
         set_key_lock();
         draw = true;
+    }
+    else {
+        show_msg("Snake can't move because obstacle");
+        snake->move_direction = NONE;
+        draw = true;
+    }
+
+    // load all object to temp map
+    for(const auto &b:snake->body) {
+        is(b->getPos(),snake_map) = AIR;
+        is(b->getPos(),map) = AIR;
+    }
+    for(const auto &o:object) {
+        is(o->getPos(),ob_map) = AIR;
+        is(o->getPos(),map) = AIR;
     }
 
     // update snake
@@ -128,6 +187,16 @@ bool Level::update() {
     // update object
     for(auto &o:object) {
         o->update();
+    }
+
+    // load all object to temp map
+    for(const auto &b:snake->body) {
+        is(b->getPos(),snake_map) = b->type;
+        is(b->getPos(),map) = b->type;
+    }
+    for(const auto &o:object) {
+        is(o->getPos(),ob_map) = o->type;
+        is(o->getPos(),map) = o->type;
     }
 
     if(draw && Show) print_map();
@@ -153,6 +222,15 @@ GAME_STATE Level::key_triger(int key) {
     if(key == ALLEGRO_KEY_P) {
         show_msg("Key triger : switch to game menu");
         return GAME_MENU;
+    } 
+    if(key == ALLEGRO_KEY_N) {
+        show_msg("Key triger : jump to next level");
+        level_stat = NEXT;
+        return GAME_LEVEL;
+    } 
+    if(key == ALLEGRO_KEY_Q) {
+        show_msg("Key triger : quit game");
+        return GAME_TERMINATE;
     } 
     if(key == ALLEGRO_KEY_R) {
         show_msg("Key triger : reset level");
@@ -185,8 +263,17 @@ bool Level::load_level(int _level_idx)
     Snake_head_image = al_load_bitmap((IMAGE_PATH+"/snakeHead.png").c_str());
     Snake_body_image = al_load_bitmap((IMAGE_PATH+"/snakeBody.png").c_str());
     End_point_image = al_load_bitmap((IMAGE_PATH+"/end.png").c_str());
+    Buttom_image = al_load_bitmap((IMAGE_PATH+"/buttom.png").c_str());
+    Spike_image = al_load_bitmap((IMAGE_PATH+"/spike.png").c_str());
     
-    if((Ground_image && Stone_image && Apple_image && Snake_head_image && Snake_body_image && End_point_image) == false) {
+    if((Ground_image && 
+        Stone_image && 
+        Apple_image && 
+        Snake_head_image && 
+        Snake_body_image && 
+        End_point_image &&
+        Buttom_image && 
+        Spike_image) == false) {
         raise_warn("Some image load fail");
     }
     show_msg("Load image done");
@@ -286,7 +373,12 @@ bool Level::load_level(int _level_idx)
             case '6': {  //map
                 show_msg("load map");
                 fin >> m >> n;
-                Map map_matrix(m,vector<OBJ_TYPE>(n,AIR));    //map(high,width)
+                mapw = n;
+                maph = m;
+                map.resize(m,std::vector<OBJ_TYPE>(n,AIR));
+                ground_map = map;
+                ob_map = map;
+                snake_map = map;
                 int element;
                 for (int i = 0; i < m; i++)
                 {
@@ -294,13 +386,36 @@ bool Level::load_level(int _level_idx)
                     {
                         fin >> element;
                         OBJ_TYPE typ = static_cast<OBJ_TYPE>(element);
-                        if(typ == HEAD || typ == BODY || typ == STONE)
-                            map_matrix[i][j] = AIR;
-                        else
-                            map_matrix[i][j] = typ;
+                        switch(typ) {
+                            case EDGE:
+                            case AIR:
+                            case GROUND:
+                            case END:
+                            case APPLE:
+                            case SPIKE: {
+                                ground_map[i][j] = typ;
+                                map[i][j] = typ;
+                                break;
+                            }
+                            case HEAD:
+                            case BODY: {
+                                snake_map[i][j] = typ;
+                                map[i][j] = typ;
+                            }
+                            case STONE:
+                            case BUTTON: {
+                                ob_map[i][j] = typ;
+                                map[i][j] = typ;
+                                break;
+                            }
+                            default: {
+                                raise_warn("Unknown type when load level");
+                                map[i][j] = typ;
+                                break;
+                            }
+                        }
                     }
                 }
-                map = map_matrix;
                 break;
             }
 
@@ -314,9 +429,9 @@ bool Level::load_level(int _level_idx)
         }
     }
     show_msg("load level done");
-    print_map();
     fin.clear();
     fin.close();
+    print_map();
     return true;
 }
 
@@ -324,16 +439,7 @@ bool Level::load_level(int _level_idx)
 void Level::print_map()
 {
     show_msg("print map begin");
-    Map _map(map);
-    for(auto &o:object) {
-        Pos pos = o->getPos();
-        _map[pos.first][pos.second] = o->type;
-    }
-    for(auto &b:snake->body) {
-        Pos pos = b->getPos();
-        _map[pos.first][pos.second] = b->type;
-    }
-    for (auto i:_map)
+    for (auto i:map)
     {
         for (auto j:i)
         {
@@ -399,12 +505,16 @@ void Level::destroy_level() {
     al_destroy_bitmap(Snake_head_image);
     al_destroy_bitmap(Snake_body_image);
     al_destroy_bitmap(End_point_image);
+    al_destroy_bitmap(Buttom_image);
+    al_destroy_bitmap(Spike_image);
     Ground_image = nullptr;
     Stone_image = nullptr;
     Apple_image = nullptr;
     Snake_head_image = nullptr;
     Snake_body_image = nullptr;
     End_point_image = nullptr;
+    Buttom_image = nullptr;
+    Spike_image = nullptr;
 
     key_lock = false;
     int key_lock_count = 0;
@@ -418,10 +528,13 @@ void Level::destroy_level() {
 }
 
 // constructor and deletor
-Level::Level(int i):Interface(MUSIC_PATH+"level_bgm.ogg",IMAGE_PATH+"background.jpg") {
+Level::Level(int i):
+       Interface(MUSIC_PATH+"/level_bgm.ogg",IMAGE_PATH+"/background.png") 
+{
     show_msg("Create level begin");
     key_lock = false;
     key_lock_count =0;
+    level_stat = KEEP;
     load_level(i);
     show_msg("Create level done");
 }

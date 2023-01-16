@@ -52,15 +52,22 @@ public:
     void destroy_level();
     ~Level();
     LEVEL_STAT level_stat = KEEP;
+    DIRCTION Gravity = DOWN;
 
 private:
     static inline DIRCTION KEY_TO_DIRC(int);
 
-    inline OBJ_TYPE& is(Pos pos) {return map.at(pos.first).at(pos.second);}
-    bool MakeMove(Pos,OBJ_TYPE,DIRCTION);
+    inline OBJ_TYPE& is(Pos pos,Map&_map) {return _map.at(pos.first).at(pos.second);}
+    bool CanMove(Pos,OBJ_TYPE,DIRCTION);
+    void draw_map();
 
     int level_idx;
+    int mapw;
+    int maph;
     Map map;
+    Map ground_map;
+    Map ob_map;
+    Map snake_map;
     Snake *snake;
     std::list<Object*> object;
 
@@ -70,6 +77,8 @@ private:
     ALLEGRO_BITMAP *  Snake_head_image;
     ALLEGRO_BITMAP *  Snake_body_image;
     ALLEGRO_BITMAP *  End_point_image;
+    ALLEGRO_BITMAP *  Buttom_image;
+    ALLEGRO_BITMAP *  Spike_image;
 
     bool key_lock = false;
     int key_lock_count = 0;

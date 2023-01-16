@@ -36,3 +36,11 @@ Pos DIRC_TO_POS(DIRCTION dirc) {
         default:    return std::make_pair( 0., 0.);
     }
 }
+
+DIRCTION POS_TO_DIRC(Pos now,Pos next) {
+    if(next.first > now.first)   return DOWN;
+    if(next.first < now.first)   return UP;
+    if(next.second > now.second) return RIGHT;
+    if(next.second < now.second) return LEFT;
+    return NONE;
+}

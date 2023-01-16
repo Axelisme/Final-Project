@@ -5,22 +5,22 @@ void Interface::draw() {
         al_clear_to_color(PINK);
     }
     else{
-        al_clear_to_color(BLACK);
+        al_clear_to_color(WRITE);
         start_sound();
         const float sx = CHUNK_WIDTH*width_ratio*(window_center.second - window_width/2);
         const float sy = 0;
         const float sw = CHUNK_WIDTH*(width_ratio*window_width);
-        const float sh = CHUNK_WIDTH*image_height;
+        const float sh = CHUNK_HEIGHT*image_height;
         const float dx = 0;
         const float dy = 0;
         const float dw = CHUNK_WIDTH*window_width;
-        const float dh = CHUNK_WIDTH*window_height;
-        al_draw_scaled_bitmap(backgroundImage,sx,sy,sw,sh,dx,dy,dw,dh,0);
+        const float dh = CHUNK_HEIGHT*window_height;
+        //al_draw_scaled_bitmap(backgroundImage,sx,sy,sw,sh,dx,dy,dw,dh,0);
     }
 }
 
 bool Interface::update() {
-    return true;
+    return false;
 }
 
 Interface::Interface(string sound_path="",string image_path="") {
@@ -37,15 +37,21 @@ Interface::Interface(string sound_path="",string image_path="") {
     }
     else raise_warn("no sound path given");
 
+    window_width = CHUNK_W_NUM;
+    window_height = CHUNK_H_NUM;
+    width_ratio = 1;
+    image_width = 0;
+    image_height = 0; 
+
     // load background image
     if(!image_path.empty()) {
         backgroundImage = al_load_bitmap(image_path.c_str());
-        window_width = CHUNK_WIDTH;
-        window_width = CHUNK_HEIGHT;
-        width_ratio = BACKGROUND_WIDTH_RATIO;
-        image_width = BACKGROUND_WIDTH;
-        image_height = BACKGROUND_HEIGHT;
-        
+        if(backgroundImage==nullptr) {
+            raise_err("Can't not load background image because invalid path");
+        }
+        image_width =  al_get_bitmap_width(backgroundImage)/CHUNK_WIDTH;
+        image_height = al_get_bitmap_height(backgroundImage)/CHUNK_HEIGHT;
+        width_ratio = image_width/SEE_MAP_WIDTH;
     }
     else raise_warn("no image path given");
     show_msg("Create interface done");

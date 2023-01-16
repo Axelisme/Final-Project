@@ -16,17 +16,22 @@ public:
     Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,ALLEGRO_BITMAP *);
     ~Snake();
 
-    bool isFall = false;
-    bool can_eat_apple = false;
-    DIRCTION move_direction = NONE;
-    DIRCTION heading = NONE;
+    bool isFall;
+    bool can_eat_apple;
+    DIRCTION move_direction;
+    DIRCTION heading;
 
-    Pos head = {0.0,0.0};
+    float window_width = CHUNK_W_NUM;
+    float window_height = CHUNK_H_NUM;
+
+    Pos head;
 
     std::deque<Body*> body;
 
 private:
-    DIRCTION Cal_Dirc(Pos,Pos);
+    void Move_all();
+    void Move_forward();
+    void Move_extend();
 
     // image
     ALLEGRO_BITMAP * Image_head = nullptr;
