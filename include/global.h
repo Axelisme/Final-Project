@@ -14,9 +14,9 @@
 #include <vector>
 
 #define Debug 1
-#define Show 1
+#define Show 0
 
-#define FIRST_STATE GAME_LEVEL
+#define FIRST_STATE GAME_MENU
 #define DISPLAY_WIDTH 800
 #define DISPLAY_HEIGHT 800
 
