@@ -27,6 +27,10 @@ public:
 
 private:
     DIRCTION Cal_Dirc(Pos,Pos);
+    void Move_all();
+    void Move_forward();
+    void Move_extend();
+    friend bool SnakeCanMove(Snake*,DIRCTION,Map&,Map&);
 
     // image
     ALLEGRO_BITMAP * Image_head = nullptr;

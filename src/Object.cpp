@@ -20,7 +20,7 @@ void Object::draw() {
                           (pos.second + width/2 )*CHUNK_WIDTH,
                           (pos.first  + height/2)*CHUNK_HEIGHT,
                           SIMPLE_COLOR_LIST[type],
-                          0);
+                          10);
     } 
     else
     {

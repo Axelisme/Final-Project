@@ -16,6 +16,7 @@ void Interface::draw() {
         const float dw = CHUNK_WIDTH*window_width;
         const float dh = CHUNK_WIDTH*window_height;
         al_draw_scaled_bitmap(backgroundImage,sx,sy,sw,sh,dx,dy,dw,dh,0);
+        //al_draw_rectangle();
     }
 }
 

@@ -6,54 +6,57 @@ void Snake::draw() {
     }
 }
 
+void Snake::Move_all() {
+    for(auto &b:body){
+        b->move_dirc = move_direction;
+        b->update();
+    }
+    head = body.back()->getPos();
+    move_direction = NONE;
+}
+
+void Snake::Move_forward() {
+    delete body.front();
+    body.pop_front();
+    Move_extend();
+}
+
+void Snake::Move_extend() {
+    Pos next_pos = Next_Pos();
+    Body *origin_head = body.back();
+
+    origin_head->getImg() = Image_body;
+    origin_head->type = BODY;
+    origin_head->to_dirc = move_direction;
+    head = next_pos;
+    heading = move_direction;
+
+    body.push_back(new Body(next_pos,
+                            HEAD,
+                            Image_head,
+                            move_direction,
+                            move_direction));
+    move_direction = NONE;
+}
+
 bool Snake::update() {
     if(isFall) {
         show_msg("Snake fall begin");
-        for(auto &b:body){
-            b->isFall = true;
-            b->update();
-        }
-        head = body.back()->getPos();
+        Move_all();
         isFall = false;
-        move_direction = NONE;
         show_msg("Snake fall done");
         return true;
     }
     else if(can_eat_apple) {
         show_msg("Snake eat apple begin");
-        Pos next_pos = Next_Pos();
-        Body *origin_head = body.back();
-        origin_head->getImg() = Image_body;
-        origin_head->type = BODY;
-        head = next_pos;
-        heading = move_direction;
-        body.push_back(new Body(next_pos,
-                                HEAD,
-                                Image_head,
-                                move_direction,
-                                move_direction));
+        Move_extend();
         can_eat_apple = false;
-        move_direction = NONE;
         show_msg("Snake eat apple done");
         return true;
     }
     else if(move_direction!=NONE) {
         show_msg("Snake move begin");
-        Pos next_pos = Next_Pos();
-        delete body.front();
-        body.pop_front();
-        Body *origin_head = body.back();
-        origin_head->getImg() = Image_body;
-        origin_head->type = BODY;
-        origin_head->to_dirc = move_direction;
-        body.push_back(new Body(next_pos,
-                                HEAD,
-                                Image_head,
-                                move_direction,
-                                move_direction));
-        head = next_pos;
-        heading = move_direction;
-        move_direction = NONE;
+        Move_forward();
         show_msg("Snake move done");
         return true;
     }
@@ -71,6 +74,10 @@ DIRCTION Snake::Cal_Dirc(Pos now,Pos next) {
     if(next.second > now.second) return RIGHT;
     if(next.second < now.second) return LEFT;
     return NONE;
+}
+
+bool SnakeCanMove(Snake*snake,DIRCTION dirc,Map& map,Map& ob_map) {
+    return false;
 }
 
 Snake::Snake(std::vector<Pos>& Poss,ALLEGRO_BITMAP * img_head,

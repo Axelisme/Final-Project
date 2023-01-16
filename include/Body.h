@@ -10,7 +10,7 @@ public:
     void draw() override;
     bool update() override;
 
-    bool isFall = false;
+    DIRCTION move_dirc = NONE;
     DIRCTION from_dirc;
     DIRCTION to_dirc;
 

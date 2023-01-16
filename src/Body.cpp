@@ -17,9 +17,9 @@ void Body::draw() {
 
 bool Body::update() {
     Object::update();
-    if(isFall) {
-        move_object({1,0});
-        isFall = false;
+    if(move_dirc!=NONE) {
+        move_object(DIRC_TO_POS(move_dirc));
+        move_dirc = NONE;
     }
     return true;
 }
@@ -28,7 +28,7 @@ Body::Body(Pos _pos,OBJ_TYPE T,ALLEGRO_BITMAP *img,DIRCTION _from,DIRCTION _to):
       Object(_pos,T,img,1,1)
 {
     show_msg("Create body begin");
-    isFall = false;
+    move_dirc = NONE;
     from_dirc = _from;
     to_dirc = _to;
     show_msg("Create body done");

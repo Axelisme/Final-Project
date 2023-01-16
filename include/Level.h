@@ -52,15 +52,21 @@ public:
     void destroy_level();
     ~Level();
     LEVEL_STAT level_stat = KEEP;
+    DIRCTION Gravity = DOWN;
 
 private:
     static inline DIRCTION KEY_TO_DIRC(int);
 
-    inline OBJ_TYPE& is(Pos pos) {return map.at(pos.first).at(pos.second);}
-    bool MakeMove(Pos,OBJ_TYPE,DIRCTION);
+    inline OBJ_TYPE& is(Pos pos,Map&_map) {return _map.at(pos.first).at(pos.second);}
+    bool CanMove(Pos,OBJ_TYPE,DIRCTION);
 
     int level_idx;
+    int mapw;
+    int maph;
     Map map;
+    Map ground_map;
+    Map ob_map;
+    Map snake_map;
     Snake *snake;
     std::list<Object*> object;
 
