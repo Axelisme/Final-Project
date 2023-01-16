@@ -92,6 +92,11 @@ bool GameWindow::update() {
                     level->update();
                     break;
                 }
+                case STOP: {
+                    delete level;
+                    state = GAME_MENU;
+                    break;
+                }
                 case NEXT:{
                     int level_idx = level->getID();
                     if(level_idx == LEVEL_NUM) {

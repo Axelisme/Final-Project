@@ -21,6 +21,7 @@ public:
 
     bool isFall;
     bool can_eat_apple;
+    bool isDied;
     DIRCTION move_direction;
     DIRCTION heading;
 
