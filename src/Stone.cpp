@@ -1,15 +1,11 @@
 #include "Stone.h"
 
+#include <iostream>
+
 bool Stone::update() {
     Object::update();
     
-    if(isFall) {
-        show_msg("Stone fall begin");
-        move_object({1.0,0.0});
-        isFall = false;
-        show_msg("Stone fall done");
-    }
-    else if(move_dirc != NONE) {
+    if(move_dirc != NONE) {
         show_msg("Stone move begin");
         move_object(DIRC_TO_POS(move_dirc));
         move_dirc = NONE;
@@ -23,7 +19,6 @@ Stone::Stone(Pos _pos,ALLEGRO_BITMAP *_img):
 {
     show_msg("Create stone begin");
     type = STONE;
-    CanFall = true;
     move_dirc = NONE;
 
     ani_total_count = ANI_TOTAL_COUNT;

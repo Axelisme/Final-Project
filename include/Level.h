@@ -5,7 +5,7 @@
 #include "Snake.h"
 #include "Stone.h"
 #include "Interface.h"
-#include <vector>
+#include <list>
 
 using namespace std;
 
@@ -40,7 +40,7 @@ public:
 
     //update key lock
     void update_key_lock() {
-        if(key_lock && (++key_lock_count%key_lock_num == 0)) {
+        if(key_lock_num==0 || key_lock && (++key_lock_count%key_lock_num == 0)) {
             //show_msg("key unlock");
             key_lock = false;
             key_lock_count = 0;
@@ -57,12 +57,12 @@ private:
     static inline DIRCTION KEY_TO_DIRC(int);
 
     inline OBJ_TYPE& is(Pos pos) {return map.at(pos.first).at(pos.second);}
-    bool CanMove(Pos,DIRCTION);
+    bool MakeMove(Pos,OBJ_TYPE,DIRCTION);
 
     int level_idx;
     Map map;
     Snake *snake;
-    std::vector<Object*> object;
+    std::list<Object*> object;
 
     ALLEGRO_BITMAP *  Ground_image;
     ALLEGRO_BITMAP *  Stone_image;

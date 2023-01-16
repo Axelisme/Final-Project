@@ -13,44 +13,53 @@ void Level::draw() {
     snake->draw();
 }
 
-bool Level::CanMove(Pos next,DIRCTION dirc) {
-    OBJ_TYPE map_next;
-    OBJ_TYPE map_next_next;
-    switch(dirc)
-    {
-        case LEFT: {
-            map_next = map[next.first][next.second];
-            map_next_next = map[next.first][next.second-1];
-            break;
+bool Level::MakeMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
+    if(dirc == NONE) return false;
+    const Pos dP = DIRC_TO_POS(dirc);
+    const Pos next = {now.first+dP.first,now.second+dP.second};
+    const Pos next_next = {next.first+dP.first,next.second+dP.second};
+    OBJ_TYPE NT = is(next);
+    OBJ_TYPE NNT = is(next_next);
+
+    Object* obj = nullptr;
+    for(const auto &b:snake->body) {
+        if(b->getPos()==next) {
+            NT = b->type;
+            obj = b;
         }
-        case RIGHT: {
-            map_next = map[next.first][next.second];
-            map_next_next = map[next.first][next.second+1];
-            break;
+        if(b->getPos()==next_next) NNT = b->type;
+    }
+    for(const auto &o:object) {
+        if(o->getPos()==next) {
+            NT = o->type;
+            obj = o;
         }
-        case UP: {
-            map_next = map[next.first][next.second];
-            map_next_next = map[next.first-1][next.second];
-            break;
+        if(o->getPos()==next_next) NNT = o->type;
+    }
+
+    switch(NT) {
+        case GROUND: 
+        case APPLE: return false;
+        case EDGE: 
+        case AIR:
+        case END: return true;
+        case STONE: {
+            if(NNT == AIR || NNT == END) {
+                obj->move_dirc = dirc;
+                return true;
+            }
+            else return false;
         }
-        case DOWN: {
-            map_next = map[next.first][next.second];
-            map_next_next = map[next.first+1][next.second];
-            break;
+        case HEAD:
+        case BODY: {
+            if(T == BODY || T == HEAD) return true;
+            else return false;
         }
-        case NONE:
+        default:{
+            raise_warn("unknown type in map");
             return false;
+        }
     }
-    if (map_next==BODY || map_next==GROUND || map_next==APPLE)
-    {
-        return false;
-    }
-    else if (map_next==STONE && map_next_next!=AIR)
-    {
-        return false;
-    }
-    else {return true;}
-    return false;
 }
 
 bool Level::update() {
@@ -60,18 +69,20 @@ bool Level::update() {
         return false;
     }
 
+    // update key lock
     update_key_lock();
 
     bool draw = false;
     // object state set
-    for(auto &ob:object) {
-        if(ob->CanFall) {
-            Pos pos = ob->getPos();
-            int y = pos.first;
-            int x = pos.second;
-            if(is({y+1,x})==AIR) {
+    for(auto it=object.begin();it!=object.end();++it) {
+        if((*it)->type == STONE) {
+            Pos _pos = (*it)->getPos();
+            if(is(_pos)==EDGE) {
+                object.erase(it);
+            }
+            if(MakeMove((*it)->getPos(),STONE,DOWN)) {
                 set_key_lock();
-                ob->isFall = true;
+                (*it)->move_dirc = DOWN;
                 draw = true;
             }
         }
@@ -81,8 +92,12 @@ bool Level::update() {
     snake->isFall = true;
     for(auto &b:snake->body) {
         Pos pos = b->getPos();
-        OBJ_TYPE ob_type = is({pos.first+1,pos.second});
-        if(ob_type != AIR && ob_type != BODY && ob_type != HEAD){
+        if(is(pos)==EDGE) {
+            level_stat = RESTART;
+            return true;
+        }
+        OBJ_TYPE below_type = is({pos.first+1,pos.second});
+        if(!MakeMove(pos,BODY,DOWN)){
             snake->isFall = false;
             break;
         }
@@ -98,32 +113,14 @@ bool Level::update() {
     else if(is(next)==APPLE) {  //eat apple
         show_msg("Snake eat apple");
         snake->can_eat_apple = true;
+        is(next) = AIR;
         draw = true;
     }
-    else if(CanMove(next,snake->move_direction)) {  //move
-        if(is(next)==STONE) {
-            for(auto &o:object) {
-                if(o->type == STONE && o->getPos() == next) {
-                    o->move_dirc = snake->move_direction;
-                }
-            }
-        }
+    else if(MakeMove(snake->head,HEAD,snake->move_direction)) {  //move
         show_msg("Snake move");
         set_key_lock();
         draw = true;
     }
-    else { 
-        snake->move_direction = NONE;
-    }
-
-    // delete snake in map
-    for(auto &b:snake->body) {
-            is(b->getPos()) = AIR;
-    }
-    // delete opject on map
-    for(auto &o:object) {
-        is(o->getPos()) = AIR;
-    }   
 
     // update snake
     snake->update();
@@ -133,16 +130,7 @@ bool Level::update() {
         o->update();
     }
 
-    // update snack on map
-    for(auto &b:snake->body) {
-        is(b->getPos()) = b->type;
-    }
-    // update object on map
-    for(auto &o:object) {
-        is(o->getPos()) = o->type;
-    }
-
-    if(draw && Debug) print_map();
+    if(draw && Show) print_map();
 
     return true;
 }
@@ -168,7 +156,6 @@ GAME_STATE Level::key_triger(int key) {
     } 
     if(key == ALLEGRO_KEY_R) {
         show_msg("Key triger : reset level");
-        level_reset(1);
         level_stat = RESTART;
         return GAME_LEVEL;
     }
@@ -258,7 +245,6 @@ bool Level::load_level(int _level_idx)
                 show_msg("load stone");
                 fin >> m;
                 Pos stone_position;  //stone_posotion {y1,x1}
-                object.reserve(m);
                 for (int i = 0; i < m; i++)
                 {
                     fin >> stone_position.first >> stone_position.second;
@@ -277,11 +263,14 @@ bool Level::load_level(int _level_idx)
                     for (int j = 0; j < n; j++)
                     {
                         fin >> element;
-                        map_matrix[i][j] = static_cast<OBJ_TYPE>(element);
+                        OBJ_TYPE typ = static_cast<OBJ_TYPE>(element);
+                        if(typ == HEAD || typ == BODY || typ == STONE)
+                            map_matrix[i][j] = AIR;
+                        else
+                            map_matrix[i][j] = typ;
                     }
                 }
                 map = map_matrix;
-                print_map();
                 break;
             }
 
@@ -295,6 +284,7 @@ bool Level::load_level(int _level_idx)
         }
     }
     show_msg("load level done");
+    print_map();
     fin.clear();
     fin.close();
     return true;
@@ -304,7 +294,16 @@ bool Level::load_level(int _level_idx)
 void Level::print_map()
 {
     show_msg("print map begin");
-    for (auto i:map)
+    Map _map(map);
+    for(auto &o:object) {
+        Pos pos = o->getPos();
+        _map[pos.first][pos.second] = o->type;
+    }
+    for(auto &b:snake->body) {
+        Pos pos = b->getPos();
+        _map[pos.first][pos.second] = b->type;
+    }
+    for (auto i:_map)
     {
         for (auto j:i)
         {
@@ -313,14 +312,11 @@ void Level::print_map()
                 case AIR:
                     cout << "  ";
                     break;
+                case STONE:
+                    cout << "░░";
+                    break;
                 case GROUND:
                     cout << "██";
-                    break;
-                case HEAD:
-                    cout << "▓▓";
-                    break;
-                case BODY:
-                    cout << "▒▒";
                     break;
                 case END:
                     cout << " ⊠";
@@ -328,11 +324,14 @@ void Level::print_map()
                 case APPLE:
                     cout << " ⋄";
                     break;
-                case STONE:
-                    cout << "░░";
-                    break;
                 case EDGE:
                     cout << "▞▞";
+                    break;
+                case BODY:
+                    cout << "▒▒";
+                    break;
+                case HEAD:
+                    cout << "▓▓";
                     break;
                 default:
                     cout << "**";
