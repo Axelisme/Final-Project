@@ -35,6 +35,8 @@ def map_to_string(map):
     f'{obj["Snake Body"]}' if j==obj["Snake Body"] else  
     f'{obj["Apple"]}' if j==obj["Apple"] else
     f'{obj["End point"]}' if j==obj["End point"] else 
+    f'{obj["Spike"]}' if j==obj["Spike"] else 
+    f'{obj["Button"]}' if j==obj["Button"] else 
     f'{obj["Edge"]}' if j==obj["Edge"] else
     '0' for j in i) + '\n' for i in map]
     return map_str
@@ -151,7 +153,7 @@ level2 = {
     "background": ['/data/image/background2'],
     "music": ['/data/music/music2'],
     "sound": ['/data/sound/sound2-1','/data/sound/sound2-2'],
-    "map":[map1.shape, map1_str, map1_graph],
+    "map":[map2.shape, map2_str, map2_graph],
     "snake":[
         '10 7',
         '9 7',

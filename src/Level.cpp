@@ -203,7 +203,7 @@ bool Level::load_level(int _level_idx)
         fin.close();
         return false;
     }
-    int t = 5;
+    int t = 6;
     char data_type[20], path[100];
     int m = 0, n = 0;
     while (t--)
