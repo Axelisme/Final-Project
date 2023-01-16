@@ -13,8 +13,8 @@
 #include <utility>
 #include <vector>
 
-#define Debug 1
-#define Show 0
+#define Debug 0
+#define Show 1
 
 #define FIRST_STATE GAME_MENU
 #define DISPLAY_WIDTH 800
@@ -33,9 +33,9 @@
 #define MIDDLEGROUND_RATIO 0.7
 
 #define FPS 20
-#define OBJECT_IMAGE_SIZE 3
+#define OBJECT_IMAGE_SIZE 3.0
 #define LEVEL_NUM 2
-#define FIRST_LEVEL 1
+#define FIRST_LEVEL 2
 #define KEY_LOCK_NUM 0
 #define ANI_NUM 4
 #define ANI_TOTAL_COUNT 50

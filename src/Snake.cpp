@@ -46,7 +46,8 @@ void Snake::Move_extend() {
 }
 
 bool Snake::update() {
-    if(isFall) {
+    if(isDied) return false;
+    else if(isFall) {
         show_msg("Snake fall begin");
         Move_all();
         isFall = false;
@@ -87,6 +88,7 @@ Snake::Snake(std::vector<Pos>& Poss,ALLEGRO_BITMAP * img_head,
     move_direction = NONE;
     isFall = false;
     can_eat_apple = false;
+    isDied = false;
 
     DIRCTION from = UP;
     DIRCTION to = POS_TO_DIRC(Poss[0],Poss[1]);

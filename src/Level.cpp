@@ -25,6 +25,10 @@ void Level::draw_map() {
                     img = Apple_image;
                     break;
                 }
+                case BUTTON: {
+                    img = Buttom_image;
+                    break;
+                }
                 case SPIKE:{
                     img = Spike_image;
                     break;
@@ -42,9 +46,9 @@ void Level::draw_map() {
             al_draw_scaled_bitmap(img,
                                   0,0,
                                   al_get_bitmap_width(img) ,al_get_bitmap_height(img),
-                                  CHUNK_WIDTH *(j -window_x - 1.5),
-                                  CHUNK_HEIGHT*(i -window_y - 1.5),
-                                  3*CHUNK_WIDTH,3*CHUNK_HEIGHT,
+                                  CHUNK_WIDTH *(j -window_x - OBJECT_IMAGE_SIZE/2),
+                                  CHUNK_HEIGHT*(i -window_y - OBJECT_IMAGE_SIZE/2),
+                                  OBJECT_IMAGE_SIZE*CHUNK_WIDTH,OBJECT_IMAGE_SIZE*CHUNK_HEIGHT,
                                   0
                                  );
         }
@@ -81,6 +85,8 @@ bool Level::CanMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
         case BODY:
         case GROUND: 
         case APPLE: return false;
+        case BUTTON:
+        case SPIKE:
         case EDGE: 
         case AIR:
         case END:   return true;
@@ -99,6 +105,12 @@ bool Level::update() {
     // if reach end
     if(is(snake->head,ground_map)==END){
         level_stat = NEXT;
+        al_stop_sample_instance(backgroundSound);
+        return false;
+    }
+    else if(snake->isDied==true) {
+        level_stat = RESTART;
+        al_stop_sample_instance(backgroundSound);
         return false;
     }
 
@@ -132,8 +144,8 @@ bool Level::update() {
         const Pos next = {pos.first+dP.first,pos.second+dP.second};
         if(is(pos,ground_map)==EDGE) {
             snake->isFall = false;
-            level_stat = RESTART;
-            return true;
+            snake->isDied = true;
+            break;
         }
         if(!CanMove(pos,b->type,Gravity) && is(next,snake_map)!=BODY && is(next,snake_map)!=HEAD){
             snake->isFall = false;
@@ -143,7 +155,10 @@ bool Level::update() {
 
     // snake state set
     Pos next = snake->Next_Pos();
-    if(snake->isFall) {  //falling
+    if(snake->isDied) {
+        show_msg("Snake died");
+    }
+    else if(snake->isFall) {  //falling
         show_msg("Snake fall");
         snake->move_direction = Gravity;
         set_key_lock();
@@ -406,6 +421,7 @@ bool Level::load_level(int _level_idx)
                             case GROUND:
                             case END:
                             case APPLE:
+                            case BUTTON:
                             case SPIKE: {
                                 ground_map[i][j] = typ;
                                 map[i][j] = typ;
@@ -416,8 +432,7 @@ bool Level::load_level(int _level_idx)
                                 snake_map[i][j] = typ;
                                 map[i][j] = typ;
                             }
-                            case STONE:
-                            case BUTTON: {
+                            case STONE: {
                                 ob_map[i][j] = typ;
                                 map[i][j] = typ;
                                 break;
