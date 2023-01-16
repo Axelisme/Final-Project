@@ -12,7 +12,8 @@
 #include <utility>
 #include <vector>
 
-#define Debug 1
+#define Debug 0
+#define Show 1
 #define SIMPLY_DISPLAY 1
 
 #define FIRST_STATE GAME_LEVEL
@@ -25,9 +26,9 @@
 #define CHUNK_W_NUM 10
 #define CHUNK_H_NUM 10
 #define G_VELOCITY 1     //CHUNK
-#define FPS 40
+#define FPS 20
 #define LEVEL_NUM 1
-#define KEY_LOCK_NUM 5
+#define KEY_LOCK_NUM 0
 #define ANI_NUM 4
 #define ANI_TOTAL_COUNT 50
 

@@ -8,8 +8,6 @@ class Object {
 public:
     // type
     OBJ_TYPE type = AIR;
-    bool CanFall = false;
-    bool isFall = false;
     DIRCTION move_dirc = NONE;
 
     virtual void draw();
@@ -20,7 +18,8 @@ public:
     Pos &getPos() {return pos;}
     ALLEGRO_BITMAP * &getImg() {return Image;}
 
-    void move_object(Pos dp) {pos.first+=dp.first;pos.second+=dp.second;}
+    void move_object(Pos dp) {
+        pos.first+=dp.first;pos.second+=dp.second;}
     Pos ConvertIdx(int idx);
 
     Object(Pos _pos,OBJ_TYPE T,ALLEGRO_BITMAP *img,float w,float h):

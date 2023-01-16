@@ -24,7 +24,7 @@ void raise_warn(const std::string &msg){
 }
 
 void show_msg(const std::string &msg){
-    std::cout << "Messenger: " << msg << std::endl;
+    if (Debug) std::cout << "Messenger: " << msg << std::endl;
 }
 
 Pos DIRC_TO_POS(DIRCTION dirc) {
