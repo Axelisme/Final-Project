@@ -22,7 +22,7 @@ public:
     void stop_sound() {al_stop_sample_instance(backgroundSound);}
 
     // load sound and backgroundImage
-    Interface(string,string);
+    Interface(string,string,string);
     void destroy_Interface();
     ~Interface();
 
@@ -31,15 +31,21 @@ protected:
     double window_width  = CHUNK_W_NUM;
     double window_height = CHUNK_H_NUM;
 
-    double width_ratio   = 1;
+    double width_ratio1   = 1;
 
-    double image_width   = 0;
-    double image_height  = 0;
+    double image_width1   = 0;
+    double image_height1  = 0;
+
+    double width_ratio2   = 1;
+
+    double image_width2   = 0;
+    double image_height2  = 0;
 
     ALLEGRO_SAMPLE *sample = nullptr;
     ALLEGRO_SAMPLE_INSTANCE *backgroundSound = nullptr;
 
-    ALLEGRO_BITMAP * backgroundImage = nullptr;
+    ALLEGRO_BITMAP * backgroundImage1 = nullptr;
+    ALLEGRO_BITMAP * backgroundImage2 = nullptr;
   
 };
 

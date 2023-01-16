@@ -12,6 +12,7 @@ public:
     bool update();
 
     Pos Next_Pos();
+    void Shorten();
 
     Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,
                             ALLEGRO_BITMAP *,

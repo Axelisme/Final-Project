@@ -14,7 +14,7 @@
 #include <vector>
 
 #define Debug 0
-#define Show 1
+#define Show 0
 
 #define FIRST_STATE GAME_MENU
 #define DISPLAY_WIDTH 800
@@ -53,6 +53,7 @@ const std::string MENUE_PATH = IMAGE_PATH+"/meue";
 #define CMY    al_map_rgb(  0,255,255)
 #define PINK   al_map_rgb(255,  0,255)
 #define WRITE  al_map_rgb(255,255,255)
+#define GRAY   al_map_rgb(100,100,100)
 
 enum GAME_STATE {
     GAME_MENU,
@@ -105,6 +106,13 @@ enum DIRCTION {
     UP,
     DOWN,
     RIGHT
+};
+
+enum EFFECT {
+    NOEFFECT,
+    SHORTEN,
+    TRIGER_SPIKE,
+    CH_GRAVITY
 };
 
 using Pos = std::pair<double, double>;
