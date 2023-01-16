@@ -10,6 +10,9 @@ public:
     OBJ_TYPE type = AIR;
     DIRCTION move_dirc = NONE;
     float rotate_angle = 0;
+    EFFECT effect = NOEFFECT;
+    std::vector<Pos> Effect_pos;
+    bool triger = false;
 
     // image
     ALLEGRO_BITMAP * Image = nullptr;

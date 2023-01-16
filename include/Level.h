@@ -4,6 +4,7 @@
 #include "global.h"
 #include "Snake.h"
 #include "Stone.h"
+#include "Button.h"
 #include "Interface.h"
 #include <list>
 

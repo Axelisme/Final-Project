@@ -25,9 +25,10 @@ public:
         Game_menu_back = al_load_bitmap((IMAGE_PATH+"/Game_menu").c_str());
         window_width = CHUNK_WIDTH;
         window_width = CHUNK_HEIGHT;
-        width_ratio = 1;
-        image_width = 0;
-        image_height = 0;
+        width_ratio1 = 1;
+        width_ratio2 = 1;
+        image_width1 = 0;
+        image_height1 = 0;
         return true;
     };
 

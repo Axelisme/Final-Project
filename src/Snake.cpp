@@ -18,12 +18,8 @@ void Snake::Move_all() {
 }
 
 void Snake::Move_forward() {
-    delete body.front();
-    body.pop_front();
-    Body * NewTail = body.front();
-    NewTail->image_body_straight = Image_tail;
-    NewTail->from_dirc = NewTail->to_dirc;
     Move_extend();
+    Shorten();
 }
 
 void Snake::Move_extend() {
@@ -43,6 +39,18 @@ void Snake::Move_extend() {
                             move_direction,
                             move_direction));
     move_direction = NONE;
+}
+
+void Snake::Shorten() {
+    delete body.front();
+    body.pop_front();
+    if(body.empty()) {
+        isDied = true;
+        return;
+    }
+    Body * NewTail = body.front();
+    NewTail->image_body_straight = Image_tail;
+    NewTail->from_dirc = NewTail->to_dirc;
 }
 
 bool Snake::update() {

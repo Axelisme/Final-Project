@@ -25,10 +25,6 @@ void Level::draw_map() {
                     img = Apple_image;
                     break;
                 }
-                case BUTTON: {
-                    img = Buttom_image;
-                    break;
-                }
                 case SPIKE:{
                     img = Spike_image;
                     break;
@@ -56,7 +52,7 @@ void Level::draw_map() {
 }
 
 void Level::draw() {
-    //al_draw_bitmap(Fix_Background_image,0,0,0);
+    al_clear_to_color(GRAY);
 
     window_center = snake->head;
     Interface::draw();
@@ -102,15 +98,15 @@ bool Level::CanMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
 }
 
 bool Level::update() {
-    // if reach end
-    if(is(snake->head,ground_map)==END){
+    
+    if(is(snake->head,ground_map)==END){  // if reach end
         level_stat = NEXT;
-        al_stop_sample_instance(backgroundSound);
+        stop_sound();
         return false;
     }
-    else if(snake->isDied==true) {
+    else if(snake->isDied==true) {   // if is died
         level_stat = RESTART;
-        al_stop_sample_instance(backgroundSound);
+        stop_sound();
         return false;
     }
 
@@ -120,26 +116,62 @@ bool Level::update() {
     bool draw = false;
     // object state set
     for(auto it=object.begin();it!=object.end();++it) {
-        if((*it)->type == STONE) {
-            Pos _pos = (*it)->getPos();
-            if(is(_pos,ground_map)==EDGE) {
-                is(_pos,ob_map) = AIR;
-                delete *it;
-                object.erase(it);
-                draw = true;
+        Object * ob = *it;
+        switch(ob->type) {
+            case STONE: {
+                Pos _pos = ob->getPos();
+                if(is(_pos,ground_map)==EDGE) {
+                    is(_pos,ob_map) = AIR;
+                    delete ob;
+                    object.erase(it);
+                    draw = true;
+                }
+                if(CanMove(ob->getPos(),STONE,Gravity)) {
+                    set_key_lock();
+                    ob->move_dirc = Gravity;
+                    draw = true;
+                }
+                break;
             }
-            if(CanMove((*it)->getPos(),STONE,Gravity)) {
-                set_key_lock();
-                (*it)->move_dirc = Gravity;
-                draw = true;
+            case BUTTON: {
+                OBJ_TYPE T = is(ob->getPos(),snake_map);
+                if(T!=BODY&&T!=HEAD || ob->triger) break;
+                switch(ob->effect) {
+                    case SHORTEN: {
+                        snake->Shorten();
+                        break;
+                    }
+                    case TRIGER_SPIKE: {
+                        for(auto &p:ob->Effect_pos) {
+                            OBJ_TYPE & typ = is(p,ground_map);
+                            typ = (typ!=SPIKE)? SPIKE:AIR;
+                        }
+                        break;
+                    }
+                    case CH_GRAVITY: {
+                        Gravity = (Gravity==DOWN)? UP:DOWN;
+                    }
+                    case NOEFFECT: break;
+                    default: {
+                        raise_warn("Unknown buttom effect");
+                    }
+                }
+                ob->triger = true;
+                break;
             }
+            default: raise_warn("Unknown object type");
         }
     }
-    
+
     // snake fall dectection
     snake->isFall = true;
     for(auto &b:snake->body) {
         Pos pos = b->getPos();
+        if(is(pos,ob_map)==SPIKE) {
+            snake->isDied = true;
+            snake->isFall = false;
+            break;
+        }
         const Pos dP = DIRC_TO_POS(Gravity);
         const Pos next = {pos.first+dP.first,pos.second+dP.second};
         if(is(pos,ground_map)==EDGE) {
@@ -376,25 +408,30 @@ bool Level::load_level(int _level_idx)
                 for (int i = 0; i < m; i++)
                 {
                     fin >> button_position.first >> button_position.second >> path;
-                    switch (path[1])
-                    {
-                    case 'h':{   //Short
-                        /* code */
-                        break;}
-                    case 'p':{   //Spike
-                        Pos spike_position;  //spike_posotion {y1,x1}
-                        fin >> n;
-                        while (n--)
-                        {
-                            fin >> spike_position.first >> spike_position.second;
+                    Object * newOb = nullptr;
+                    switch (path[1]){
+                        case 'h':{   //Short
+                            newOb = new Button(button_position,Buttom_image,SHORTEN,std::vector<Pos>(0));
+                            object.emplace_back(newOb);
+                            break;}
+                        case 'p':{   //Spike
+                            std::vector<Pos> Spike;
+                            Pos spike_position;  //spike_posotion {y1,x1}
+                            fin >> n;
+                            while (n--)
+                            {
+                                fin >> spike_position.first >> spike_position.second;
+                                Spike.emplace_back(spike_position);
+                            }
+                            object.emplace_back(new Button(button_position,Buttom_image,TRIGER_SPIKE,Spike));
+                            break;}
+                        case 'r':{   //Grave
+                            object.emplace_back(new Button(button_position,Buttom_image,CH_GRAVITY,std::vector<Pos>(0)));
+                            break;}
+                        default: {
+                            raise_warn("Can not load unknow type buttom");
+                            break;
                         }
-                        
-                        break;}
-                    case 'r':{   //Grave
-                        /* code */
-                        break;}
-                    default:
-                        break;
                     }
                 }
                 break;
@@ -421,7 +458,6 @@ bool Level::load_level(int _level_idx)
                             case GROUND:
                             case END:
                             case APPLE:
-                            case BUTTON:
                             case SPIKE: {
                                 ground_map[i][j] = typ;
                                 map[i][j] = typ;
@@ -432,6 +468,7 @@ bool Level::load_level(int _level_idx)
                                 snake_map[i][j] = typ;
                                 map[i][j] = typ;
                             }
+                            case BUTTON:
                             case STONE: {
                                 ob_map[i][j] = typ;
                                 map[i][j] = typ;
@@ -562,7 +599,7 @@ void Level::destroy_level() {
 
 // constructor and deletor
 Level::Level(int i):
-       Interface(MUSIC_PATH+"/level_bgm.ogg",IMAGE_PATH+"/background.png") 
+       Interface(MUSIC_PATH+"/level_bgm.ogg",IMAGE_PATH+"/background.png",IMAGE_PATH+"/fog.png") 
 {
     show_msg("Create level begin");
     key_lock = false;
