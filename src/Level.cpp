@@ -5,7 +5,7 @@
 
 void Level::draw_map() {
     float window_x = window_center.second - window_width/2;
-    float window_y = (MAP_HEIGHT-SEE_MAP_HEIGHT)/2;
+    float window_y = (MAP_HEIGHT-SEE_MAP_BUTTOM+SEE_MAP_TOP)/2;
     for(int i=0;i<map.size();++i) {
         for(int j=0;j<map[0].size();++j){
             if(j<window_x || j>window_x+window_width || i<window_y || i>window_y+window_height) continue;
@@ -35,7 +35,7 @@ void Level::draw_map() {
                 }
             }
             if(img==nullptr) {
-                raise_warn("try to draw null object"); 
+                raise_warn("try to draw null object in ground map"); 
                 return;
             }
 
@@ -59,7 +59,7 @@ void Level::draw() {
 
     for(auto &o:object) {
         o->window_x = window_center.second - window_width/2;
-        o->window_y = (MAP_HEIGHT-SEE_MAP_HEIGHT)/2;
+        o->window_y = (MAP_HEIGHT-SEE_MAP_BUTTOM+SEE_MAP_TOP)/2;
         o->draw();
     }
     
@@ -171,7 +171,7 @@ bool Level::update() {
         draw = true;
     }
 
-    // load all object to temp map
+    // delete all object to temp map
     for(const auto &b:snake->body) {
         is(b->getPos(),snake_map) = AIR;
         is(b->getPos(),map) = AIR;
@@ -211,7 +211,7 @@ inline DIRCTION Level::KEY_TO_DIRC(int key) {
         case ALLEGRO_KEY_UP:    return UP;
         case ALLEGRO_KEY_DOWN:  return DOWN;
         default :               {
-            raise_warn("known key");
+            raise_warn("Unknown key");
             return NONE;
         }
     }    
@@ -261,7 +261,9 @@ bool Level::load_level(int _level_idx)
     Stone_image = al_load_bitmap((IMAGE_PATH+"/stone.png").c_str());
     Apple_image = al_load_bitmap((IMAGE_PATH+"/apple.png").c_str());
     Snake_head_image = al_load_bitmap((IMAGE_PATH+"/snakeHead.png").c_str());
-    Snake_body_image = al_load_bitmap((IMAGE_PATH+"/snakeBody.png").c_str());
+    Snake_body_straight_image = al_load_bitmap((IMAGE_PATH+"/snakeBody_straight.png").c_str());
+    Snake_body_turn_image = al_load_bitmap((IMAGE_PATH+"/snakeBody_turn.png").c_str());
+    Snake_tail_image = al_load_bitmap((IMAGE_PATH+"/snakeTail.png").c_str());
     End_point_image = al_load_bitmap((IMAGE_PATH+"/end.png").c_str());
     Buttom_image = al_load_bitmap((IMAGE_PATH+"/buttom.png").c_str());
     Spike_image = al_load_bitmap((IMAGE_PATH+"/spike.png").c_str());
@@ -270,7 +272,9 @@ bool Level::load_level(int _level_idx)
         Stone_image && 
         Apple_image && 
         Snake_head_image && 
-        Snake_body_image && 
+        Snake_body_straight_image && 
+        Snake_body_turn_image &&
+        Snake_tail_image &&
         End_point_image &&
         Buttom_image && 
         Spike_image) == false) {
@@ -325,7 +329,9 @@ bool Level::load_level(int _level_idx)
                     fin >> snake_position_vector[i].first >> snake_position_vector[i].second;
                 }
                 snake = new Snake(snake_position_vector,Snake_head_image,
-                                                        Snake_body_image);
+                                                        Snake_body_straight_image,
+                                                        Snake_body_turn_image,
+                                                        Snake_tail_image);
                 break;
             }
             case '4': {  //stone
@@ -503,15 +509,19 @@ void Level::destroy_level() {
     al_destroy_bitmap(Stone_image);
     al_destroy_bitmap(Apple_image);
     al_destroy_bitmap(Snake_head_image);
-    al_destroy_bitmap(Snake_body_image);
+    al_destroy_bitmap(Snake_body_straight_image);
+    al_destroy_bitmap(Snake_body_turn_image);
     al_destroy_bitmap(End_point_image);
     al_destroy_bitmap(Buttom_image);
     al_destroy_bitmap(Spike_image);
+    al_destroy_bitmap(Snake_tail_image);
     Ground_image = nullptr;
     Stone_image = nullptr;
     Apple_image = nullptr;
     Snake_head_image = nullptr;
-    Snake_body_image = nullptr;
+    Snake_body_straight_image = nullptr;
+    Snake_body_turn_image = nullptr;
+    Snake_tail_image = nullptr;
     End_point_image = nullptr;
     Buttom_image = nullptr;
     Spike_image = nullptr;

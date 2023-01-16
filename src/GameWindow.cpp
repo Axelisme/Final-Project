@@ -9,7 +9,7 @@ void GameWindow::game_load() {
 
     // create level
     show_msg("Create level");
-    level = new Level(1);
+    level = new Level(FIRST_LEVEL);
 
     // create menu
     show_msg("Create menu");
@@ -190,7 +190,7 @@ GameWindow::GameWindow() {
 void GameWindow::game_reset() {
     show_msg("Game reset begin");
 
-    level->level_reset(1);
+    level->level_reset(FIRST_LEVEL);
     state = FIRST_STATE;
 
     show_msg("Game reset down");

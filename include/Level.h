@@ -75,7 +75,9 @@ private:
     ALLEGRO_BITMAP *  Stone_image;
     ALLEGRO_BITMAP *  Apple_image;
     ALLEGRO_BITMAP *  Snake_head_image;
-    ALLEGRO_BITMAP *  Snake_body_image;
+    ALLEGRO_BITMAP *  Snake_body_straight_image;
+    ALLEGRO_BITMAP *  Snake_body_turn_image;
+    ALLEGRO_BITMAP *  Snake_tail_image;
     ALLEGRO_BITMAP *  End_point_image;
     ALLEGRO_BITMAP *  Buttom_image;
     ALLEGRO_BITMAP *  Spike_image;
