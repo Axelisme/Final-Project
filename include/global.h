@@ -15,7 +15,6 @@
 
 #define Debug 1
 #define Show 1
-#define SIMPLY_DISPLAY 0
 
 #define FIRST_STATE GAME_LEVEL
 #define DISPLAY_WIDTH 800
@@ -32,7 +31,9 @@
 #define MIDDLEGROUND_RATIO 0.7
 
 #define FPS 20
-#define LEVEL_NUM 1
+#define OBJECT_IMAGE_SIZE 3
+#define LEVEL_NUM 2
+#define FIRST_LEVEL 1
 #define KEY_LOCK_NUM 0
 #define ANI_NUM 4
 #define ANI_TOTAL_COUNT 50

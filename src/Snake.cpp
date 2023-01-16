@@ -20,6 +20,9 @@ void Snake::Move_all() {
 void Snake::Move_forward() {
     delete body.front();
     body.pop_front();
+    Body * NewTail = body.front();
+    NewTail->image_body_straight = Image_tail;
+    NewTail->from_dirc = NewTail->to_dirc;
     Move_extend();
 }
 
@@ -27,7 +30,6 @@ void Snake::Move_extend() {
     Pos next_pos = Next_Pos();
     Body *origin_head = body.back();
 
-    origin_head->getImg() = Image_body;
     origin_head->type = BODY;
     origin_head->to_dirc = move_direction;
     head = next_pos;
@@ -36,6 +38,8 @@ void Snake::Move_extend() {
     body.push_back(new Body(next_pos,
                             HEAD,
                             Image_head,
+                            Image_body_straight,
+                            Image_body_turn,
                             move_direction,
                             move_direction));
     move_direction = NONE;
@@ -71,25 +75,39 @@ Pos Snake::Next_Pos() {
 }
 
 Snake::Snake(std::vector<Pos>& Poss,ALLEGRO_BITMAP * img_head,
-                                    ALLEGRO_BITMAP * img_body) {
+                                    ALLEGRO_BITMAP * img_body_straight,
+                                    ALLEGRO_BITMAP * img_body_turn,
+                                    ALLEGRO_BITMAP * img_tail) {
     show_msg("Create snake begin");
     Image_head = img_head;
-    Image_body = img_body;
+    Image_body_straight = img_body_straight;
+    Image_body_turn = img_body_turn;
+    Image_tail = img_tail;
 
     move_direction = NONE;
     isFall = false;
     can_eat_apple = false;
 
     DIRCTION from = UP;
-    DIRCTION to = UP;
-    for(int i=0;i<Poss.size()-1;++i) {
+    DIRCTION to = POS_TO_DIRC(Poss[0],Poss[1]);
+    body.push_back(new Body(Poss.front(),BODY,Image_head,
+                                              Image_tail,
+                                              Image_body_turn,
+                                              to,to));
+    for(int i=1;i<Poss.size()-1;++i) {
         from = to;
         to = POS_TO_DIRC(Poss[i],Poss[i+1]);
-        body.push_back(new Body(Poss[i],BODY,Image_body,from,to));
+        body.push_back(new Body(Poss[i],BODY,Image_head,
+                                             Image_body_straight,
+                                             Image_body_turn,
+                                             from,to));
     }
     head = Poss.back();
     heading = to;
-    body.push_back(new Body(head,HEAD,Image_head,to,to));
+    body.push_back(new Body(head,HEAD,Image_head,
+                                      Image_body_straight,
+                                      Image_body_turn,
+                                      to,to));
     
     show_msg("Create Snake done");
 }

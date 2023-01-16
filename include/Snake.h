@@ -13,7 +13,10 @@ public:
 
     Pos Next_Pos();
 
-    Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,ALLEGRO_BITMAP *);
+    Snake(std::vector<Pos>&,ALLEGRO_BITMAP *,
+                            ALLEGRO_BITMAP *,
+                            ALLEGRO_BITMAP *,
+                            ALLEGRO_BITMAP *);
     ~Snake();
 
     bool isFall;
@@ -35,7 +38,9 @@ private:
 
     // image
     ALLEGRO_BITMAP * Image_head = nullptr;
-    ALLEGRO_BITMAP * Image_body = nullptr;
+    ALLEGRO_BITMAP * Image_body_straight = nullptr;
+    ALLEGRO_BITMAP * Image_body_turn = nullptr;
+    ALLEGRO_BITMAP * Image_tail = nullptr;
 };
 
 #endif // SNAKE_H
