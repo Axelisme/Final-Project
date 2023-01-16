@@ -34,11 +34,12 @@ public:
     GAME_STATE mouse_triger(int mouse){return GAME_MENU;}
 
     // constructor and deletor
-    Menu(MENU_TYPE _type);
+    Menu(GAME_STATE _game_state);
     ~Menu();
 
 private:
-    MENU_TYPE type;
+    MENU_STATE menu_state;
+    GAME_STATE game_state;
 
     ALLEGRO_BITMAP *  Start_menu;
     ALLEGRO_BITMAP *  Start_menu_level;
