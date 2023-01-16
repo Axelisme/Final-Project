@@ -24,10 +24,10 @@
 #define CHUNK_H_NUM 14
 #define MAP_WIDTH  40
 #define MAP_HEIGHT 25
-#define SEE_MAP_LEFT 5
-#define SEE_MAP_RIGHT 35
-#define SEE_MAP_TOP 5
-#define SEE_MAP_BUTTOM 20
+#define SEE_MAP_LEFT 2
+#define SEE_MAP_RIGHT 39
+#define SEE_MAP_TOP 2
+#define SEE_MAP_BUTTOM 24
 #define CHUNK_WIDTH   (double(DISPLAY_WIDTH )/CHUNK_W_NUM)
 #define CHUNK_HEIGHT  (double(DISPLAY_HEIGHT)/CHUNK_H_NUM)
 #define MIDDLEGROUND_RATIO 0.7
