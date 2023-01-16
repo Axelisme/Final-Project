@@ -167,7 +167,7 @@ bool Level::update() {
     snake->isFall = true;
     for(auto &b:snake->body) {
         Pos pos = b->getPos();
-        if(is(pos,ob_map)==SPIKE) {
+        if(is(pos,ground_map)==SPIKE) {
             snake->isDied = true;
             snake->isFall = false;
             break;
@@ -179,9 +179,8 @@ bool Level::update() {
             snake->isDied = true;
             break;
         }
-        if(!CanMove(pos,b->type,Gravity) && is(next,snake_map)!=BODY && is(next,snake_map)!=HEAD){
+        if(snake->isFall && !CanMove(pos,b->type,Gravity) && is(next,snake_map)!=BODY && is(next,snake_map)!=HEAD){
             snake->isFall = false;
-            break;
         }
     }
 
