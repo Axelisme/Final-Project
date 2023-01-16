@@ -5,23 +5,17 @@ void Interface::draw() {
         al_clear_to_color(PINK);
     }
     else{
-    al_clear_to_color(BLACK);
-    start_sound();
-    const float sx = CHUNK_WIDTH*width_ratio*(window_center.second - window_width/2);
-    const float sy = 0;
-    const float sw = CHUNK_WIDTH*(width_ratio*window_width);
-    const float sh = CHUNK_WIDTH*image_height;
-    const float dx = 0;
-    const float dy = 0;
-    const float dw = CHUNK_WIDTH*window_width;
-    const float dh = CHUNK_WIDTH*window_height;
-    al_draw_scaled_bitmap(backgroundImage,
-                        sx,sy,
-                        sw,sh,
-                        dx,dy,
-                        dw,dh,
-                        0
-                        );
+        al_clear_to_color(BLACK);
+        start_sound();
+        const float sx = CHUNK_WIDTH*width_ratio*(window_center.second - window_width/2);
+        const float sy = 0;
+        const float sw = CHUNK_WIDTH*(width_ratio*window_width);
+        const float sh = CHUNK_WIDTH*image_height;
+        const float dx = 0;
+        const float dy = 0;
+        const float dw = CHUNK_WIDTH*window_width;
+        const float dh = CHUNK_WIDTH*window_height;
+        al_draw_scaled_bitmap(backgroundImage,sx,sy,sw,sh,dx,dy,dw,dh,0);
     }
 }
 
