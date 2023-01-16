@@ -3,7 +3,7 @@
 void Snake::draw() {
     for(auto &b:body) {
         b->window_x = head.second - window_width/2;
-        b->window_y = (MAP_HEIGHT-SEE_MAP_HEIGHT)/2;
+        b->window_y = (MAP_HEIGHT-SEE_MAP_BUTTOM+SEE_MAP_TOP)/2;
         b->draw();
     }
 }
