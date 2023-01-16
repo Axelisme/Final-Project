@@ -7,7 +7,6 @@
 
 class Body: public Object {
 public:
-    void draw() override;
     bool update() override;
 
     DIRCTION move_dirc = NONE;

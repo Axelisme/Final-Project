@@ -28,8 +28,8 @@ public:
 
 protected:
     Pos window_center = {0,0};
-    double window_width  = 0;
-    double window_height = 0;
+    double window_width  = CHUNK_W_NUM;
+    double window_height = CHUNK_H_NUM;
 
     double width_ratio   = 1;
 

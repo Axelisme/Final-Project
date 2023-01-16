@@ -14,34 +14,19 @@ Pos Object::ConvertIdx(int idx) {
 }
 
 void Object::draw() {
-    if(SIMPLY_DISPLAY) {
-        al_draw_rectangle((pos.second - width/2 )*CHUNK_WIDTH,
-                          (pos.first  - height/2)*CHUNK_HEIGHT,
-                          (pos.second + width/2 )*CHUNK_WIDTH,
-                          (pos.first  + height/2)*CHUNK_HEIGHT,
-                          SIMPLE_COLOR_LIST[type],
-                          10);
-    } 
-    else
-    {
-        if(Image==nullptr) {
-            raise_warn("try to draw null object"); 
-            return;
-        }
-        float Image_width = al_get_bitmap_width(Image);
-        float Image_height = al_get_bitmap_height(Image);
-        Pos pos = ConvertIdx(ani_image_idx);
-        al_draw_scaled_bitmap(Image,
-                            pos.first,pos.second,
-                            Image_width/2,
-                            Image_height/2,
-                            (pos.second-width/2)*CHUNK_WIDTH,
-                            (pos.first-height/2)*CHUNK_HEIGHT,
-                            width*CHUNK_WIDTH,
-                            height*CHUNK_HEIGHT,
+    if(Image==nullptr) {
+        raise_warn("try to draw null object"); 
+        return;
+    }
+
+    al_draw_scaled_bitmap(Image,
+                            0,0,
+                            al_get_bitmap_width(Image),al_get_bitmap_height(Image),
+                            CHUNK_WIDTH *(pos.second - window_x - 1.5),
+                            CHUNK_HEIGHT*(pos.first  - window_y - 1.5),
+                            3*CHUNK_WIDTH , 3*CHUNK_HEIGHT,
                             0
                             );
-    }
 }
 
 bool Object::update() {
@@ -50,4 +35,24 @@ bool Object::update() {
         return true;
     }
     return false;
+}
+
+Object::Object(Pos _pos,OBJ_TYPE T,ALLEGRO_BITMAP* _img,float _w,float _h) {
+    pos = _pos;
+    type = T;
+
+    image_width = 0;
+    image_height = 0;
+
+    rotate_angle = 0;
+
+    Image = _img;
+    if(Image!=nullptr) {
+        raise_warn("load object image fail");
+        image_width = al_get_bitmap_width(Image)/CHUNK_WIDTH;
+        image_height = al_get_bitmap_height(Image)/CHUNK_HEIGHT;
+    }
+    
+    width = _w;
+    height = _h;
 }

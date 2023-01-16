@@ -2,6 +2,8 @@
 
 void Snake::draw() {
     for(auto &b:body) {
+        b->window_x = head.second - window_width/2;
+        b->window_y = (MAP_HEIGHT-SEE_MAP_HEIGHT)/2;
         b->draw();
     }
 }
@@ -68,34 +70,27 @@ Pos Snake::Next_Pos() {
     return std::make_pair(head.first+dP.first,head.second+dP.second);
 }
 
-DIRCTION Snake::Cal_Dirc(Pos now,Pos next) {
-    if(next.first > now.first)   return DOWN;
-    if(next.first < now.first)   return UP;
-    if(next.second > now.second) return RIGHT;
-    if(next.second < now.second) return LEFT;
-    return NONE;
-}
-
-bool SnakeCanMove(Snake*snake,DIRCTION dirc,Map& map,Map& ob_map) {
-    return false;
-}
-
 Snake::Snake(std::vector<Pos>& Poss,ALLEGRO_BITMAP * img_head,
                                     ALLEGRO_BITMAP * img_body) {
     show_msg("Create snake begin");
     Image_head = img_head;
     Image_body = img_body;
 
-    head = Poss.back();
+    move_direction = NONE;
+    isFall = false;
+    can_eat_apple = false;
 
     DIRCTION from = UP;
     DIRCTION to = UP;
     for(int i=0;i<Poss.size()-1;++i) {
         from = to;
-        to = Cal_Dirc(Poss[i],Poss[i+1]);
+        to = POS_TO_DIRC(Poss[i],Poss[i+1]);
         body.push_back(new Body(Poss[i],BODY,Image_body,from,to));
     }
+    head = Poss.back();
+    heading = to;
     body.push_back(new Body(head,HEAD,Image_head,to,to));
+    
     show_msg("Create Snake done");
 }
 

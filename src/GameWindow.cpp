@@ -111,8 +111,8 @@ bool GameWindow::update() {
                     return true;
                 }
             }
-        }
             return true;
+        }
         case GAME_TERMINATE: return false;
         default : {
             raise_err("unknown game state");

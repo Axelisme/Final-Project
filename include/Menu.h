@@ -25,9 +25,10 @@ public:
         Game_menu_back = al_load_bitmap((IMAGE_PATH+"/Game_menu").c_str());
         window_width = CHUNK_WIDTH;
         window_width = CHUNK_HEIGHT;
-        width_ratio = BACKGROUND_WIDTH_RATIO;
-        image_width = BACKGROUND_WIDTH;
-        image_height = BACKGROUND_HEIGHT;
+        width_ratio = 1;
+        image_width = 0;
+        image_height = 0;
+        return true;
     };
 
     // process trigered by mouse

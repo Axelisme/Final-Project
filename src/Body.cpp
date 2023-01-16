@@ -1,20 +1,5 @@
 #include "Body.h"
 
-void Body::draw() {
-    return;
-    if(SIMPLY_DISPLAY) {
-        al_draw_rectangle((pos.second - width/2 )*CHUNK_WIDTH,
-                          (pos.first  - height/2)*CHUNK_HEIGHT,
-                          (pos.second + width/2 )*CHUNK_WIDTH,
-                          (pos.first  + height/2)*CHUNK_HEIGHT,
-                          SIMPLE_COLOR_LIST[type],
-                          0);
-    } 
-    else {
-        raise_warn("I don't know how to draw because you don't tell me");
-    }
-}
-
 bool Body::update() {
     Object::update();
     if(move_dirc!=NONE) {
@@ -25,7 +10,7 @@ bool Body::update() {
 }
 
 Body::Body(Pos _pos,OBJ_TYPE T,ALLEGRO_BITMAP *img,DIRCTION _from,DIRCTION _to):
-      Object(_pos,T,img,1,1)
+      Object(_pos,T,img,3,3)
 {
     show_msg("Create body begin");
     move_dirc = NONE;

@@ -59,6 +59,7 @@ private:
 
     inline OBJ_TYPE& is(Pos pos,Map&_map) {return _map.at(pos.first).at(pos.second);}
     bool CanMove(Pos,OBJ_TYPE,DIRCTION);
+    void draw_map();
 
     int level_idx;
     int mapw;
@@ -76,6 +77,8 @@ private:
     ALLEGRO_BITMAP *  Snake_head_image;
     ALLEGRO_BITMAP *  Snake_body_image;
     ALLEGRO_BITMAP *  End_point_image;
+    ALLEGRO_BITMAP *  Buttom_image;
+    ALLEGRO_BITMAP *  Spike_image;
 
     bool key_lock = false;
     int key_lock_count = 0;

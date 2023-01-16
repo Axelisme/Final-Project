@@ -3,10 +3,63 @@
 #include <fstream>
 #include <string>
 
+void Level::draw_map() {
+    float window_x = window_center.second - window_width/2;
+    float window_y = (MAP_HEIGHT-SEE_MAP_HEIGHT)/2;
+    for(int i=0;i<map.size();++i) {
+        for(int j=0;j<map[0].size();++j){
+            if(j<window_x || j>window_x+window_width || i<window_y || i>window_y+window_height) continue;
+            ALLEGRO_BITMAP * img;
+            switch(ground_map[i][j]) {
+                case AIR : 
+                case EDGE : continue;
+                case GROUND: {
+                    img = Ground_image;
+                    break;
+                }
+                case END: {
+                    img = End_point_image;
+                    break;
+                }
+                case APPLE: {
+                    img = Apple_image;
+                    break;
+                }
+                case SPIKE:{
+                    img = Spike_image;
+                    break;
+                }
+                default: {
+                    raise_warn("wrong object type while write map");
+                    img = nullptr;
+                }
+            }
+            if(img==nullptr) {
+                raise_warn("try to draw null object"); 
+                return;
+            }
+
+            al_draw_scaled_bitmap(img,
+                                  0,0,
+                                  al_get_bitmap_width(img) ,al_get_bitmap_height(img),
+                                  CHUNK_WIDTH *(j -window_x - 1.5),
+                                  CHUNK_HEIGHT*(i -window_y - 1.5),
+                                  3*CHUNK_WIDTH,3*CHUNK_HEIGHT,
+                                  0
+                                 );
+        }
+    }
+}
+
 void Level::draw() {
+    window_center = snake->head;
     Interface::draw();
 
+    draw_map();
+
     for(auto &o:object) {
+        o->window_x = window_center.second - window_width/2;
+        o->window_y = (MAP_HEIGHT-SEE_MAP_HEIGHT)/2;
         o->draw();
     }
     
@@ -99,6 +152,7 @@ bool Level::update() {
         show_msg("Snake eat apple");
         snake->can_eat_apple = true;
         is(next,map) = AIR;
+        is(next,ground_map) = AIR;
         draw = true;
     }
     else if(CanMove(snake->head,HEAD,snake->move_direction)) {  //move
@@ -209,8 +263,17 @@ bool Level::load_level(int _level_idx)
     Snake_head_image = al_load_bitmap((IMAGE_PATH+"/snakeHead.png").c_str());
     Snake_body_image = al_load_bitmap((IMAGE_PATH+"/snakeBody.png").c_str());
     End_point_image = al_load_bitmap((IMAGE_PATH+"/end.png").c_str());
+    Buttom_image = al_load_bitmap((IMAGE_PATH+"/buttom.png").c_str());
+    Spike_image = al_load_bitmap((IMAGE_PATH+"/spike.png").c_str());
     
-    if((Ground_image && Stone_image && Apple_image && Snake_head_image && Snake_body_image && End_point_image) == false) {
+    if((Ground_image && 
+        Stone_image && 
+        Apple_image && 
+        Snake_head_image && 
+        Snake_body_image && 
+        End_point_image &&
+        Buttom_image && 
+        Spike_image) == false) {
         raise_warn("Some image load fail");
     }
     show_msg("Load image done");
@@ -442,12 +505,16 @@ void Level::destroy_level() {
     al_destroy_bitmap(Snake_head_image);
     al_destroy_bitmap(Snake_body_image);
     al_destroy_bitmap(End_point_image);
+    al_destroy_bitmap(Buttom_image);
+    al_destroy_bitmap(Spike_image);
     Ground_image = nullptr;
     Stone_image = nullptr;
     Apple_image = nullptr;
     Snake_head_image = nullptr;
     Snake_body_image = nullptr;
     End_point_image = nullptr;
+    Buttom_image = nullptr;
+    Spike_image = nullptr;
 
     key_lock = false;
     int key_lock_count = 0;
@@ -461,10 +528,13 @@ void Level::destroy_level() {
 }
 
 // constructor and deletor
-Level::Level(int i):Interface(MUSIC_PATH+"level_bgm.ogg",IMAGE_PATH+"background.jpg") {
+Level::Level(int i):
+       Interface(MUSIC_PATH+"/level_bgm.ogg",IMAGE_PATH+"/background.png") 
+{
     show_msg("Create level begin");
     key_lock = false;
     key_lock_count =0;
+    level_stat = KEEP;
     load_level(i);
     show_msg("Create level done");
 }
