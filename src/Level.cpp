@@ -98,17 +98,6 @@ bool Level::CanMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
 }
 
 bool Level::update() {
-    if(snake->isDied==true) {   // if is died
-        level_stat = RESTART;
-        stop_sound();
-        return false;
-    }
-    else if(is(snake->head,ground_map)==END){  // if reach end
-        level_stat = NEXT;
-        stop_sound();
-        return false;
-    }
-
     // update key lock
     update_key_lock();
 
@@ -244,6 +233,17 @@ bool Level::update() {
     for(const auto &o:object) {
         is(o->getPos(),ob_map) = o->type;
         is(o->getPos(),map) = o->type;
+    }
+    
+    if(snake->isDied==true) {   // if is died
+        level_stat = RESTART;
+        stop_sound();
+        return false;
+    }
+    else if(is(snake->head,ground_map)==END){  // if reach end
+        level_stat = NEXT;
+        stop_sound();
+        return false;
     }
 
     if(draw && Show) print_map();
