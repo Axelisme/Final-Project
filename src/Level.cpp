@@ -528,6 +528,7 @@ void Level::print_map()
                     cout << "▞▞";
                     break;
                 case SPIKE:
+                case SPIKE_DOWN:
                     cout << "||";
                     break;
                 case BUTTON:

@@ -9,6 +9,7 @@ obj = {
     "Apple":5, 
     "Stone":6,
     "Spike":7,
+    "Spike down":9,
     "Button":8,
     "Edge":-1
     }
@@ -21,7 +22,7 @@ def map_to_graph(map):
     '▒▒' if j==obj["Snake Body"] else  
     ' ⋄' if j==obj["Apple"] else 
     ' ⊠' if j==obj["End point"] else
-    '||' if j==obj["Spike"] else
+    '||' if j==obj["Spike"] or j==obj["Spike down"] else
     ' ▂' if j==obj["Button"] else
     '▞▞' if j==obj["Edge"] else
     '  ' for j in i) + '\n' for i in map]
@@ -139,6 +140,7 @@ map2[6,21:23] = obj["Ground"]
 map2[5,17] = obj["Ground"]
 map2[4:6,13:15] = obj["Ground"]
 map2[[2,5,4,5,5],[9,12,14,19,22]] = obj["Spike"]
+map2[5,19] = obj["Spike down"]
 map2[[6,5,2],[3,16,12]] = obj["Apple"]
 map2[[1,5],[5,15]] = obj["Button"]
 map2[6,24] = obj["End point"]

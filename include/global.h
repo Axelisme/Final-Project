@@ -91,7 +91,8 @@ enum OBJ_TYPE {
     APPLE,
     STONE,
     SPIKE,
-    BUTTON
+    BUTTON,
+    SPIKE_DOWN
 };
 
 enum LEVEL_STAT {
