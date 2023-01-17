@@ -208,3 +208,43 @@ level3 = {
     }
 
 write_file(3,level3)
+
+map4_high, map4_width = 10, 25
+map4 = np.zeros([map4_high, map4_width]).astype(int)
+map4[1,17:19] = map4[9,17:23] = map4[9,17:23] = map4[7,10:15] = map4[5,15:17] = map4[5,6:8] = map4[2,0:2] = map4[3,1:3] = map4[9,1:4] = map4[8,1:3] = obj["Ground"]
+map4[6:10,1] = map4[3:6,12] = obj["Ground"]
+map4[[7,7,9,8,2,5,8],[4,6,7,11,20,24,24]] = obj["Ground"]
+map4[[6,6,2,2],[4,10,12,17]] = obj["Spike"]
+map4[[6,8],[12,22]] = obj["Button"]
+map4[3:5,6:8] = obj["Snake Body"]
+map4[3,6] = obj["Snake Head"]
+map4[4,0] = obj["Apple"]
+map4[4,15] = obj["Stone"]
+map4[4,24] = obj["End point"]
+
+map4 = add_edge(map4)
+map4_list = map4.tolist()
+map4_graph = map_to_graph(map4)
+map4_str = map_to_string(map4)
+
+level4 = {
+    "background": ['/data/image/background3'],
+    "music": ['/data/music/music3'],
+    "sound": ['/data/sound/sound3-1','/data/sound/sound3-2'],
+    "map":[map4.shape, map4_str, map4_graph],
+    "snake":[
+        '10 14',
+        '11 14',
+        '11 13',
+        '10 13',
+        ],
+    "stone":[
+        '11 22'
+        ],
+    "button":[
+        '13 19 Short',
+        '15 29 Grave'
+        ]
+    }
+
+write_file(4,level4)
