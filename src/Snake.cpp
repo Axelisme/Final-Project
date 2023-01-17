@@ -42,6 +42,7 @@ void Snake::Move_extend() {
 }
 
 void Snake::Shorten() {
+    show_msg("snake shorten begin");
     delete body.front();
     body.pop_front();
     if(body.empty()) {
@@ -51,6 +52,7 @@ void Snake::Shorten() {
     Body * NewTail = body.front();
     NewTail->image_body_straight = Image_tail;
     NewTail->from_dirc = NewTail->to_dirc;
+    show_msg("snake shorten end");
 }
 
 bool Snake::update() {
