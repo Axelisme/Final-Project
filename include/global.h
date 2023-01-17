@@ -36,7 +36,7 @@
 
 #define FPS 30
 #define OBJECT_IMAGE_SIZE 3.0
-#define LEVEL_NUM 2
+#define LEVEL_NUM 3
 #define FIRST_LEVEL 1
 #define KEY_LOCK_NUM 0
 #define ANI_NUM 4
