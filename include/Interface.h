@@ -21,6 +21,8 @@ public:
     // stop sound
     void stop_sound() {al_stop_sample_instance(backgroundSound);}
 
+    void down_then_lift();
+
     // load sound and backgroundImage
     Interface(string,string,string);
     void destroy_Interface();
@@ -46,7 +48,10 @@ protected:
 
     ALLEGRO_BITMAP * backgroundImage1 = nullptr;
     ALLEGRO_BITMAP * backgroundImage2 = nullptr;
-  
+
+    int light = 255;
+    bool stay = true;
+    bool up_or_down = false;
 };
 
 #endif // INTERFACCE_H

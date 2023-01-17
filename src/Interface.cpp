@@ -2,7 +2,7 @@
 #include "GameWindow.h"
 
 void Interface::draw() {
-    //al_clear_to_color(WRITE);
+    al_clear_to_color(al_map_rgb(light,light,light));
     float sx = CHUNK_WIDTH*width_ratio1*(window_center.second-window_width/2-SEE_MAP_LEFT);
     float sy = 0;
     float sw = CHUNK_WIDTH*(window_width);
@@ -24,6 +24,7 @@ void Interface::draw() {
 }
 
 bool Interface::update() {
+    down_then_lift();
     return false;
 }
 
@@ -77,6 +78,23 @@ Interface::Interface(string sound_path="",string back1path="",string back2path="
 
     show_msg("Create interface done");
 }
+
+void Interface::down_then_lift() {
+    if(!stay){
+        if(up_or_down){
+            light = (light+1)%255;
+        }
+        else {
+            --light;
+            if(light<=0) {
+                up_or_down=true;
+                light = 0;
+            }
+        }
+        if(light==255) stay=true;
+    }
+}
+
 
 void Interface::destroy_Interface() {
     show_msg("Destroy interface begin");

@@ -37,6 +37,7 @@ ALLEGRO_BITMAP * Menu::ToImg(MENU_STATE stat) {
 }
 
 void Menu::draw() {
+    al_clear_to_color(al_map_rgb(light,light,light));
     ALLEGRO_BITMAP * img = ToImg(menu_state);
     al_draw_scaled_bitmap(img,
                           0,0,
@@ -142,6 +143,17 @@ GAME_STATE Menu::key_triger(int key) {
 }
 
 bool Menu::update() {
+    if(!stay){
+        if(up_or_down){
+            light = (++light)%255;
+            if(light==255) stay=true;
+        }
+        else if(light>0){
+            light = (--light)%255;
+            if(light==0) stay=true;
+        }
+    }
+
     switch(game_state) {
         case GAME_MENU: {
             break;
@@ -189,8 +201,4 @@ Menu::Menu(GAME_STATE _game_state):Interface("","","") {
     }
     
 
-}
-
-Menu::~Menu() {
-    
 }

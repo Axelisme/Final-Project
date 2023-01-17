@@ -37,7 +37,6 @@ public:
 
     // constructor and deletor
     Menu(GAME_STATE _game_state);
-    ~Menu();
 
 private:
     ALLEGRO_BITMAP * ToImg(MENU_STATE stat);
@@ -57,7 +56,6 @@ private:
     ALLEGRO_BITMAP *  Level_menu_4;
     ALLEGRO_BITMAP *  Level_menu_exit;
     ALLEGRO_BITMAP *  Guide;
-    
 
     bool key_lock = false;
     int key_lock_count = 0;
