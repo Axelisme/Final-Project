@@ -49,8 +49,6 @@ void Menu::draw() {
     al_flip_display();
 }
 
-// bool Menu::update(){return true;}
-
 GAME_STATE Menu::key_triger(int key) {
     if (menu_state == IN_MENU)
     {
@@ -104,19 +102,19 @@ GAME_STATE Menu::key_triger(int key) {
                 return GAME_TERMINATE;
                 break;
             case LEVEL_MENU_1:
-                /* code */
+                GameWindow::want_level = 1;
                 return GAME_LEVEL;
                 break;
             case LEVEL_MENU_2:
-                /* code */
+                GameWindow::want_level = 2;
                 return GAME_LEVEL;
                 break;
             case LEVEL_MENU_3:
-                /* code */
+                GameWindow::want_level = 3;
                 return GAME_LEVEL;
                 break;
             case LEVEL_MENU_4:
-                /* code */
+                GameWindow::want_level = 4;
                 return GAME_LEVEL;
                 break;
             case LEVEL_MENU_EXIT:
@@ -143,16 +141,8 @@ GAME_STATE Menu::key_triger(int key) {
 }
 
 bool Menu::update() {
-    if(!stay){
-        if(up_or_down){
-            light = (++light)%255;
-            if(light==255) stay=true;
-        }
-        else if(light>0){
-            light = (--light)%255;
-            if(light==0) stay=true;
-        }
-    }
+    Interface::down_then_lift();
+    if(update_lock) return true;
 
     switch(game_state) {
         case GAME_MENU: {
@@ -196,9 +186,6 @@ Menu::Menu(GAME_STATE _game_state):Interface("","","") {
             Level_menu_4 && Level_menu_exit && Guide))
         {
             raise_warn("menu image missing");
-        }
-        
+        }   
     }
-    
-
 }
