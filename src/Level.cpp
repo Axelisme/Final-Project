@@ -66,10 +66,12 @@ void Level::draw() {
     Interface::draw();
 
     draw_map();
-
+    
+    const double x = window_center.second - window_width/2;
+    const double y = window_center.first - window_height/2;
     for(auto &o:object) {
-        o->window_x = window_center.second - window_width/2;
-        o->window_y = window_center.first - window_height/2;
+        o->window_x = x;
+        o->window_y = y;
         o->draw();
     }
     
@@ -118,11 +120,12 @@ bool Level::update() {
                 Pos _pos = ob->getPos();
                 if(is(_pos,ground_map)==EDGE) {
                     is(_pos,ob_map) = AIR;
+                    is(_pos,map) = EDGE;
                     delete ob;
-                    object.erase(it);
+                    object.erase(it++);
                     draw = true;
                 }
-                if(CanMove(ob->getPos(),STONE,Gravity)) {
+                else if(CanMove(ob->getPos(),STONE,Gravity)) {
                     set_key_lock();
                     ob->move_dirc = Gravity;
                     draw = true;
@@ -242,7 +245,7 @@ bool Level::update() {
         is(o->getPos(),ob_map) = o->type;
         is(o->getPos(),map) = o->type;
     }
-    
+
     if(snake->isDied==true) {   // if is died
         level_stat = RESTART;
         stop_sound();

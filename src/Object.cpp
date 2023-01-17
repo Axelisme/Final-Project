@@ -48,10 +48,10 @@ Object::Object(Pos _pos,OBJ_TYPE T,ALLEGRO_BITMAP* _img,float _w,float _h) {
 
     Image = _img;
     if(Image!=nullptr) {
-        raise_warn("load object image fail");
         image_width = al_get_bitmap_width(Image)/CHUNK_WIDTH;
         image_height = al_get_bitmap_height(Image)/CHUNK_HEIGHT;
     }
+    else raise_warn("load object image fail");
     
     width = _w;
     height = _h;
