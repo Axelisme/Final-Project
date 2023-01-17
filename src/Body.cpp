@@ -3,9 +3,10 @@
 
 void Body::draw() {
     ALLEGRO_BITMAP *img;
-    float angle;
+    double angle;
     if(type==HEAD) img = image_head;
     else if(from_dirc==to_dirc) img = image_body_straight;
+    else img = image_body_turn;
     if(type==HEAD || from_dirc==to_dirc) {
         switch(to_dirc) {
             case UP: 
@@ -27,7 +28,6 @@ void Body::draw() {
         }
     }
     else {
-        img = image_body_turn;
         if       (to_dirc==RIGHT&&from_dirc==UP)    angle = 0;
         else if  (to_dirc==DOWN &&from_dirc==RIGHT) angle = M_PI_2;
         else if  (to_dirc==LEFT &&from_dirc==DOWN)  angle = M_PI;
@@ -47,11 +47,21 @@ void Body::draw() {
     }
     const float img_w = al_get_bitmap_width(img);
     const float img_h = al_get_bitmap_height(img);
+    float w_scale = 0.5;
+    float h_scale = 1;
+    if(angle==0||angle==M_PI) {
+        w_scale = OBJECT_IMAGE_SIZE*CHUNK_WIDTH/img_w;
+        h_scale = OBJECT_IMAGE_SIZE*CHUNK_HEIGHT/img_h;
+    }
+    else {
+        w_scale = OBJECT_IMAGE_SIZE*CHUNK_HEIGHT/img_w;
+        h_scale = OBJECT_IMAGE_SIZE*CHUNK_WIDTH/img_h;        
+    }
 
     al_draw_scaled_rotated_bitmap(img,
                                   img_w/2,img_h/2,
                                   CHUNK_WIDTH*(pos.second-window_x),CHUNK_HEIGHT*(pos.first-window_y),
-                                  3*CHUNK_WIDTH/img_w,3*CHUNK_HEIGHT/img_h,
+                                  w_scale,h_scale,
                                   angle,
                                   0
                                  );
