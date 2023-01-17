@@ -10,6 +10,8 @@ using namespace std;
 
 class GameWindow {
 public:
+    static bool Mute;
+
     // Draw function
     void draw();
     // update object

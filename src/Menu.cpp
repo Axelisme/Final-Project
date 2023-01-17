@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "GameWindow.h"
 
 ALLEGRO_BITMAP * Menu::ToImg(MENU_STATE stat) {
     switch(stat) {
@@ -23,6 +24,7 @@ ALLEGRO_BITMAP * Menu::ToImg(MENU_STATE stat) {
         case LEVEL_MENU_3:
             return Level_menu_3;
         case LEVEL_MENU_4:
+            return Level_menu_4;
         case LEVEL_MENU_EXIT:
             return Level_menu_exit;
         case GUIDE:
@@ -58,6 +60,7 @@ GAME_STATE Menu::key_triger(int key) {
     {
         if (key == ALLEGRO_KEY_ENTER || key == ALLEGRO_KEY_P)
         {
+            menu_state = START_MENU;
             return GAME_LEVEL;
         }
         else {return GAME_LEVEL_PUASE;}
@@ -72,13 +75,13 @@ GAME_STATE Menu::key_triger(int key) {
             menu_state = MENU_STATE(((int)menu_state)+1);
             return GAME_MENU;
         } 
-        if(key == ALLEGRO_KEY_UP && (menu_state == START_MENU || menu_state == LEVEL_MENU || menu_state || GUIDE)) {
+        if(key == ALLEGRO_KEY_UP && (menu_state == START_MENU || menu_state == LEVEL_MENU || menu_state == GUIDE)) {
             show_msg("Key triger : at the top of menu");
-            return GAME_LEVEL;
+            return GAME_MENU;
         } 
         if(key == ALLEGRO_KEY_UP && (menu_state != START_MENU && menu_state != LEVEL_MENU && menu_state != GUIDE)) {
             show_msg("Key triger : menu select go up");
-            menu_state = MENU_STATE(((int)menu_state)+1);
+            menu_state = MENU_STATE(((int)menu_state)-1);
             return GAME_MENU;
         } 
         if(key == ALLEGRO_KEY_ENTER) {
@@ -89,7 +92,7 @@ GAME_STATE Menu::key_triger(int key) {
                 return GAME_MENU;
                 break;
             case START_MENU_MUSIC:
-                /* code */
+                GameWindow::Mute = !GameWindow::Mute;
                 return GAME_MENU;
                 break;
             case START_MENU_GUID:
@@ -97,7 +100,7 @@ GAME_STATE Menu::key_triger(int key) {
                 return GAME_MENU;
                 break;
             case START_MENU_EXIT:
-                /* code */
+                return GAME_TERMINATE;
                 break;
             case LEVEL_MENU_1:
                 /* code */
@@ -139,7 +142,19 @@ GAME_STATE Menu::key_triger(int key) {
 }
 
 bool Menu::update() {
-    draw();
+    switch(game_state) {
+        case GAME_MENU: {
+            break;
+        }
+        case GAME_LEVEL_PUASE: {
+            menu_state = GUIDE;
+            break;
+        }
+        default: {
+            raise_warn("Unknown game state");
+            menu_state = IN_MENU;
+        }
+    }
     return true;
 }
 

@@ -1,8 +1,8 @@
 #include "Interface.h"
+#include "GameWindow.h"
 
 void Interface::draw() {
     //al_clear_to_color(WRITE);
-    start_sound();
     float sx = CHUNK_WIDTH*width_ratio1*(window_center.second-window_width/2-SEE_MAP_LEFT);
     float sy = 0;
     float sw = CHUNK_WIDTH*(window_width);

@@ -1,5 +1,7 @@
 #include "GameWindow.h"
 
+bool GameWindow::Mute = false;
+
 int main() {
     work_dir_init();
     
