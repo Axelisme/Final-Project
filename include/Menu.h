@@ -9,7 +9,7 @@ public:
     void draw() override;
 
     // update all object
-    bool update(){return true;}
+    bool update() override;
 
     // process trigered by key
     GAME_STATE key_triger(int key);
@@ -38,6 +38,8 @@ public:
     ~Menu();
 
 private:
+    ALLEGRO_BITMAP * ToImg(MENU_STATE stat);
+
     MENU_STATE menu_state = IN_MENU;
     GAME_STATE game_state;
 

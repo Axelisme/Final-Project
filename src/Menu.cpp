@@ -1,11 +1,52 @@
 #include "Menu.h"
 
-void Menu::draw() {
-    // al_draw_scaled_bitmap(pic,0,0,al_get_bitmap_width(pic),al_get_bitmap_height(pic),0,0,DISPLAY_WIDTH,DISPLAY_HEIGHT,0)
-    // al_clear_to_color(rgb)
-    //al_draw_bitmap(Fix_Background_image,0,0,0);
-    Interface::draw();
+ALLEGRO_BITMAP * Menu::ToImg(MENU_STATE stat) {
+    switch(stat) {
+        case IN_MENU:
+            return In_menu;
+        case START_MENU:
+            return Start_menu;
+        case START_MENU_LEVEL:
+            return Start_menu_level;
+        case START_MENU_MUSIC:
+            return Start_menu_music;
+        case START_MENU_GUID:
+            return Start_menu_guide;
+        case START_MENU_EXIT:
+            return Start_menu_exit;
+        case LEVEL_MENU:
+            return Level_menu;
+        case LEVEL_MENU_1:
+            return Level_menu_1;
+        case LEVEL_MENU_2:
+            return Level_menu_2;
+        case LEVEL_MENU_3:
+            return Level_menu_3;
+        case LEVEL_MENU_4:
+        case LEVEL_MENU_EXIT:
+            return Level_menu_exit;
+        case GUIDE:
+            return Guide;
+        
+        default:
+            raise_warn("Unknown menu draw issue");
+            return In_menu;
+    }
 }
+
+void Menu::draw() {
+    ALLEGRO_BITMAP * img = ToImg(menu_state);
+    al_draw_scaled_bitmap(img,
+                          0,0,
+                          al_get_bitmap_width(img),
+                          al_get_bitmap_height(img),
+                          0,0,
+                          DISPLAY_WIDTH,DISPLAY_HEIGHT,
+                          0);
+    al_flip_display();
+}
+
+// bool Menu::update(){return true;}
 
 GAME_STATE Menu::key_triger(int key) {
     if (menu_state == IN_MENU)
@@ -97,6 +138,11 @@ GAME_STATE Menu::key_triger(int key) {
     return GAME_MENU;
 }
 
+bool Menu::update() {
+    draw();
+    return true;
+}
+
 Menu::Menu(GAME_STATE _game_state):Interface("","","") {
     game_state = _game_state;
     if (game_state == GAME_LEVEL)
@@ -118,6 +164,13 @@ Menu::Menu(GAME_STATE _game_state):Interface("","","") {
         Level_menu_4 = al_load_bitmap((MENUE_PATH+"/level_in4.png").c_str());
         Level_menu_exit = al_load_bitmap((MENUE_PATH+"/level_exit.png").c_str());
         Guide = al_load_bitmap((MENUE_PATH+"/guide_menu.png").c_str());
+        if (!(In_menu && Start_menu && Start_menu_level && Start_menu_music && Start_menu_guide &&
+            Start_menu_exit && Level_menu && Level_menu_1 && Level_menu_2 && Level_menu_3 &&
+            Level_menu_4 && Level_menu_exit && Guide))
+        {
+            raise_warn("menu image missing");
+        }
+        
     }
     
 

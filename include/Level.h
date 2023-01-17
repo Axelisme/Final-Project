@@ -84,6 +84,7 @@ private:
     ALLEGRO_BITMAP *  End_point_image = nullptr;
     ALLEGRO_BITMAP *  Buttom_image = nullptr;
     ALLEGRO_BITMAP *  Spike_image = nullptr;
+    ALLEGRO_BITMAP *  Spike_down_image = nullptr;
 
     bool key_lock = false;
     int key_lock_count = 0;

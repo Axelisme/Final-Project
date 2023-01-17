@@ -18,7 +18,7 @@
 
 #define SHOW_BACK_FOG 1
 
-#define FIRST_STATE GAME_LEVEL
+#define FIRST_STATE GAME_MENU
 #define DISPLAY_WIDTH 800
 #define DISPLAY_HEIGHT 800
 
@@ -45,7 +45,7 @@
 const std::string MUSIC_PATH("data/music");
 const std::string IMAGE_PATH("data/image");
 const std::string LEVEL_PATH("data/level");
-const std::string MENUE_PATH = IMAGE_PATH+"/meue";
+const std::string MENUE_PATH = IMAGE_PATH+"/menu";
 
 #define BLACK  al_map_rgb(  0,  0,  0)
 #define RED    al_map_rgb(255,  0,  0)
