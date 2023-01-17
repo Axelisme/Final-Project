@@ -10,6 +10,8 @@ using namespace std;
 
 class Interface {
 public:
+    bool key_lock = false;
+
     // draw all objects
     virtual void draw();
 
@@ -21,7 +23,8 @@ public:
     // stop sound
     void stop_sound() {al_stop_sample_instance(backgroundSound);}
 
-    void down_then_lift();
+    void go_down();
+    void go_lift();
 
     // load sound and backgroundImage
     Interface(string,string,string);
@@ -50,8 +53,7 @@ protected:
     ALLEGRO_BITMAP * backgroundImage2 = nullptr;
 
     int light = 255;
-    bool up_or_down = false;
-    static bool update_lock;
+    
 };
 
 #endif // INTERFACCE_H

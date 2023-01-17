@@ -1,8 +1,6 @@
 #include "Interface.h"
 #include "GameWindow.h"
 
-bool Interface::update_lock = false;
-
 void Interface::draw() {
     al_clear_to_color(WRITE);
     float sx = CHUNK_WIDTH*width_ratio1*(window_center.second-window_width/2-SEE_MAP_LEFT);
@@ -26,7 +24,6 @@ void Interface::draw() {
 }
 
 bool Interface::update() {
-    down_then_lift();
     return false;
 }
 
@@ -81,26 +78,35 @@ Interface::Interface(string sound_path="",string back1path="",string back2path="
     show_msg("Create interface done");
 }
 
-void Interface::down_then_lift() {
-    if(update_lock){
-        if(up_or_down){
-            light += 5;
-            if(light>=256) {
-                light = 255;
-            }
-        }
-        else {
-            light -= 5;
-            if(light<=0) {
-                up_or_down=true;
-                light = 0;
-            }
-        }
-        if(light==255) {
-            update_lock = false;
-            up_or_down = false;
+void Interface::go_down() {
+    show_msg("show down animation begin");
+    key_lock = true;
+    int lock = true;
+    while(lock){
+        light -= 2;
+        if(light<=0) {
+            light = 0;
+            lock = false;
         }
     }
+    key_lock = false;
+    show_msg("show down animation done");
+}
+
+void Interface::go_lift() {
+    show_msg("show lift animation begin");
+    key_lock = true;
+    int lock = true;
+    while(lock){
+        light += 2;
+        if(light>=255) {
+            light = 255;
+            lock = false;
+        }
+        draw();
+    }
+    key_lock = false;
+    show_msg("show lift animation done");
 }
 
 void Interface::destroy_Interface() {

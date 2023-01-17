@@ -73,6 +73,7 @@ void GameWindow::game_process() {
             return;
         }
         case ALLEGRO_EVENT_KEY_DOWN: {               // if pulse a key
+            if(level->key_lock || menu->key_lock) break;
             show_msg("Detect key down");
             // process for different state
             if(state==GAME_LEVEL)
