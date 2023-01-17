@@ -26,7 +26,15 @@ void Level::draw_map() {
                     break;
                 }
                 case SPIKE:{
-                    img = Spike_image;
+                    if (ground_map[i+1][j] == GROUND)
+                    {
+                        img = Spike_image;
+                    }
+                    else
+                    {
+                        img = Spike_down_image;
+                    }
+                    
                     break;
                 }
                 default: {
@@ -320,6 +328,7 @@ bool Level::load_level(int _level_idx)
     End_point_image = al_load_bitmap((IMAGE_PATH+"/end.png").c_str());
     Buttom_image = al_load_bitmap((IMAGE_PATH+"/buttom.png").c_str());
     Spike_image = al_load_bitmap((IMAGE_PATH+"/spike.png").c_str());
+    Spike_down_image = al_load_bitmap((IMAGE_PATH+"/spike_down.png").c_str());
     
     if((Ground_image && 
         Stone_image && 
