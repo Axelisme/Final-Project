@@ -7,12 +7,13 @@ void Menu::draw() {
     Interface::draw();
 }
 
-bool Menu::update() {
-    return false;
-}
-
 GAME_STATE Menu::key_triger(int key) {
-    if (game_state == GAME_LEVEL_PUASE)
+    if (menu_state == IN_MENU)
+    {
+        menu_state = START_MENU;
+        return GAME_MENU;
+    }
+    else if (game_state == GAME_LEVEL_PUASE)
     {
         if (key == ALLEGRO_KEY_ENTER || key == ALLEGRO_KEY_P)
         {
@@ -21,62 +22,102 @@ GAME_STATE Menu::key_triger(int key) {
         else {return GAME_LEVEL_PUASE;}
     }
     else {
-        
-    }
+        if(key == ALLEGRO_KEY_DOWN && (menu_state == START_MENU_EXIT || menu_state == LEVEL_MENU_EXIT || menu_state == GUIDE)) {
+            show_msg("Key triger : at the bottom of menu");
+            return GAME_MENU;
+        }
+        if(key == ALLEGRO_KEY_DOWN && (menu_state != START_MENU_EXIT && menu_state != LEVEL_MENU_EXIT && menu_state != GUIDE)) {
+            show_msg("Key triger : menu select go down");
+            menu_state = MENU_STATE(((int)menu_state)+1);
+            return GAME_MENU;
+        } 
+        if(key == ALLEGRO_KEY_UP && (menu_state == START_MENU || menu_state == LEVEL_MENU || menu_state || GUIDE)) {
+            show_msg("Key triger : at the top of menu");
+            return GAME_LEVEL;
+        } 
+        if(key == ALLEGRO_KEY_UP && (menu_state != START_MENU && menu_state != LEVEL_MENU && menu_state != GUIDE)) {
+            show_msg("Key triger : menu select go up");
+            menu_state = MENU_STATE(((int)menu_state)+1);
+            return GAME_MENU;
+        } 
+        if(key == ALLEGRO_KEY_ENTER) {
+            switch (menu_state)
+            {
+            case START_MENU_LEVEL:
+                menu_state = LEVEL_MENU;
+                return GAME_MENU;
+                break;
+            case START_MENU_MUSIC:
+                /* code */
+                return GAME_MENU;
+                break;
+            case START_MENU_GUID:
+                menu_state = GUIDE;
+                return GAME_MENU;
+                break;
+            case START_MENU_EXIT:
+                /* code */
+                break;
+            case LEVEL_MENU_1:
+                /* code */
+                return GAME_LEVEL;
+                break;
+            case LEVEL_MENU_2:
+                /* code */
+                return GAME_LEVEL;
+                break;
+            case LEVEL_MENU_3:
+                /* code */
+                return GAME_LEVEL;
+                break;
+            case LEVEL_MENU_4:
+                /* code */
+                return GAME_LEVEL;
+                break;
+            case LEVEL_MENU_EXIT:
+                menu_state = START_MENU;
+                return GAME_MENU;
+                break;
+            case GUIDE:
+                menu_state = START_MENU;
+                return GAME_MENU;
+                break;
 
-    if(key == ALLEGRO_KEY_DOWN) {
-        // show_msg("Key triger : switch to game menu");
-        return GAME_MENU;
-    } 
-    if(key == ALLEGRO_KEY_UP) {
-        // show_msg("Key triger : jump to next level");
-        level_stat = NEXT;
-        return GAME_LEVEL;
-    } 
-    if(key == ALLEGRO_KEY_ENTER) {
-        // show_msg("Key triger : quit game");
-        return GAME_TERMINATE;
-    } 
-    if(key_lock) {
-        // show_msg("Key triger : key lock");
-        snake->move_direction = NONE;
+            default:
+                return GAME_MENU;
+                break;
+            }
+            // show_msg("Key triger : quit game");
+            // return GAME_TERMINATE;
+        } 
+        else {
+            return GAME_MENU;
+        }
     }
-    else {
-        // show_msg("Key triger : move");
-        snake->move_direction = KEY_TO_DIRC(key);
-    }
-    return GAME_LEVEL;
-};
-
-void Menu::set_key_lock() {
-
+    return GAME_MENU;
 }
 
-void Menu::update_key_lock() {
-
-}
-
-Menu::Menu(GAME_STATE _game_state):Interface("","") {
+Menu::Menu(GAME_STATE _game_state):Interface("","","") {
     game_state = _game_state;
     if (game_state == GAME_LEVEL)
     {
         menu_state = GUIDE;
-        Guide = al_load_bitmap((MENUE_PATH+"/guide_menu").c_str());
+        Guide = al_load_bitmap((MENUE_PATH+"/guide_menu.png").c_str());
     }
     else {
-        menu_state = START_MENU;
-        Start_menu = al_load_bitmap((MENUE_PATH+"/game_menu").c_str());
-        Start_menu_level = al_load_bitmap((MENUE_PATH+"/game_menu_level").c_str());
-        Start_menu_music = al_load_bitmap((MENUE_PATH+"/game_menu_music").c_str());
-        Start_menu_guide = al_load_bitmap((MENUE_PATH+"/game_menu_guide").c_str());
-        Start_menu_exit = al_load_bitmap((MENUE_PATH+"/game_menu_exit").c_str());
-        Level_menu = al_load_bitmap((MENUE_PATH+"/level_in").c_str());
-        Level_menu_1 = al_load_bitmap((MENUE_PATH+"/level_in1").c_str());
-        Level_menu_2 = al_load_bitmap((MENUE_PATH+"/level_in2").c_str());
-        Level_menu_3 = al_load_bitmap((MENUE_PATH+"/level_in3").c_str());
-        Level_menu_4 = al_load_bitmap((MENUE_PATH+"/level_in4").c_str());
-        Level_menu_exit = al_load_bitmap((MENUE_PATH+"/level_exit").c_str());
-        Guide = al_load_bitmap((MENUE_PATH+"/guide_menu").c_str());
+        In_menu = al_load_bitmap((MENUE_PATH+"/menu.png").c_str());
+        Start_menu = al_load_bitmap((MENUE_PATH+"/game_menu.png").c_str());
+        Start_menu_level = al_load_bitmap((MENUE_PATH+"/game_menu_level.png").c_str());
+        Start_menu_music = al_load_bitmap((MENUE_PATH+"/game_menu_music.png").c_str());
+        Start_menu_guide = al_load_bitmap((MENUE_PATH+"/game_menu_guide.png").c_str());
+        Start_menu_exit = al_load_bitmap((MENUE_PATH+"/game_menu_exit.png").c_str());
+        Level_menu = al_load_bitmap((MENUE_PATH+"/level_in.png").c_str());
+        Level_menu_1 = al_load_bitmap((MENUE_PATH+"/level_in1.png").c_str());
+        Level_menu_2 = al_load_bitmap((MENUE_PATH+"/level_in2.png").c_str());
+        Level_menu_3 = al_load_bitmap((MENUE_PATH+"/level_in3.png").c_str());
+        Level_menu_4 = al_load_bitmap((MENUE_PATH+"/level_in4.png").c_str());
+        Level_menu_exit = al_load_bitmap((MENUE_PATH+"/level_exit.png").c_str());
+        Guide = al_load_bitmap((MENUE_PATH+"/guide_menu.png").c_str());
     }
     
 
