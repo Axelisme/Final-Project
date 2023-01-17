@@ -5,6 +5,8 @@
 
 using namespace std;
 
+int GameWindow::want_level = FIRST_LEVEL;
+
 void GameWindow::game_load() {
     show_msg("Game Loading...");
 
@@ -93,6 +95,14 @@ void GameWindow::game_process() {
 
 bool GameWindow::update() {
     // menu or level update
+    if(GameWindow::want_level!=level->getID()) {
+        delete level;
+        if(want_level>LEVEL_NUM){
+            state = GAME_MENU;
+            want_level = FIRST_LEVEL;
+        }
+        else level = new Level(want_level);
+    }
     switch(state) {
         case GAME_MENU: {
             menu->game_state = state;
@@ -113,11 +123,13 @@ bool GameWindow::update() {
                 case NEXT:{
                     int level_idx = level->getID();
                     if(level_idx == LEVEL_NUM) {
+                        GameWindow::want_level = 1;
                         state = GAME_MENU;
                         return false;
                     }
                     else{
                         delete level;
+                        GameWindow::want_level = level_idx+1;
                         level = new Level(level_idx+1);
                         return true;
                     }

@@ -1,8 +1,10 @@
 #include "Interface.h"
 #include "GameWindow.h"
 
+bool Interface::update_lock = false;
+
 void Interface::draw() {
-    al_clear_to_color(al_map_rgb(light,light,light));
+    al_clear_to_color(WRITE);
     float sx = CHUNK_WIDTH*width_ratio1*(window_center.second-window_width/2-SEE_MAP_LEFT);
     float sy = 0;
     float sw = CHUNK_WIDTH*(window_width);
@@ -36,7 +38,7 @@ Interface::Interface(string sound_path="",string back1path="",string back2path="
         if(sample==nullptr) backgroundSound = nullptr;
         else {
             backgroundSound = al_create_sample_instance(sample);
-            al_set_sample_instance_playmode(backgroundSound, ALLEGRO_PLAYMODE_ONCE);
+            al_set_sample_instance_playmode(backgroundSound, ALLEGRO_PLAYMODE_LOOP);
             al_attach_sample_instance_to_mixer(backgroundSound, al_get_default_mixer());
         }
     }
@@ -80,21 +82,26 @@ Interface::Interface(string sound_path="",string back1path="",string back2path="
 }
 
 void Interface::down_then_lift() {
-    if(!stay){
+    if(update_lock){
         if(up_or_down){
-            light = (light+1)%255;
+            light += 5;
+            if(light>=256) {
+                light = 255;
+            }
         }
         else {
-            --light;
+            light -= 5;
             if(light<=0) {
                 up_or_down=true;
                 light = 0;
             }
         }
-        if(light==255) stay=true;
+        if(light==255) {
+            update_lock = false;
+            up_or_down = false;
+        }
     }
 }
-
 
 void Interface::destroy_Interface() {
     show_msg("Destroy interface begin");

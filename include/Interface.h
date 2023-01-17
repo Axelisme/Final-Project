@@ -50,8 +50,8 @@ protected:
     ALLEGRO_BITMAP * backgroundImage2 = nullptr;
 
     int light = 255;
-    bool stay = true;
     bool up_or_down = false;
+    static bool update_lock;
 };
 
 #endif // INTERFACCE_H

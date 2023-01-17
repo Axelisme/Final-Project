@@ -11,6 +11,7 @@ using namespace std;
 class GameWindow {
 public:
     static bool Mute;
+    static int want_level;
 
     // Draw function
     void draw();

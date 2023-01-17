@@ -132,4 +132,3 @@ Snake::~Snake() {
     }
     show_msg("Delete snake done");
 }
-
