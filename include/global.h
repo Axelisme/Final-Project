@@ -13,8 +13,8 @@
 #include <utility>
 #include <vector>
 
-#define Debug 1
-#define Show 1
+#define Debug 0
+#define Show 0
 
 #define SHOW_BACK_FOG 1
 
