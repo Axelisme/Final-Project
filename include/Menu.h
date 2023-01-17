@@ -6,53 +6,59 @@
 
 class Menu: public Interface {
 public:
+    void draw() override;
+
     // update all object
     bool update();
-    
-    // load menu
-    bool load_menu(int)
-    {
-        Start_menu = al_load_bitmap((IMAGE_PATH+"/Start_menu").c_str());
-        Start_menu_L1 = al_load_bitmap((IMAGE_PATH+"/Start_menu_L1").c_str());
-        Start_menu_L2 = al_load_bitmap((IMAGE_PATH+"/Start_menu_L2").c_str());
-        Start_menu_music = al_load_bitmap((IMAGE_PATH+"/Start_menu_music").c_str());
-        Start_menu_guide = al_load_bitmap((IMAGE_PATH+"/Start_menu_guide").c_str());
-        Start_menu_exit = al_load_bitmap((IMAGE_PATH+"/Start_menu_exit").c_str());
-        Game_menu = al_load_bitmap((IMAGE_PATH+"/Game_menu").c_str());
-        Game_menu_repeat = al_load_bitmap((IMAGE_PATH+"/Game_menu").c_str());
-        Game_menu_music = al_load_bitmap((IMAGE_PATH+"/Game_menu").c_str());
-        Game_menu_guide = al_load_bitmap((IMAGE_PATH+"/Game_menu").c_str());
-        Game_menu_back = al_load_bitmap((IMAGE_PATH+"/Game_menu").c_str());
-        window_width = CHUNK_WIDTH;
-        window_width = CHUNK_HEIGHT;
-        width_ratio1 = 1;
-        width_ratio2 = 1;
-        image_width1 = 0;
-        image_height1 = 0;
-        return true;
-    };
+
+    // process trigered by key
+    GAME_STATE key_triger(int key);
+
+    //set key lock
+    void set_key_lock() {
+        //show_msg("key lock");
+        key_lock = true;
+        key_lock_count=0;
+    }
+
+    //update key lock
+    void update_key_lock() {
+        if(key_lock_num==0 || key_lock && (++key_lock_count%key_lock_num == 0)) {
+            //show_msg("key unlock");
+            key_lock = false;
+            key_lock_count = 0;
+        }
+    }
 
     // process trigered by mouse
     GAME_STATE mouse_triger(int mouse){return GAME_MENU;}
 
     // constructor and deletor
-    Menu(MENU_TYPE _type);
+    Menu(GAME_STATE _game_state);
     ~Menu();
 
 private:
-    MENU_TYPE type;
+    MENU_STATE menu_state;
+    GAME_STATE game_state;
 
     ALLEGRO_BITMAP *  Start_menu;
-    ALLEGRO_BITMAP *  Start_menu_L1;
-    ALLEGRO_BITMAP *  Start_menu_L2;
+    ALLEGRO_BITMAP *  Start_menu_level;
     ALLEGRO_BITMAP *  Start_menu_music;
     ALLEGRO_BITMAP *  Start_menu_guide;
     ALLEGRO_BITMAP *  Start_menu_exit;
-    ALLEGRO_BITMAP *  Game_menu;
-    ALLEGRO_BITMAP *  Game_menu_repeat;
-    ALLEGRO_BITMAP *  Game_menu_music;
-    ALLEGRO_BITMAP *  Game_menu_guide;
-    ALLEGRO_BITMAP *  Game_menu_back;
+    ALLEGRO_BITMAP *  Level_menu;
+    ALLEGRO_BITMAP *  Level_menu_1;
+    ALLEGRO_BITMAP *  Level_menu_2;
+    ALLEGRO_BITMAP *  Level_menu_3;
+    ALLEGRO_BITMAP *  Level_menu_4;
+    ALLEGRO_BITMAP *  Level_menu_exit;
+    ALLEGRO_BITMAP *  Guide;
+    
+
+    bool key_lock = false;
+    int key_lock_count = 0;
+    const int key_lock_num = KEY_LOCK_NUM;
+
 };
 
 #endif // MENU_H

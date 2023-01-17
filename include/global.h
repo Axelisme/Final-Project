@@ -45,6 +45,7 @@
 const std::string MUSIC_PATH("data/music");
 const std::string IMAGE_PATH("data/image");
 const std::string LEVEL_PATH("data/level");
+const std::string MENUE_PATH = IMAGE_PATH+"/meue";
 
 #define BLACK  al_map_rgb(  0,  0,  0)
 #define RED    al_map_rgb(255,  0,  0)
@@ -59,13 +60,23 @@ const std::string LEVEL_PATH("data/level");
 enum GAME_STATE {
     GAME_MENU,
     GAME_LEVEL,
+    GAME_LEVEL_PUASE,
     GAME_TERMINATE
 };
 
-enum MENU_TYPE {
-    START,
-    SELECT_LEVEL,
-    IN_GAME
+enum MENU_STATE {
+    START_MENU,
+    START_MENU_LEVEL,
+    START_MENU_MUSIC,
+    START_MENU_GUID,
+    START_MENU_EXIT,
+    LEVEL_MENU,
+    LEVEL_MENU_1,
+    LEVEL_MENU_2,
+    LEVEL_MENU_3,
+    LEVEL_MENU_4,
+    LEVEL_MENU_EXIT,
+    GUIDE
 };
 
 #define TYPE_NUM 10
