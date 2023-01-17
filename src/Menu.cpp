@@ -7,7 +7,7 @@ void Menu::draw() {
     Interface::draw();
 }
 
-bool Menu::update(){return true;}
+// bool Menu::update(){return true;}
 
 GAME_STATE Menu::key_triger(int key) {
     if (menu_state == IN_MENU)
