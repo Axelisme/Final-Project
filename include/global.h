@@ -65,6 +65,7 @@ enum GAME_STATE {
 };
 
 enum MENU_STATE {
+    IN_MENU,
     START_MENU,
     START_MENU_LEVEL,
     START_MENU_MUSIC,

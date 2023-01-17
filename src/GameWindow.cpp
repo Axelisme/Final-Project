@@ -14,7 +14,7 @@ void GameWindow::game_load() {
 
     // create menu
     show_msg("Create menu");
-    menu = new Menu(START);
+    menu = new Menu(state);
 
     show_msg("Game Load finish");
 }
@@ -91,7 +91,7 @@ bool GameWindow::update() {
     // menu or level update
     switch(state) {
         case GAME_MENU: {
-            state = GAME_LEVEL;
+            //state = GAME_LEVEL;
             menu->update();
             return true;
         }
