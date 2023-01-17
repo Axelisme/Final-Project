@@ -182,6 +182,7 @@ map3[6,2] = obj["Ground"]
 map3[5,3] = obj["Snake Head"]
 map3[4:6,1:3] = obj["Snake Body"]
 map3[4,2] = obj["Air"]
+map3[6,2] = obj["End point"]
 
 map3 = add_edge(map3)
 map3_list = map3.tolist()
