@@ -1,4 +1,5 @@
 #include "Level.h"
+#include "GameWindow.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -64,8 +65,6 @@ void Level::draw() {
 
     window_center = snake->head;
     Interface::draw();
-
-    draw_map();
     
     const double x = window_center.second - window_width/2;
     const double y = window_center.first - window_height/2;
@@ -76,6 +75,8 @@ void Level::draw() {
     }
     
     snake->draw();
+
+    draw_map();
 }
 
 bool Level::CanMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
@@ -277,33 +278,38 @@ inline DIRCTION Level::KEY_TO_DIRC(int key) {
 
 // process trigered by key
 GAME_STATE Level::key_triger(int key) {
-    if(key == ALLEGRO_KEY_P) {
-        show_msg("Key triger : switch to game menu");
-        return GAME_MENU;
-    } 
-    if(key == ALLEGRO_KEY_N) {
-        show_msg("Key triger : jump to next level");
-        level_stat = NEXT;
-        return GAME_LEVEL;
-    } 
-    if(key == ALLEGRO_KEY_Q) {
-        show_msg("Key triger : quit game");
-        return GAME_TERMINATE;
-    } 
-    if(key == ALLEGRO_KEY_R) {
-        show_msg("Key triger : reset level");
-        level_stat = RESTART;
-        return GAME_LEVEL;
+    switch(key) {
+        case ALLEGRO_KEY_P: {
+            show_msg("Key triger : switch to game menu");
+            return GAME_LEVEL_PUASE;
+        }
+        case ALLEGRO_KEY_N: {
+            show_msg("Key triger : jump to next level");
+            level_stat = NEXT;
+            return GAME_LEVEL;
+        }
+        case ALLEGRO_KEY_Q: {
+            show_msg("Key triger : quit game");
+            stop_sound();
+            return GAME_MENU;
+        }
+        case ALLEGRO_KEY_R:
+            show_msg("Key triger : reset level");
+            level_stat = RESTART;
+            return GAME_LEVEL;
+        case ALLEGRO_KEY_UP:
+        case ALLEGRO_KEY_DOWN:
+        case ALLEGRO_KEY_LEFT:
+        case ALLEGRO_KEY_RIGHT: {
+            show_msg("Key triger : move");
+            snake->move_direction = KEY_TO_DIRC(key);
+            return GAME_LEVEL; 
+        }
+        default: {
+            show_msg("Unknown key in level");
+            return GAME_LEVEL;
+        }
     }
-    if(key_lock) {
-        show_msg("Key triger : key lock");
-        snake->move_direction = NONE;
-    }
-    else {
-        show_msg("Key triger : move");
-        snake->move_direction = KEY_TO_DIRC(key);
-    }
-    return GAME_LEVEL;
 }
 
 // load level

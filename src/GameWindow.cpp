@@ -61,7 +61,7 @@ void GameWindow::game_process() {
     // process for different event
     switch(event.type) {
         case ALLEGRO_EVENT_TIMER: {                  // meet time update
-            if(!update()) return;
+            update();
             draw();
             break;
         }
@@ -74,7 +74,11 @@ void GameWindow::game_process() {
             show_msg("Detect key down");
             // process for different state
             if(state==GAME_LEVEL)
-                    state = level->key_triger(event.keyboard.keycode);
+                state = level->key_triger(event.keyboard.keycode);
+            else {
+                menu->game_state = state;
+                state = menu->key_triger(event.keyboard.keycode);
+            }
             break;
         }
         case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN: {      // if click
@@ -91,7 +95,7 @@ bool GameWindow::update() {
     // menu or level update
     switch(state) {
         case GAME_MENU: {
-            // state = GAME_LEVEL;
+            menu->game_state = state;
             menu->update();
             return true;
         }
@@ -109,7 +113,7 @@ bool GameWindow::update() {
                 case NEXT:{
                     int level_idx = level->getID();
                     if(level_idx == LEVEL_NUM) {
-                        state = GAME_TERMINATE;
+                        state = GAME_MENU;
                         return false;
                     }
                     else{
@@ -127,6 +131,10 @@ bool GameWindow::update() {
             }
             return true;
         }
+        case GAME_LEVEL_PUASE: {
+            menu->game_state = state;
+            menu->update();
+        }
         case GAME_TERMINATE: return false;
         default : {
             raise_err("unknown game state");
@@ -137,8 +145,11 @@ bool GameWindow::update() {
 }
 
 void GameWindow::draw() {
+    if(GameWindow::Mute) level->stop_sound();
+    else level->start_sound();
     switch(state) {
-        case GAME_MENU: {
+        case GAME_MENU:
+        case GAME_LEVEL_PUASE: {
             menu->draw();
             break;
         }
