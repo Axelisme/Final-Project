@@ -154,6 +154,9 @@ bool Level::update() {
                     }
                 }
                 ob->triger = true;
+                delete ob;
+                object.erase(it++);
+                draw = true;
                 break;
             }
             default: raise_warn("Unknown object type");

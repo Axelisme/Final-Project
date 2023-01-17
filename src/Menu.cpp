@@ -133,9 +133,7 @@ GAME_STATE Menu::key_triger(int key) {
                 return GAME_MENU;
                 break;
             case GUIDE:
-                go_down();
                 menu_state = START_MENU;
-                go_lift();
                 return GAME_MENU;
                 break;
 
