@@ -109,8 +109,6 @@ bool Level::CanMove(Pos now,OBJ_TYPE T,DIRCTION dirc) {
 }
 
 bool Level::update() {
-    // update key lock
-    update_key_lock();
 
     bool draw = false;
     // object state set
@@ -127,7 +125,6 @@ bool Level::update() {
                     draw = true;
                 }
                 else if(CanMove(ob->getPos(),STONE,Gravity)) {
-                    set_key_lock();
                     ob->move_dirc = Gravity;
                     draw = true;
                 }
@@ -157,6 +154,9 @@ bool Level::update() {
                     }
                 }
                 ob->triger = true;
+                delete ob;
+                object.erase(it++);
+                draw = true;
                 break;
             }
             default: raise_warn("Unknown object type");
@@ -192,7 +192,6 @@ bool Level::update() {
     else if(snake->isFall) {  //falling
         show_msg("Snake fall");
         snake->move_direction = Gravity;
-        set_key_lock();
         draw = true;
     }
     else if(snake->move_direction==NONE) {}
@@ -210,7 +209,6 @@ bool Level::update() {
                 if(ob->getPos() == next) ob->move_dirc = snake->move_direction;
             }
         }
-        set_key_lock();
         draw = true;
     }
     else {
@@ -573,7 +571,6 @@ void Level::level_reset(int idx) {
     show_msg("Level reset begin");
     destroy_level();
     key_lock = false;
-    key_lock_count =0;
     load_level(idx);
     show_msg("Level reset done");
 }
@@ -620,7 +617,6 @@ Level::Level(int i):
 {
     show_msg("Create level begin");
     key_lock = false;
-    key_lock_count =0;
     level_stat = KEEP;
     load_level(i);
     show_msg("Create level done");

@@ -52,14 +52,18 @@ void Menu::draw() {
 GAME_STATE Menu::key_triger(int key) {
     if (menu_state == IN_MENU)
     {
+        go_down();
         menu_state = START_MENU;
+        go_lift();
         return GAME_MENU;
     }
     else if (game_state == GAME_LEVEL_PUASE)
     {
         if (key == ALLEGRO_KEY_ENTER || key == ALLEGRO_KEY_P)
         {
+            go_down();
             menu_state = START_MENU;
+            go_lift();
             return GAME_LEVEL;
         }
         else {return GAME_LEVEL_PUASE;}
@@ -87,7 +91,9 @@ GAME_STATE Menu::key_triger(int key) {
             switch (menu_state)
             {
             case START_MENU_LEVEL:
+                go_down();
                 menu_state = LEVEL_MENU;
+                go_lift();
                 return GAME_MENU;
                 break;
             case START_MENU_MUSIC:
@@ -95,10 +101,13 @@ GAME_STATE Menu::key_triger(int key) {
                 return GAME_MENU;
                 break;
             case START_MENU_GUID:
+                go_down();
                 menu_state = GUIDE;
+                go_lift();
                 return GAME_MENU;
                 break;
             case START_MENU_EXIT:
+                go_down();
                 return GAME_TERMINATE;
                 break;
             case LEVEL_MENU_1:
@@ -118,7 +127,9 @@ GAME_STATE Menu::key_triger(int key) {
                 return GAME_LEVEL;
                 break;
             case LEVEL_MENU_EXIT:
+                go_down();
                 menu_state = START_MENU;
+                go_lift();
                 return GAME_MENU;
                 break;
             case GUIDE:
@@ -141,9 +152,6 @@ GAME_STATE Menu::key_triger(int key) {
 }
 
 bool Menu::update() {
-    Interface::down_then_lift();
-    if(update_lock) return true;
-
     switch(game_state) {
         case GAME_MENU: {
             break;
