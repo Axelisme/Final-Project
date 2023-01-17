@@ -172,3 +172,37 @@ level2 = {
     }
 
 write_file(2,level2)
+
+
+map3_high, map3_width = 10, 25
+map3 = np.zeros([map3_high, map3_width]).astype(int)
+map3[1,3] = obj["Apple"]
+map3[2:4,3] = obj["Ground"]
+map3[6,2] = obj["Ground"]
+map3[5,3] = obj["Snake Head"]
+map3[4:6,1:3] = obj["Snake Body"]
+map3[4,2] = obj["Air"]
+
+map3 = add_edge(map3)
+map3_list = map3.tolist()
+map3_graph = map_to_graph(map3)
+map3_str = map_to_string(map3)
+
+level3 = {
+    "background": ['/data/image/background3'],
+    "music": ['/data/music/music3'],
+    "sound": ['/data/sound/sound3-1','/data/sound/sound3-2'],
+    "map":[map3.shape, map3_str, map3_graph],
+    "snake":[
+        '11 8',
+        '12 8',
+        '12 9',
+        '12 10',
+        ],
+    "stone":[
+        ],
+    "button":[
+        ]
+    }
+
+write_file(3,level3)
