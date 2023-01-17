@@ -11,7 +11,7 @@ void Interface::draw() {
     float dy = 0;
     float dw = CHUNK_WIDTH*window_width;
     float dh = CHUNK_HEIGHT*window_height;
-    al_draw_scaled_bitmap(backgroundImage1,sx,sy,sw,sh,dx,dy,dw,dh,0);
+    if(SHOW_BACK_FOG) al_draw_scaled_bitmap(backgroundImage1,sx,sy,sw,sh,dx,dy,dw,dh,0);
     sx = CHUNK_WIDTH*width_ratio2*(window_center.second-window_width/2-SEE_MAP_LEFT);
     sy = 0;
     sw = CHUNK_WIDTH*(window_width);

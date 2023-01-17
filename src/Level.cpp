@@ -5,7 +5,7 @@
 
 void Level::draw_map() {
     float window_x = window_center.second - window_width/2;
-    float window_y = (MAP_HEIGHT-SEE_MAP_BUTTOM+SEE_MAP_TOP)/2;
+    float window_y = window_center.first - window_height/2;
     for(int i=0;i<map.size();++i) {
         for(int j=0;j<map[0].size();++j){
             if(j<window_x || j>window_x+window_width || i<window_y || i>window_y+window_height) continue;
@@ -61,7 +61,7 @@ void Level::draw() {
 
     for(auto &o:object) {
         o->window_x = window_center.second - window_width/2;
-        o->window_y = (MAP_HEIGHT-SEE_MAP_BUTTOM+SEE_MAP_TOP)/2;
+        o->window_y = window_center.first - window_height/2;
         o->draw();
     }
     

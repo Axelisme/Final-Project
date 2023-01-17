@@ -22,9 +22,9 @@ void Object::draw() {
     al_draw_scaled_bitmap(Image,
                             0,0,
                             al_get_bitmap_width(Image),al_get_bitmap_height(Image),
-                            CHUNK_WIDTH *(pos.second - window_x - 1.5),
-                            CHUNK_HEIGHT*(pos.first  - window_y - 1.5),
-                            3*CHUNK_WIDTH , 3*CHUNK_HEIGHT,
+                            CHUNK_WIDTH *(pos.second - window_x - OBJECT_IMAGE_SIZE/2),
+                            CHUNK_HEIGHT*(pos.first  - window_y - OBJECT_IMAGE_SIZE/2),
+                            OBJECT_IMAGE_SIZE*CHUNK_WIDTH , OBJECT_IMAGE_SIZE*CHUNK_HEIGHT,
                             0
                             );
 }

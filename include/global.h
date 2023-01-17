@@ -16,26 +16,28 @@
 #define Debug 0
 #define Show 0
 
+#define SHOW_BACK_FOG 1
+
 #define FIRST_STATE GAME_MENU
 #define DISPLAY_WIDTH 800
 #define DISPLAY_HEIGHT 800
 
-#define CHUNK_W_NUM 14
-#define CHUNK_H_NUM 14
-#define MAP_WIDTH  40
-#define MAP_HEIGHT 25
-#define SEE_MAP_LEFT 2
+#define CHUNK_W_NUM 16
+#define CHUNK_H_NUM 16
+#define MAP_WIDTH  39
+#define MAP_HEIGHT 24
+#define SEE_MAP_LEFT 0
 #define SEE_MAP_RIGHT 39
-#define SEE_MAP_TOP 2
+#define SEE_MAP_TOP 0
 #define SEE_MAP_BUTTOM 24
 #define CHUNK_WIDTH   (double(DISPLAY_WIDTH )/CHUNK_W_NUM)
 #define CHUNK_HEIGHT  (double(DISPLAY_HEIGHT)/CHUNK_H_NUM)
 #define MIDDLEGROUND_RATIO 0.7
 
-#define FPS 20
+#define FPS 30
 #define OBJECT_IMAGE_SIZE 3.0
 #define LEVEL_NUM 2
-#define FIRST_LEVEL 2
+#define FIRST_LEVEL 1
 #define KEY_LOCK_NUM 0
 #define ANI_NUM 4
 #define ANI_TOTAL_COUNT 50
