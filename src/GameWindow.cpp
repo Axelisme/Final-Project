@@ -91,7 +91,7 @@ bool GameWindow::update() {
     // menu or level update
     switch(state) {
         case GAME_MENU: {
-            state = GAME_LEVEL;
+            // state = GAME_LEVEL;
             menu->update();
             return true;
         }
