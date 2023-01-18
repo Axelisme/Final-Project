@@ -1,7 +1,6 @@
 #include "GameWindow.h"
 #include <iostream>
 #include <unistd.h>
-#include <sched.h>
 
 using namespace std;
 
@@ -35,13 +34,6 @@ void GameWindow::game_play() {
     while(state != GAME_TERMINATE) {
         if(!al_is_event_queue_empty(event_queue))
             game_process();
-        else {
-            t_now=al_get_time();
-            if(t_now-t_pre>=10/FPS) {
-                t_pre = t_now;
-            }
-            else sleep(0);
-        }
     }
 
 }
